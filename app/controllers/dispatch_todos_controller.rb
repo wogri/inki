@@ -1,0 +1,2 @@
+class DispatchTodosController < ApplicationController
+end

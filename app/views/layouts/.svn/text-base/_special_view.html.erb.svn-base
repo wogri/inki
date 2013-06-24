@@ -1,0 +1,8 @@
+<div class="show_table" id="slider_<%= @ajax_id %>_<%= @object.class %>_<%= @object.id %>" style="display:none;">
+	<div class="pull-right">
+		<%= close_button(@object) %>
+	</div>
+	<div class="pull-left">
+		<%= render(:file => @special_render, :handlers => [:erb]) %>
+	</div>
+</div>

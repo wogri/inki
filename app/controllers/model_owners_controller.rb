@@ -1,0 +1,2 @@
+class ModelOwnersController < ApplicationController
+end

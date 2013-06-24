@@ -1,0 +1,34 @@
+- time_recording:
+  - time_elements
+  - projects
+  - customers
+  - billing: bills
+- wogri_at_users:
+  - user_accounts
+  - user_mail_addresses
+  - user_homepages
+  - user_homepages
+- expenses:
+  - expenses
+  - rides
+- wogri_only:
+  - bookmarks
+  - bookmark_categories
+  - ipv6_routes
+  - jabber_message_archives
+  - delayed_mails
+  - weather_forecasts
+  - fh_hagenberg:
+    - courses
+    - question_difficulties
+- dropdown_fields:
+  - rights
+  - webserver_templates
+  - bill_templates
+- internal:
+  - dispatch_jobs
+  - colors
+  - rgb_colors: rgbs
+  - user_management:
+    - users
+    - usergroups

@@ -1,0 +1,27 @@
+#!/usr/bin/ruby 
+
+require "#{File.dirname(__FILE__)}/../../config/environment.rb"
+
+todo = DispatchTodoInstance.new
+
+docs = InkiDoc.order("sort_index ASC, doc_title ASC") 
+menu = []
+documentation = []
+docs.each do |doc|
+	anchor = doc.doc_title.underscore.gsub(/ /, '_')
+	menu.push("<li><a href=\"##{anchor}\">#{doc.doc_title}</a></li>")
+	d = "<div class=\"page-header\">\n<a name=\"#{anchor}\"><span style=\"padding-top: 40px; margin-top: -40px; display: block;\"></span></a><h2>#{doc.doc_title} <small><a href=\"#top\">(back to top)</a></small></h2>\n</div>\n#{doc.doc}"
+	documentation.push(d)
+end
+
+File.open("#{Rails.root}/doc/doc_menu.html.erb", "w+") do |f|
+	f.write(menu.join("\n"))
+end
+
+File.open("#{Rails.root}/doc/doc.html.erb", "w+") do |f|
+	f.write(documentation.join("\n"))
+end
+
+todo.jobs.each do |job|
+	todo.success!(job)
+end

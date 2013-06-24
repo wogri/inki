@@ -1,0 +1,367 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  title: "wogri.at command and control"
+  attribute: "Datenfeld"
+  help: "Hilfe"
+  value: "Wert"
+  server_status: "Server Status"
+  ip_config: "IP-Konfiguration"
+  reboot: "Reboot"
+  database: "Datenbank"
+  server_maintenance: "Server / Wartung"
+  people: "Personen"
+  new_person: "Neue Person"
+  groups: "Gruppen"
+  new_group: "Neue Gruppe"
+  logging: "Logging"
+  sorry: "Es tut und leid..."
+  no_access: "Sie haben keinen Zugang zu dieser Ressource"
+  access_time: "Zugriffszeit"
+  csv_export: "CSV exportieren"
+  adding: "hinzufügen"
+  access_times: "Zugriffszeiten"
+  edit: "Bearbeiten"
+  delete: "Löschen"
+  deleted: "gelöscht"
+  back: "Zurück"
+  options: "Optionen"
+  time: "Zeit"
+  updated: "aktualisiert"
+  deleted: "gelöscht"
+  created: "erstellt"
+  unknown_command: "unbekannter Befehl"
+  daemon_unknown: "Daemon unbekannt. Geh weg."
+  executed_successfully: "erfolgreich ausgeführt"
+  executed_nonsuccessfully: "gescheitert. Fehler: " 
+  from: "Von"
+  until: "Bist"
+  use_datesearch: "Datumssuche anwenden"
+  person: "Person"
+  card_id: "Kartennummer"
+  log_id: "Log ID"
+  access_granted: "Zugriff gewährt"
+  access_denied: "Zugriff verweigert"
+  search: "Suche"
+  no_entries_found: "Keine Einträge gefunden."
+  db_backup_restore: "Datenbank Backup / Wiederherstellung"
+  db_dump_failed: "Datenbank konnte nicht gedumpt werden"
+  db_dump_success: "Datenbank dump war erfolgreich"
+  db_restore_failed: "Datenbank konnte nicht wiederhergestellt werden"
+  db_restore_success: "Datenbanwiederherstellung war erfolgreich"
+  threshold_warning: "Threshold muss zwischen 0 und 1 sein"
+  backup: "Backup"
+  create_backup: "Erzeuge eine Backup-Datei der Datenbank"
+  create_backup_confirmation: "Dies wird ein Backup-Datei der Datenbank erzeugen, welche Sie danach herunterladen können. Fortfahren? Die Fertigstellung könnte einige Sekundenen dauern, bitte bleiben Sie auf dieser Seite und warten Sie das Ergebnis ab."
+  download_backup: "Backup herunterladen"
+  restore: "Wiederherstellung"
+  restore_message: "Bitte stellen sie nur Dateien wieder her, welche zuvor mit diesem Tool gedumpt wurden. Die hochgeladene Datei muss bzip-komprimiert sein. "
+  file_to_upload: "Datei zum Hochladen"
+  restore_database: "Wiederherstellung der Datenbank"
+  restore_database_confirmation: "Dies wird die Datenbank in den Zustand der hochgeladenen Datei wiederherstellen. Das könnte zu Problemen führen und kann einige Sekunden dauern. Fortfahren?"
+  daemon: "Daemon"
+  status: "Status"
+  action: "Aktion"
+  start: "start"
+  stop: "stop"
+  start_confirmation: "wird neu gestartet. Das kann zu einer Instabilität des Webinterfaces führen. Fortfahren?"
+  stop_confirmation: "wird gestoppt. Fortfahren?"
+  save_threshold: "Threshold Speichern"
+  save_threshold_confirmation: "Dies wird den Threshold setzen und den BSPd neu starten. Sind Sie sicher?"
+  ip_config: "Server IP-Konfiguration"
+  ip_config_saved: "IP-Konfiguration erfolgreich gespeichert."
+  ip_config_failed: "IP-Konfiguration konnte nicht gespeichert werden. Ihre Einstellungen wurden nicht gespeichert."
+  ip_address: "IP-Adresse"
+  netmask: "Netzmaske"
+  gateway: "Default Gateway"
+  save: "Speichern"
+  ip_confirmation: "Sie müssen die Maschine nach den Änderungen neu starten. Fortfahren?"
+  reboot_information: "Um die Maschine neu zu starten klicken Sie bitte unten."
+  reboot_confirmation: "Dies wird die Maschine neu starten. Das Web-Interface wird für einige Minuten nicht errreichbar sein. Fortfahren?."
+  rebooting: "Das System startet jetzt neu. "
+  reboot_error: "Das System konnte nicht neu gestartet werden. "
+  startpage: "Verwenden Sie das Menü auf der linken Seite zur Navigation. "
+  picture_error: "Konnte kein Bild machen. Fehler:"
+  logout: "Abmelden"
+  wrong_user_or_password: "Falscher Benutzername oder Kennwort. Bitte probieren Sie es nochmals."
+  username: "Benutzername"
+  password: "Kennwort"
+  login: "Bitte anmelden"
+  submit: "Absenden"
+  new: "Neu"
+  people_groups: "Personen / Gruppen"
+  internal: "Intern"
+  users: "Benutzer"
+  groups: "Gruppen"
+  could_not_get_threshold: "Konnte Threshold nicht auslesen"
+  log_picture: "Log Bildvergleich"
+  functions: "Funktionen"
+  countries: "Länder"
+  get_picture: "Neues Bild erstellen"
+  sure: "Sicher"
+  time_recording: Zeiterfassung
+  views:
+    pagination:
+      first: "Anfang"
+      previous: "&#171;"
+      next: "&#187;"
+      truncate: "..."
+      last: "Ende"
+  activerecord:
+    errors:
+      template:
+        header: "Fehler beim Speichern"
+        body: "Folgende Fehler sind beim Speichern aufgetreten"
+    models:
+      log: "Log"
+      person: "Person"
+      access_time: "Zugriffszeit"
+      country: "Land"
+      function: "Funktion"
+      user: "Benutzer"
+      group: "Gruppe"
+      usergroup: "Gruppe"
+    attributes:
+      log:
+        LogID: "Log ID"
+        StationID: "Station ID"
+        PersonID: "Person"
+        CardID: "Kartennummer"
+        Timestamp: "Zeit"
+        LogEvent: "Zugang"
+      person:
+        Surname: "Nachname"
+        Forename: "Vorname"
+        Title: "Titel"
+        PersonnelNumber: "Personalnummer"
+        Height: "Größe (cm)"
+        Comment: "Kommentar"
+        Active: "Aktiv"
+        EndDate: "Abgelaufen am"
+        Salutation: "Anrede"
+        function: "Funktion"
+        origin: "Herkunft"
+        country: "Land"
+        CardID: "Karten ID"
+      group:
+        GroupName: "Gruppenname"
+      function:
+        FunctionsDescription: "Funktion"
+      country:
+        CountryName: "Land"
+      usergroup:
+        group_name: "Gruppenname"
+        description: "Beschreibung"
+      user:
+        username: "Benutzername"
+        password: "Kennwort"
+        first_name: "Vorname"
+        last_name: "Nachname"
+        email_address: "E-Mail Adresse"
+        usergroup: "Gruppe"
+      access_time:
+        TimeFrom: "Von"
+        TimeUntil: "Bis"
+        monday: "Montag"
+        tuesday: "Dienstag"
+        wednesday: "Mittwoch"
+        thursday: "Donnerstag"
+        friday: "Freitag"
+        saturday: "Samstag"
+        sunday: "Sonntag"
+  date:
+    abbr_day_names:
+    - So
+    - Mo
+    - Di
+    - Mi
+    - Do
+    - Fr
+    - Sa
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mär
+    - Apr
+    - Mai
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Okt
+    - Nov
+    - Dez
+    day_names:
+    - Sonntag
+    - Montag
+    - Dienstag
+    - Mittwoch
+    - Donnerstag
+    - Freitag
+    - Samstag
+    formats:
+      default: ! '%d.%m.%Y'
+      long: ! '%e. %B %Y'
+      short: ! '%e. %b'
+    month_names:
+    -
+    - Januar
+    - Februar
+    - März
+    - April
+    - Mai
+    - Juni
+    - Juli
+    - August
+    - September
+    - Oktober
+    - November
+    - Dezember
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: etwa eine Stunde
+        other: etwa %{count} Stunden
+      about_x_months:
+        one: etwa ein Monat
+        other: etwa %{count} Monate
+      about_x_years:
+        one: etwa ein Jahr
+        other: etwa %{count} Jahre
+      almost_x_years:
+        one: fast ein Jahr
+        other: fast %{count} Jahre
+      half_a_minute: eine halbe Minute
+      less_than_x_minutes:
+        one: weniger als eine Minute
+        other: weniger als %{count} Minuten
+      less_than_x_seconds:
+        one: weniger als eine Sekunde
+        other: weniger als %{count} Sekunden
+      over_x_years:
+        one: mehr als ein Jahr
+        other: mehr als %{count} Jahre
+      x_days:
+        one: ein Tag
+        other: ! '%{count} Tage'
+      x_minutes:
+        one: eine Minute
+        other: ! '%{count} Minuten'
+      x_months:
+        one: ein Monat
+        other: ! '%{count} Monate'
+      x_seconds:
+        one: eine Sekunde
+        other: ! '%{count} Sekunden'
+    prompts:
+      day: Tag
+      hour: Stunden
+      minute: Minuten
+      month: Monat
+      second: Sekunden
+      year: Jahr
+  errors: &errors
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: muss akzeptiert werden
+      blank: muss ausgefüllt werden
+      confirmation: stimmt nicht mit der Bestätigung überein
+      empty: muss ausgefüllt werden
+      equal_to: muss genau %{count} sein
+      even: muss gerade sein
+      exclusion: ist nicht verfügbar
+      greater_than: muss größer als %{count} sein
+      greater_than_or_equal_to: muss größer oder gleich %{count} sein
+      inclusion: ist kein gültiger Wert
+      invalid: ist nicht gültig
+      less_than: muss kleiner als %{count} sein
+      less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+      not_a_number: ist keine Zahl
+      not_an_integer: muss ganzzahlig sein
+      odd: muss ungerade sein
+      record_invalid: ! 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
+      taken: ist bereits vergeben
+      too_long: ist zu lang (nicht mehr als %{count} Zeichen)
+      too_short: ist zu kurz (nicht weniger als %{count} Zeichen)
+      wrong_length: hat die falsche Länge (muss genau %{count} Zeichen haben)
+    template:
+      body: ! 'Bitte überprüfen Sie die folgenden Felder:'
+      header:
+        one: ! 'Konnte %{model} nicht speichern: ein Fehler.'
+        other: ! 'Konnte %{model} nicht speichern: %{count} Fehler.'
+  helpers:
+    select:
+      prompt: Bitte wählen
+    submit:
+      create: ! '%{model} erstellen'
+      submit: ! '%{model} speichern'
+      update: ! '%{model} aktualisieren'
+  number:
+    currency:
+      format:
+        delimiter: .
+        format: ! '%n %u'
+        precision: 2
+        separator: ! ','
+        significant: false
+        strip_insignificant_zeros: false
+        unit: €
+    format:
+      delimiter: .
+      precision: 2
+      separator: ! ','
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion:
+            one: Milliarde
+            other: Milliarden
+          million: Millionen
+          quadrillion:
+            one: Billiarde
+            other: Billiarden
+          thousand: Tausend
+          trillion: Billionen
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ' und '
+      two_words_connector: ! ' und '
+      words_connector: ! ', '
+  time:
+    am: vormittags
+    formats:
+      default: ! '%A, %d. %B %Y, %H:%M Uhr'
+      long: ! '%A, %d. %B %Y, %H:%M Uhr'
+      short: ! '%d. %B, %H:%M Uhr'
+    pm: nachmittags

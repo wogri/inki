@@ -1,0 +1,12 @@
+<% if @no_new_object_possible -%>
+	<%= ajax_html("#new_#{@ajax_id}", t(:no_new_object_possible)) %>
+<% else -%>
+	<% if @add_existing_model %>
+		<%= modal(t(:edit_associations), render(:partial => "layouts/index_table"), 600, 600) %>
+	<% else %>
+		<%= ajax_html("#new_#{@ajax_id}", render(:partial => "layouts/form", :locals => {:new => true, :object => @object, :additional_partials => @object.class.edit_partials, :hidden_fields => @object.class.hidden_fields}), false) %>
+		<%#= ajax_html("#close_#{@ajax_id}", render(:partial => "layouts/close")) %>
+		<% div_id = "#{@ajax_id}_#{@object.class}_#{@object.id}" -%>
+		<%= ajax_slidedown("#new_slider_#{div_id}") %>
+	<% end -%>
+<% end -%>

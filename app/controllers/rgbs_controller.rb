@@ -1,0 +1,2 @@
+class RgbsController < ApplicationController
+end

@@ -1,0 +1,2 @@
+class DispatchJobsController < ApplicationController
+end

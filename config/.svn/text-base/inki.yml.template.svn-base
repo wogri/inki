@@ -1,0 +1,17 @@
+development:
+  rest_password: '1234' # a password for restful interaction with the webinterface - it's a shared secret.
+  title: Inki Development Version
+  scrollyness: true # if set to true, the webinterface will be more scrolling, not good for mobile phones
+  brand: Inki
+  languages:
+    en: English
+    de: Deutsch
+
+production:
+  rest_password: '1234asdfjkl' # a password for restful interaction with the webinterface - it's a shared secret.
+  title: Inki Database
+  scrollyness: false
+  brand: Inki
+  languages:
+    en: English
+    de: Deutsch

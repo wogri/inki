@@ -1,0 +1,13 @@
+users:
+  user_accounts: :write
+  user_homepages: :read
+  startpages: :read
+  courses: :read
+accounting:
+  participants: :write
+  startpages: :read
+read_only:
+  :all: :read
+admins:
+  :all: :write
+

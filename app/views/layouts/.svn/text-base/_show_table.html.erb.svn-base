@@ -1,0 +1,57 @@
+<div <%= 'class="bubble"'.html_safe if defined?(create) -%> id="<%= "new_" if defined?(create) -%>slider_<%= @div_id %>" <%= 'style="display:none;"'.html_safe if request.xhr? -%>>
+	<table class="table table-condensed table-hover table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>
+					<%= t(:attribute) %>
+				</th>
+				<th>
+					<%= t(:value) %>
+				</th>
+				<th width="12pt;">
+					<%= close_button(@object, :non_dropdown_view => (defined? non_dropdown_view), :new => defined?(create)) %>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% (@object.class.sorted_attributes + [:_owner_name]).each do |attribute| %>
+				<tr> 
+					<td style="white-space: nowrap;">
+						<% if attribute == :_owner_name %>
+							<%= t(:owner_name) %>
+						<% elsif attribute == :color %>
+							<%= t(:color) %>
+						<% else %>
+							<% if help = @object.class.help_text(attribute) %>
+								<abbr title="<%= t(help) %>">
+							<% end %>
+							<%= @object.class.human_attribute_name(attribute) %>
+							<% if help %>
+								</abbr>
+							<% end %>
+							<%#= help_link(@object, attribute) %>
+						<% end %>
+					</td>
+					<td colspan="2">
+						<%= show_attribute_value(@object, attribute, :show => true) %>
+					</td>
+				</tr>
+			<% end -%>
+		</tbody>
+	</table>
+
+	<div>
+		<!-- show partials if defined in the model -->
+		<% if defined? @object.class.show_partials -%>
+			<% @object.class.show_partials.each do |partial| -%>
+				<%= render :partial => partial %>
+			<% end -%>
+		<% end -%>
+
+		<% if @object.class.visible_relations %>
+			<% @object.class.visible_relations.each do |relation| %>
+				<%= object_relation_link(@object, relation) %>
+			<% end -%>
+		<% end -%>
+	</div>
+</div>

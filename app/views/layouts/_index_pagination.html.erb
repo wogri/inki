@@ -1,0 +1,23 @@
+<% if @relation != :has_one %>
+	<div class="pagination">
+		<%= paginate @objects, :params => {:action => "index", :ajax_id => @ajax_id}, :remote => true %>
+		<% if @objects.total_pages > 1 or @no_pagination %>
+			<ul>
+				<li>
+					<% if @no_pagination %>
+						<%= link_to(t(:paginate), params.merge({:no_pagination => false, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
+					<% else %>
+						<% if @objects.total_count > 1000 %>
+							<%= link_to(t(:all), params.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, :confirm => t(:big_number_of_objects_to_display), :class => "spinner") %>
+						<% else %>
+							<%= link_to(t(:all), params.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
+						<% end %>
+					<% end -%>
+				</li>
+			</ul>
+		<% end -%>
+	</div>
+	<div class="left_aligned">
+		<%= page_entries_info @objects %>
+	</div>
+<% end %>

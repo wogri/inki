@@ -1,0 +1,16 @@
+<% link_hash = {:ajax_id => @ajax_id} -%>
+<% link_hash.merge!({:show_id => @show_object.id, :from_show_table => @from_show_table}) if @from_show_table -%>
+<%= link_to(image_tag("icons/add.png", :class => "icon") + ' ' + t(:new), self.send("new_#{@model_class.to_s.underscore}_path", link_hash), :remote => true, :class => "btn btn-success spinner") %>
+<% if @relation == :has_and_belongs_to_many %>
+	<% link_hash[:add_existing_model] = true %>
+	<% link_hash[:previous_ajax_id] = @ajax_id %>
+	<% link_hash.delete(:ajax_id) %>
+	<%= link_to(image_tag("icons/database_green.png", :class => "icon spinner") + t(:modify_existing_model), self.send("new_#{@model_class.to_s.underscore}_path", link_hash), :remote => true, :class => "btn btn-info") %>
+<% end %>
+<span id="close_<%= @ajax_id %>" style="display: none;">
+</span>
+<div class="row">
+	<div class="span6" id="new_<%= @ajax_id -%>" style="float: left; clear: left; display: none;">
+		<!-- AJAX-Placeholder -->
+	</div>
+</div>

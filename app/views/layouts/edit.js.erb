@@ -1,0 +1,4 @@
+<% div_id = "#{@ajax_id}_#{@object.class.to_s}_#{@object.id}" -%>
+<%= ajax_html("#" + div_id, render(:partial => "layouts/form", :locals => {:object => @object, :additional_partials => @object.class.edit_partials, :hidden_fields => @object.class.hidden_fields}), false) %>
+<%= ajax_html("##{div_id}_options", option_buttons(@object)) %>
+<%= ajax_slidedown("#slider_#{div_id}") %>

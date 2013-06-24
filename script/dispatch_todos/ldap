@@ -1,0 +1,70 @@
+#!/usr/bin/ruby 
+
+require "#{File.dirname(__FILE__)}/../../config/environment.rb"
+require 'net/ldap'
+
+
+def connect_to_ldap(options)
+	ldap = Net::LDAP.new(options)
+end
+
+def is_empty_value?(value)
+	(value.class == String and value == "") or not value or (value.class == Array and value.size == 0)
+end
+
+todo = DispatchTodoInstance.new
+
+ldap = connect_to_ldap(todo.options[:options][:ldap])
+if not ldap.bind
+	puts "Error: Could not connect to LDAP server: \n#{ldap.get_operation_result.message}" 
+	exit 1
+end
+
+todo.jobs.each do |job|
+	#job = find_user_account(job)
+	next if not job # this is not ideal yet, because this job would not succeed. 
+	dn, attributes = job.to_ldap(todo.options[:options])
+	update_failed = false
+	# empty out 
+	attributes.each do |key, value|
+		if is_empty_value?(value)
+			attributes.delete(key)
+		end
+	end
+	if job._operation == "create"
+		todo.emit_log(job, "inserting object into ldap now! - #{dn}")
+		if not ldap.add(:dn => dn, :attributes => attributes)
+			todo.emit_log(job, ldap.get_operation_result.message)
+			next
+		end
+	elsif job._operation == "update"
+		attributes.each do |key, value|
+			if key == :objectClass
+				next
+			end
+			if is_empty_value?(value)
+				todo.emit_log(job, "deleting #{key}")
+				if not ldap.delete_attribute(dn, key)
+					todo.emit_log(job, ldap.get_operation_result.message)
+				end
+			else
+				todo.emit_log(job, "updating #{key}/#{value.inspect}")
+				if not ldap.replace_attribute(dn, key, value)
+					update_failed = true
+					todo.emit_log(job, ldap.get_operation_result.message)
+				end
+			end
+		end
+	elsif job._operation == "destroy"
+		if not ldap.delete :dn => dn
+			todo.emit_log(job, ldap.get_operation_result.message)
+			update_failed = true
+		end	
+	else
+		todo.emit_log(job, "can't handle #{job._operation} on #{job.model_name}")
+	end
+	# do not return sucess! for this job if the update failed somewhere.
+	if not update_failed
+		todo.success!(job)
+	end
+end

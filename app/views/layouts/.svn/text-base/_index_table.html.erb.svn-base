@@ -1,0 +1,63 @@
+<div id="list_<%= @ajax_id -%>">
+	<% if @objects and @objects.size > 0 or @search_string %>
+		<table class="table table-condensed table-hover table-bordered">
+			<thead>
+				<% if @relation != :has_one %>
+					<tr>
+						<th colspan="<%= @fields.count + 1 -%>">
+							<%= render :partial => "layouts/search_form" %>
+						</th>
+					</tr>
+				<% end -%>
+				<tr>
+					<% @fields.each do |field| %>
+						<th class="header_th">
+							<b>
+								<%= translate_and_link(@model_class.new, field) %>
+							</b>
+						</th>
+					<% end -%>
+					<th>
+						<b><%= t(:options) %></b>
+					</th>
+					<!--<th class="table_widener">
+					</th>
+					-->
+				</tr>
+			</thead>
+			<tbody>
+				<% @objects.each do |object| %>
+					<% id = "#{@ajax_id}_#{@model_class.to_s}_#{object.id}" -%>
+					<tr <%= get_tr_css_style(object, @colors) %> id="<%= "tr_#{@ajax_id}_#{id}" %>">
+						<% @fields.each do |field| %>
+							<td class="content_td" id="<%= "#{id}_#{field}" -%>" <%= column_style(@model_class, field) -%>>
+								<%= show_attribute_value(object, field) %>
+							</td>
+						<% end -%>
+						<td class="options_td" id="<%= "#{id}_options" -%>">
+							<%= option_buttons(object) %>
+						</td>
+						<!--
+						<td class="table_widener">
+						</td>
+						-->
+					</tr>
+					<tr class="show_table_row" id = "tr_<%= id -%>"> 
+						<td class="show_table_column" style="padding-top: 0; padding-bottom: 0; border-top: 0; border-bottom: 0;" colspan="<%= @fields.count + 1 -%>" id="<%= id -%>">
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="<%= @fields.count + 1 -%>">
+						<%= render :partial => "layouts/index_pagination" if not defined? no_pagination %>
+					</td>
+					<!--<td class="table_widener">
+					</td>
+					-->
+				</tr>
+			</tfoot>
+		</table>
+	<% end %>
+</div>

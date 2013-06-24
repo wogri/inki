@@ -1,0 +1,7 @@
+<% if @index -%>
+	<%= ajax_close("#slider_#{@div_id}") %>
+	<%#= ajax_html("##{@div_id}_options", option_buttons(@object)) %>
+<% else %>
+	<%= ajax_close("#new_#{@ajax_id}") %>
+	<%#= ajax_close("#close_#{@ajax_id}") %>
+<% end %>

@@ -1,0 +1,23 @@
+#!/usr/bin/ruby 
+
+require "#{File.dirname(__FILE__)}/../../config/environment.rb"
+
+# this does all the command line parsing, and returns a todo-instance 
+# that contains an array called jobs. This array holds all the currently 
+# dispatched model-instances (even the deleted ones). These instances 
+# are active record elements, so you can treat them like you would treat
+# them in ruby on rails. 
+todo = DispatchTodoInstance.new
+
+puts todo.options.to_yaml
+
+todo.jobs.each do |job|
+	File.open("/tmp/log", "w") do |file|
+	  file.puts "#{job.class} was dispatched with id ##{job.id}. The database row was: #{job._operation}"
+	end
+	# this creates a log-entry in the dispatch_todos database table. 
+	# If a job fails, it this log will be e-mailed to the user. 
+	todo.emit_log(job, "asdf")
+	# this tells the dispatcher that the job has been executed successfully
+	todo.success!(job)
+end
