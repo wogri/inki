@@ -1,6 +1,0 @@
-<h1><%= t(:new) %></h1>
-<div style="float:left;">
-	<%= back_link(@object) %>
-	<%= render :partial => "layouts/form", :locals => {:object => @object, :additional_partials => @object.class.edit_partials, :hidden_fields => @object.class.hidden_fields} %>
-</div>
-

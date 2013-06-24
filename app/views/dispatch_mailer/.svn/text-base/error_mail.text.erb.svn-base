@@ -1,6 +1,0 @@
-<%= t(:hello) %>, 
-<%= t(:dispatch_errors_occured) %>. 
-
-<%= @body %>
--- 
-http://www.inki-db.com

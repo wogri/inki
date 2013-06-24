@@ -1,3 +1,0 @@
-<%= option_buttons(@object, :non_dropdown_view => true) %>
-<div class="left_aligned show_table_column" id="<%= @div_id %>">
-</div>

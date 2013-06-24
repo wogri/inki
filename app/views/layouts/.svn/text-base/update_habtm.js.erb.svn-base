@@ -1,2 +1,0 @@
-<%= ajax_html("#dropdown_#{@previous_ajax_id}", render(:partial => "layouts/show_index_table"), false) %>
-<%= ajax_show("#index_#{@ajax_id}") %>

@@ -1,7 +1,0 @@
-<h1><%= t(:edit) %>: <%= @object.title if defined? @object.title %></h1>
-
-<div style="float:left;">
-	<%= back_link(@object) %>
-
-	<%= render :partial => "layouts/form", :locals => {:object => @object, :additional_partials => @object.class.edit_partials, :hidden_fields => @object.class.hidden_fields, :non_dropdown_view => true} %>
-</div>

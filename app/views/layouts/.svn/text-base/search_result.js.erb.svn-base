@@ -1,1 +1,0 @@
-<%= ajax_html("#list_#{@ajax_id}", render(:partial => "layouts/index_table", :locals => {:no_pagination => true})) %>

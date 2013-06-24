@@ -1,4 +1,0 @@
-<h2><%= t(:sorry) %></h2>
-<div class="alert alert-error">
-	<%= t(:no_access) %> 
-</div>

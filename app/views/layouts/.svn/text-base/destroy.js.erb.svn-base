@@ -1,3 +1,0 @@
-<%= ajax_html("#list_#{@ajax_id}", render(:partial => "layouts/index_table")) %>
-<%= ajax_decrement("#dropdown_counter_#{@ajax_id}") if @from_show_table %>
-<%= ajax_html("div.pagination_#{@ajax_id}", paginate(@objects, :params => {:ajax_id => @ajax_id}, :remote => true)) if @relation != :has_one %>

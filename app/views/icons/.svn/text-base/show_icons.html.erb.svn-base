@@ -1,5 +1,0 @@
-<% @files.each do |file| %>
-	<%= image_tag("icons/#{file}") %>
-	<%= file %>
-	<br />
-<% end %>
