@@ -1,0 +1,82 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+en:
+  attribute: "Data Field"
+  value: "Value"
+  help: "Help"
+  internal: "Internal"
+  wrong_username_or_password: Wrong username or password
+  sorry: "We are sorry..."
+  no_access: "You don't have access to this resource"
+  cancel: "Cancel"
+  edit: "Edit"
+  delete: "Delete"
+  deleted: "deleted"
+  back: "Back to"
+  options: "Options"
+  _owner_name: Owner
+  owner_name: Owner
+  csv_export: "Export to CSV"
+  json_export: "Export to JSON"
+  xml_export: "Export to XML"
+  show: Show
+  show_no_remote: Show Exclusively
+  time: "Time"
+  updated: "updated"
+  deleted: "deleted"
+  created: "created"
+  search: "Search"
+  no_entries_found: "No Entries found."
+  save: "Save"
+  welcome: "Welcome to the Inki Database System"
+  startpage: "Click on the top menu to access your data"
+  logout: "Logout"
+  wrong_user_or_password: "Wrong username or password. Please try again."
+  username: "Username"
+  password: "Password"
+  please_login: "Please log in"
+  login: "Login"
+  submit: "Submit"
+  new: "New"
+  sure: "Are you sure you want do delete this"
+  close: "Close"
+  dispatch_errors: Errors
+  completed_dispatches: Completed
+  colors: Colors
+  all: All
+  paginate: Paginate
+  dispatch_todos: Dispatch Todos
+  big_number_of_objects_to_display: "The number of objects you are trying to display is very big. This operation might take a long time, and your browser will probably get quite busy. Are you sure you want to continue?"
+  no_new_object_possible: "Sorry. You can't create another object here. This is a one-to-one relationship."
+  edit_associations: Modify Associations
+  hello: Hello
+  details_here: Find more details about the job here
+  error_description: Error Description
+  dispatch_errors_occured: Unfortunately some errors occured while running a dispatch-job
+  modify_existing_model: Modify Existing Associations
+  color: Color
+  create_pdf: Create PDF
+  views:
+    pagination:
+      previous: "&#171;"
+      next: "&#187;"
+      truncate: "..."
+  activerecord:
+    models:
+      user: User
+      group: Group
+    attributes:
+      group:
+        GroupName: "Group Name"
+      user:
+        username: "Username"
+        password: "Password"
+        first_name: "First Name"
+        last_name: "Last Name"
+        email_address: "Email Address"
+        usergroup: "Group"
+      ip_address:
+        ip_address: "IP Address"
+  time:
+    formats:
+      shorter: "%-d.%-m.%Y - %H:%M"
