@@ -4,6 +4,7 @@ development:
       password: 912ec803b2ce49e4a541068d495ab570
       mailaddress: wogri@wogri.com
       name: Wolfgang Hennerbichler
+  users:
     test: 
       password: 912ec803b2ce49e4a541068d495ab570
       mailaddress: wogri@wogri.com

@@ -3,7 +3,7 @@
 	</li>
 	<% if @right -%>
 		<li class="pull-right">
-			<%= button_to(t(:logout), {:controller => "logins", :action => "destroy", :id => nil}, :disable_with => "...", :class => "btn btn-warning btn_small") %>
+			<%= button_to(t(:logout), {:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning btn_small") %>
 		</li>
 	<% end -%>
 	<li class="pull-right dropdown">

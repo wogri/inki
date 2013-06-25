@@ -1,106 +1,56 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 de:
-  title: "wogri.at command and control"
   attribute: "Datenfeld"
   help: "Hilfe"
+  internal: "Intern"
   value: "Wert"
-  server_status: "Server Status"
-  ip_config: "IP-Konfiguration"
-  reboot: "Reboot"
-  database: "Datenbank"
-  server_maintenance: "Server / Wartung"
-  people: "Personen"
-  new_person: "Neue Person"
-  groups: "Gruppen"
-  new_group: "Neue Gruppe"
-  logging: "Logging"
-  sorry: "Es tut und leid..."
-  no_access: "Sie haben keinen Zugang zu dieser Ressource"
-  access_time: "Zugriffszeit"
-  csv_export: "CSV exportieren"
-  adding: "hinzufügen"
-  access_times: "Zugriffszeiten"
+  wrong_username_or_password: Falscher Benutzername oder Kennwort
+  sorry: "Es tut uns leid..."
+  no_access: "Sie haben keinen Zugriff auf diese Ressource"
   edit: "Bearbeiten"
   delete: "Löschen"
   deleted: "gelöscht"
-  back: "Zurück"
+  cancel: "Abbrechen"
+  back: "Zurück zu"
   options: "Optionen"
-  time: "Zeit"
-  updated: "aktualisiert"
-  deleted: "gelöscht"
-  created: "erstellt"
-  unknown_command: "unbekannter Befehl"
-  daemon_unknown: "Daemon unbekannt. Geh weg."
-  executed_successfully: "erfolgreich ausgeführt"
-  executed_nonsuccessfully: "gescheitert. Fehler: " 
-  from: "Von"
-  until: "Bist"
-  use_datesearch: "Datumssuche anwenden"
-  person: "Person"
-  card_id: "Kartennummer"
-  log_id: "Log ID"
-  access_granted: "Zugriff gewährt"
-  access_denied: "Zugriff verweigert"
-  search: "Suche"
+  _owner_name: Besitzer
+  owner_name: Besitzer
+  csv_export: "CSV Export"
+  json_export: "JSON Export"
+  xml_export: "XML Export"
+  show: Details
+  show_no_remote: Exklusiv Anzeigen
+  search: "Suchen"
   no_entries_found: "Keine Einträge gefunden."
-  db_backup_restore: "Datenbank Backup / Wiederherstellung"
-  db_dump_failed: "Datenbank konnte nicht gedumpt werden"
-  db_dump_success: "Datenbank dump war erfolgreich"
-  db_restore_failed: "Datenbank konnte nicht wiederhergestellt werden"
-  db_restore_success: "Datenbanwiederherstellung war erfolgreich"
-  threshold_warning: "Threshold muss zwischen 0 und 1 sein"
-  backup: "Backup"
-  create_backup: "Erzeuge eine Backup-Datei der Datenbank"
-  create_backup_confirmation: "Dies wird ein Backup-Datei der Datenbank erzeugen, welche Sie danach herunterladen können. Fortfahren? Die Fertigstellung könnte einige Sekundenen dauern, bitte bleiben Sie auf dieser Seite und warten Sie das Ergebnis ab."
-  download_backup: "Backup herunterladen"
-  restore: "Wiederherstellung"
-  restore_message: "Bitte stellen sie nur Dateien wieder her, welche zuvor mit diesem Tool gedumpt wurden. Die hochgeladene Datei muss bzip-komprimiert sein. "
-  file_to_upload: "Datei zum Hochladen"
-  restore_database: "Wiederherstellung der Datenbank"
-  restore_database_confirmation: "Dies wird die Datenbank in den Zustand der hochgeladenen Datei wiederherstellen. Das könnte zu Problemen führen und kann einige Sekunden dauern. Fortfahren?"
-  daemon: "Daemon"
-  status: "Status"
-  action: "Aktion"
-  start: "start"
-  stop: "stop"
-  start_confirmation: "wird neu gestartet. Das kann zu einer Instabilität des Webinterfaces führen. Fortfahren?"
-  stop_confirmation: "wird gestoppt. Fortfahren?"
-  save_threshold: "Threshold Speichern"
-  save_threshold_confirmation: "Dies wird den Threshold setzen und den BSPd neu starten. Sind Sie sicher?"
-  ip_config: "Server IP-Konfiguration"
-  ip_config_saved: "IP-Konfiguration erfolgreich gespeichert."
-  ip_config_failed: "IP-Konfiguration konnte nicht gespeichert werden. Ihre Einstellungen wurden nicht gespeichert."
-  ip_address: "IP-Adresse"
-  netmask: "Netzmaske"
-  gateway: "Default Gateway"
   save: "Speichern"
-  ip_confirmation: "Sie müssen die Maschine nach den Änderungen neu starten. Fortfahren?"
-  reboot_information: "Um die Maschine neu zu starten klicken Sie bitte unten."
-  reboot_confirmation: "Dies wird die Maschine neu starten. Das Web-Interface wird für einige Minuten nicht errreichbar sein. Fortfahren?."
-  rebooting: "Das System startet jetzt neu. "
-  reboot_error: "Das System konnte nicht neu gestartet werden. "
-  startpage: "Verwenden Sie das Menü auf der linken Seite zur Navigation. "
-  picture_error: "Konnte kein Bild machen. Fehler:"
+  startpage: "Verwenden Sie das Menü oben zur Navigation. "
+  welcome: "Willkommen im Inki Datenbank System"
   logout: "Abmelden"
   wrong_user_or_password: "Falscher Benutzername oder Kennwort. Bitte probieren Sie es nochmals."
   username: "Benutzername"
   password: "Kennwort"
-  login: "Bitte anmelden"
-  submit: "Absenden"
+  please_login: "Bitte anmelden"
+  login: "Anmelden"
+  submit: "Senden"
   new: "Neu"
-  people_groups: "Personen / Gruppen"
-  internal: "Intern"
-  users: "Benutzer"
-  groups: "Gruppen"
-  could_not_get_threshold: "Konnte Threshold nicht auslesen"
-  log_picture: "Log Bildvergleich"
-  functions: "Funktionen"
-  countries: "Länder"
-  get_picture: "Neues Bild erstellen"
-  sure: "Sicher"
-  time_recording: Zeiterfassung
+  sure: "Wirklich löschen"
+  close: "Schließen"
+  dispatch_errors: Fehler
+  completed_dispatches: Erfolgreich
+  colors: Farben
+  all: Alle
+  paginate: Seitenweise
+  dispatch_todos: Dispatch Todos
+  big_number_of_objects_to_display: "Die Anzahl der Elemente die angezeigt werden sollen ist sehr hoch. Diese Aktion könnte lange dauern, und Ihr Browser könnte damit sehr beschäftigt sein. Wirklich weitermachen?"
+  no_new_object_possible: "Es können keine weiteren Objekte angelegt werden, das ist eine Eins-zu-einz Beziehung."
+  edit_associations: Verbindungen ändern
+  hello: Hallo
+  details_here: Mehr Details über den Job hier
+  error_description: Fehlerbeschreibung
+  dispatch_errors_occured: Leider sind ein paar Fehler während eines Dispatch Jobs passiert
+  modify_existing_model: Verbindungen ändern
+  color: Farbe
   views:
     pagination:
       first: "Anfang"
@@ -109,67 +59,19 @@ de:
       truncate: "..."
       last: "Ende"
   activerecord:
-    errors:
-      template:
-        header: "Fehler beim Speichern"
-        body: "Folgende Fehler sind beim Speichern aufgetreten"
     models:
-      log: "Log"
-      person: "Person"
-      access_time: "Zugriffszeit"
-      country: "Land"
-      function: "Funktion"
-      user: "Benutzer"
-      group: "Gruppe"
-      usergroup: "Gruppe"
+      user: User
+      group: Group
     attributes:
-      log:
-        LogID: "Log ID"
-        StationID: "Station ID"
-        PersonID: "Person"
-        CardID: "Kartennummer"
-        Timestamp: "Zeit"
-        LogEvent: "Zugang"
-      person:
-        Surname: "Nachname"
-        Forename: "Vorname"
-        Title: "Titel"
-        PersonnelNumber: "Personalnummer"
-        Height: "Größe (cm)"
-        Comment: "Kommentar"
-        Active: "Aktiv"
-        EndDate: "Abgelaufen am"
-        Salutation: "Anrede"
-        function: "Funktion"
-        origin: "Herkunft"
-        country: "Land"
-        CardID: "Karten ID"
       group:
-        GroupName: "Gruppenname"
-      function:
-        FunctionsDescription: "Funktion"
-      country:
-        CountryName: "Land"
-      usergroup:
-        group_name: "Gruppenname"
-        description: "Beschreibung"
+        GroupName: "Gruppen Name"
       user:
         username: "Benutzername"
         password: "Kennwort"
         first_name: "Vorname"
         last_name: "Nachname"
-        email_address: "E-Mail Adresse"
+        email_address: "Email Adresse"
         usergroup: "Gruppe"
-      access_time:
-        TimeFrom: "Von"
-        TimeUntil: "Bis"
-        monday: "Montag"
-        tuesday: "Dienstag"
-        wednesday: "Mittwoch"
-        thursday: "Donnerstag"
-        friday: "Freitag"
-        saturday: "Samstag"
-        sunday: "Sonntag"
   date:
     abbr_day_names:
     - So
@@ -364,4 +266,5 @@ de:
       default: ! '%A, %d. %B %Y, %H:%M Uhr'
       long: ! '%A, %d. %B %Y, %H:%M Uhr'
       short: ! '%d. %B, %H:%M Uhr'
+      shorter: "%-d.%-m.%Y - %H:%M"
     pm: nachmittags
