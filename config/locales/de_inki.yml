@@ -5,7 +5,7 @@ de:
   help: "Hilfe"
   internal: "Intern"
   value: "Wert"
-  wrong_username_or_password: Falscher Benutzername oder Kennwort
+  wrong_username_or_password: Benutzername oder Kennwort falsch
   sorry: "Es tut uns leid..."
   no_access: "Sie haben keinen Zugriff auf diese Ressource"
   edit: "Bearbeiten"
@@ -51,6 +51,9 @@ de:
   dispatch_errors_occured: Leider sind ein paar Fehler während eines Dispatch Jobs passiert
   modify_existing_model: Verbindungen ändern
   color: Farbe
+  users: Benutzer
+  usergroups: Benutzergruppen
+  dropdown_fields: Dropdowns
   views:
     pagination:
       first: "Anfang"

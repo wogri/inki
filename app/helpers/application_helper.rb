@@ -432,7 +432,7 @@ module ApplicationHelper
     if relationship == :belongs_to
 			foreign_object = object.send(relation)
 			if foreign_object
-				title_prefix = t(foreign_object.class.to_s.underscore.to_sym)
+				title_prefix = foreign_object.class.model_name.human
 				title = content_tag(:span, "#{title_prefix}: #{foreign_object.title}".html_safe, :class => "label")
 				title = (content_tag(:span, nil, :class => "arrow-left") + title).html_safe
 				content_tag(:div, link_to(title, foreign_object), :class => "left-aligned spinner")
