@@ -13,7 +13,7 @@
   - user_homepages
   - network_components
   - ip_addresses
-- wogri_only:
+- various_data:
   - bookmarks
   - bookmark_categories
   - ipv6_routes

@@ -64,16 +64,18 @@ de:
   activerecord:
     models:
       user: User
-      group: Group
+      usergroup: "Gruppe"
     attributes:
-      group:
-        GroupName: "Gruppen Name"
+      usergroup:
+        name: "Gruppen Name"
+        comment: "Kommentar"
       user:
         username: "Benutzername"
         password: "Kennwort"
         first_name: "Vorname"
         last_name: "Nachname"
-        email_address: "Email Adresse"
+        mailaddress: "Email Adresse"
+        created_at: "Erstellt um"
         usergroup: "Gruppe"
   date:
     abbr_day_names:

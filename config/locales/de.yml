@@ -1,0 +1,238 @@
+de:
+  groups: "Gruppen"
+  users: "Users"
+  help_mailaddress: "Mail Address that the user has. Needs to be a valid mail address."
+  exam_questions: Prüfungsfragen
+  exam_answers: Prüfungsantworten
+  create_diagram: Diagramm erstellen
+  wogri_at_system: System Management
+  ip_addresses: IP Addressen
+  show_graph: Graph anzeigen
+  help_snmp_counter: Für ständig ansteigende Interface Counter, wie Netzwerk-Verkehr.
+  help_data_lifetime: So viele Tage werden aufgehoben
+  courses: Fächer
+  time_elements: Zeitelemente
+  bills: Rechnungen
+  projects: Projekte
+  customer_ip_ranges: Kunden IP Bereiche
+  user_rights: Rechte
+  user_homepages: Homepages
+  user_mail_addresses: Mail Addressen
+  user_spamassassin_settings: Spam Einstellungen
+  user_emails: Mail Archiv
+  bookmarks: Bookmarks
+  user_homepage_aliases: Aliases
+  wogriusers: Wogri.at Benutzer
+  user_mail_settings: Mail Einstellungen
+  group_accounts: Gruppen Accounts
+  user_accounts: Benutzer Accounts
+  user_web_settings: Web Einstellungen
+  webserver_templates: Webserver Templates
+  webservers: Webserver
+  summarizes_all_unbilled_elements: Zusammenfassung
+  adds_bill_elements: Elemente hinzufügen
+  can_be_empty: Kann auch leer bleiben, wird dann automatisch berechnet
+  download_pdf: Download PDF
+  show_source_code: Quell-Code anzeigen
+  time_elements: Zeit Management
+  my_company: Meine Firma
+  various_data: Diverse Daten
+  customers: Kunden
+  expenses: Ausgaben
+  rides: Fahrten
+  network_components: Netzwerk Komponenten
+  bookmark_categories: Bookmark Kategorien
+  ipv6_routes: IPv6 Routen
+  jabber_message_archives: Jabber Archiv
+  weather_forecasts: Wettervorhersage
+  question_difficulties: Schwierigkeitsgrade
+  graph_data_sets: Graph Datensets
+  snmp_data_sets: SNMP Datensets
+  snmp_pollers: SNMP Poller
+  exam_answers: Prüfungsantworten
+  rgbs: RGB Werte
+  rights: Rechte
+  network_component_types: Komponenten Typen
+  bill_templates: Rechnungsvorlagen
+  activerecord:
+    models:
+      exam_question: Prüfungsfragen
+      course: Fach
+      user_account: Benutzer Account
+      ip_address: IP Adresse
+      project: Projekt
+      customer: Kunde
+      bill: Rechnung
+      bill_template: Rechnungsvorlage
+      expense: Ausgabe
+      ride: Fahrt
+      user_account: Benutzer Account
+      right: Recht
+      user_right: Recht
+      user_mail_address: Mail Adresse
+      user_mail_setting: Mail Einstellung
+      user_email: Mail Archiv
+      group_account: Gruppenaccount
+      network_component: Netzwerk Komponente
+      graph_data_set: Graph Datenset
+      snmp_data_set: SNMP Datenset
+      snmp_poller: SNMP Poller
+      ip_address: IP Adresse
+      bookmark: Bookmark
+      bookmark_category: Bookmark Kategorie
+      ipv6_route: IPv6 Route
+      jabber_message_archive: Jabber Archiv
+      weather_forecast: Wetter Vorhersage
+      inki_doc: Inki Dokument
+      exam_question: Prüfungsfrage
+      exam_answer: Prüfungsantwort
+      question_difficulty: Schwierigkeitsgrad
+      dispatch_job: Dispatch Job
+      rgb: RGB
+      right: Recht
+      network_component_type: Komponenten Typ
+    attributes:
+      time_element:
+        action: Aktion 
+        comment: Kommentar
+        cost: Kosten
+        time_start: Start
+        time_end: Ende
+        duration: Dauer
+        project: Projekt
+      project:
+        comment: Kommentar
+        cost_per_hour: Stundensatz
+        done: Erledigt
+        customer: Kunde
+      customer:
+        comment: Kommentar
+        street_address: Straße
+        city_address: Stadt
+        country_address: Land
+      bill:
+        bill_id: Rechnungsnummer
+        bill_date: Rechnungsdatum
+        project: Projekt
+        bill_template: Rechnungsvorlage
+        payed: Bezahlt
+        comment: Kommentar
+      bill:
+        expense_date: Datum
+        expense: Ausgabe
+        price: Preise
+        comment: Kommentar
+      ride:
+        ride_start: Beginn
+        ride_end: Ende
+        starting_location: Abfahrtsort
+        via_location: Über
+        destination_location: Ankunftsort
+        km: KM
+        comment: Kommentar
+      user_account:
+        username: Benutzername
+        password: Kennwort
+        description: Beschreibung
+        user_id: Unix UID
+        home_directory: Home Verzeichnis
+        contact_mail_address: Kontaktmailadresse
+        jabber_uid: Jabber UID
+        login_shell: Login Shell
+      user_right:
+        right: Recht
+        comment: Kommentar
+        locked: Gesperrt
+      user_mail_address:
+        mail_address: Mail Adresse
+        comment: Kommentar
+      user_mail_setting:
+        spamassassin_drop_score: Spamassassin Drop Schwellenwert
+        spamassassin_required_score: Spamassassin Schwellenwert
+        user_account: Benutzer Account
+        vacation_from: Urlaubsbenachrichtigung von
+        vacation_until: Urlaubsbenachrichtigung bis
+        vacation_message: Urlaubsbenachrichtigungstext
+      group_account:
+        group_name: Gruppenname
+        short_name: Kurzname
+      user_homepage:
+        homepage: Homepage Adresse
+        automatic_update: Automatisches Update am Webserver
+        extra_path: Extra Pfad am Webserver
+        extra_nginx_config: Extra nginx Config
+        extra_php_config: Extra php Config
+        extra_port: Extra Port
+        user_web_setting: Webeinstellung
+        webserver_template: Webserver Template
+      network_component:
+        comment: Kommentar
+        fqdn: FQDN
+        network_component_type: Komponenten-Typ
+        network_component: Übergeordnete Komponente
+        use_ipv6: IPv6 benutzen
+        snmp_community: SNMP Community
+      graph_data_set:
+        description: Beschreibung
+        network_component: Netzwerk Komponente
+        snmp_poller: SNMP Poller
+        data_lifetime: Daten Lebenszeit
+      snmp_data_set:
+        data_value: Datenwert
+        graph_data_set: Graph Datenset
+      ip_address:
+        ip_address: IP Adresse
+        comment: Kommentar
+        network_component: Netzwerk Komponente
+      bookmark:
+        comment: Kommentar
+        description: Beschreibung
+        bookmark_category: Bookmark Kategorie
+      bookmark_category:
+        bookmark_category: Bookmark Kategorie
+        comment: Kommentar
+      ipv6_route:
+        routes: Routen
+        created_at: Datum
+      jabber_message_archive:
+        created_at: Datum - Uhrzeit
+        sender: Absender
+        receiver: Empfänger
+        message: Nachricht
+      weather_forecast:
+        forecast: Vorhersage
+        created_at: Datum - Uhrzeit
+      inki_doc:
+        doc_title: Titel
+        doc: Dokumentation
+        sort_index: Sortierreihenfolge
+      exam_question:
+        question: Frage
+        question_difficulty: Schwierigkeitsgrad
+        course: Kurs
+      exam_answer:
+        answer: Antwort
+        right_answer: Korrekt 
+      dispatch_job:
+        model_name: Model Name
+        model_id: Model ID
+        done: Erledigt
+        locked_at: Gelockt um
+        model_description: Model Beschreibung
+        model_operation: Änderungstyp
+        retries: Versuche
+        retry_at: Neuversuch am
+      dispatch_todo:
+        dispatch_job: Dispatch Job
+        done: Erledigt
+      color:
+        model_id: Model ID
+        model_name: Model Name
+        rgb: RGB
+      rgb:
+        rgb: RGB Value
+      right:
+        description: Beschreibung
+        short_name: Kurzname
+      network_component_type:
+        type_description: Typ-Beschreibung
