@@ -518,6 +518,7 @@ module ApplicationHelper
 		html.html_safe
 	end
 
+	# deprecated: no longer used.
 	def help_link(object, attribute) 
 		if object.class.help_text(attribute)
 			ajax_id = get_ajax_id(true)

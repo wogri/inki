@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	index_order :username, :name, :mailaddress, :usergroup
 	attribute_order :username, :password, :name, :mailaddress, :usergroup, :created_at
 	attribute_properties :password => :password 
-	help :mailaddress => :help_mailaddress
+	help :mailaddress
 	
 	read_only :username
   

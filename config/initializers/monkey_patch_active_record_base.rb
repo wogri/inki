@@ -302,13 +302,16 @@ class ActiveRecord::Base
 		end
 	end
 
-	def self.help(hash)
-		@help_hash = hash
+	def self.help(*values)
+		@help_array = []
+		values.collect do |v|
+			@help_array.push(v)
+		end
 	end
 
 	def self.help_text(field)
-		if defined? @help_hash and help_text = @help_hash[field.to_sym]
-			help_text
+		if defined? @help_array and help_text = @help_array.member?(field.to_sym)
+			"help_#{field}".to_sym
 		end
 	end
 	

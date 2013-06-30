@@ -49,3 +49,7 @@ en:
       user_account: User Account
       ip_addresses: IP Addresses
     attributes:
+      network_component:
+        fqdn: FQDN
+        help_fqdn: A Fully Qualified Domain (DNS) Name, e. g. webserver.go-inki.com - without the trailing dot. 
+        help_use_ipv6: Use IPv6 for polling this Host (for example via SNMP)

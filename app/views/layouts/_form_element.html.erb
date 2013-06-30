@@ -5,7 +5,7 @@
 			<%= t(:color) %>
 		<% else %>
 			<% if help = object.class.help_text(attribute) %>
-				<abbr title="<%= t(help) %>">
+				<abbr title="<%= object.class.human_attribute_name(help) %>">
 			<% end %>
 			<%#= f.label attribute %>
 			<%= object.class.human_attribute_name(attribute) %>
