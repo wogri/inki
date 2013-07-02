@@ -5,7 +5,11 @@ Development::Application.routes.draw do
 		res = ApplicationController.descendants.map do |controller|
 			controller.to_s.underscore.sub(/_controller$/, '').to_sym
 		end
-
+		resources :logins do
+			collection do
+				post 'destroy'
+			end
+		end
 		resources :startpages do
 			collection do
 				get 'unauthorized'
@@ -116,5 +120,5 @@ Development::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':locale/:controller(/:action(/:id))(.:format)', via: [:get]
+  # match ':locale/:controller(/:action(/:id))(.:format)', via: [:get]
 end
