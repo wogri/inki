@@ -174,7 +174,7 @@ class ApplicationController < ActionController::Base
 				format.js { render :file => 'layouts/update_habtm' }
 				format.html { render :nothing => true } # actually this will never happen.
 			end	
-		elsif @object.update_attributes(params[model_class.to_s.underscore.to_sym])
+		elsif @object.update_attributes(model_parameters)
 			# changed = @object.changed? # this doesn't work with update_attributes
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:update)
@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def create
-		@object = model_class.new(params[model_class.to_s.underscore.to_sym])
+		@object = model_class.new(model_parameters)
     if @object.save 
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:create)
@@ -246,6 +246,12 @@ class ApplicationController < ActionController::Base
 	end
 
   private
+
+	# strong parameters abstraction
+	def model_parameters
+		model_symbol = model_class.to_s.underscore.to_sym
+		params.require(model_symbol).permit(model_class.strong_parameters)
+	end
 
 	# gnuplot
 	def gnuplot(datapoints, options = {})

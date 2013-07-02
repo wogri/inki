@@ -58,8 +58,9 @@ Development::Application.routes.draw do
 
 	end
 
-	match '/icons' => 'icons#show_icons'
-	match '/:locale' => 'startpages#index'
+	match '/icons' => 'icons#show_icons', via: [:get]
+	match '/:locale' => 'startpages#index', via: [:get]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -115,5 +116,5 @@ Development::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':locale/:controller(/:action(/:id))(.:format)'
+  match ':locale/:controller(/:action(/:id))(.:format)', via: [:get]
 end

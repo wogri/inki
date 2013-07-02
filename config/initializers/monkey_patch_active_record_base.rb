@@ -2,7 +2,7 @@
 class ActiveRecord::Base
 
 	# attr_accessible :_color
-	attr_protected
+	# attr_protected
 
 	after_destroy do |model|
 		model._operation = :destroy
@@ -235,6 +235,13 @@ class ActiveRecord::Base
 
 	def self.get_belongs_to_extra_info
 		@belongs_to_extra_info
+	end
+
+	# strong parameters - we just return every parameter for now. 
+	def self.strong_parameters
+		(self.attribute_names - ["created_at", "updated_at", "id"]).collect do |a|
+			a.to_sym
+		end
 	end
 
 	def self.sorted_attributes
