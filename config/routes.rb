@@ -8,6 +8,7 @@ Development::Application.routes.draw do
 		resources :logins do
 			collection do
 				post 'destroy'
+				get 'destroy'
 			end
 		end
 		resources :startpages do

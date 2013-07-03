@@ -31,7 +31,7 @@ class LoginsController < ApplicationController
     session.delete(:user_name)
     session.delete(:user_mailaddress)
     session.delete(:group)
-    redirect_to logins_path
+    redirect_to :action => "index"
   end
 
 end

@@ -373,7 +373,8 @@ EOF
     @user_name = session[:user_name]
 		@user_group = session[:group]
     if not @user_id 
-			session[:request_uri] = request.env['REQUEST_URI']
+			request_uri = request.env['REQUEST_URI']
+			session[:request_uri] = request_uri if not request_uri =~ /logins/
       redirect_to logins_path
     else
       @menu_items = generate_menu
