@@ -286,6 +286,8 @@ module ApplicationHelper
 			case(description)
 			when :string
 				sanitize(value)
+			when :inet
+				sanitize(value.to_s)
 			when :float
 				sanitize(value.to_s)
 			when :integer
@@ -372,6 +374,8 @@ module ApplicationHelper
 				form_object.text_field attribute, :disabled => disabled
 			when :float
 				form_object.number_field attribute, :disabled => disabled
+			when :inet
+				form_object.text_field attribute, :disabled => disabled
 			when :integer
 				form_object.number_field attribute, :disabled => disabled
 			when :boolean
