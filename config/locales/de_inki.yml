@@ -43,7 +43,7 @@ de:
   paginate: Seitenweise
   dispatch_todos: Dispatch Todos
   big_number_of_objects_to_display: "Die Anzahl der Elemente die angezeigt werden sollen ist sehr hoch. Diese Aktion könnte lange dauern, und Ihr Browser könnte damit sehr beschäftigt sein. Wirklich weitermachen?"
-  no_new_object_possible: "Es können keine weiteren Objekte angelegt werden, das ist eine Eins-zu-einz Beziehung."
+  no_new_object_possible: "Es können keine weiteren Objekte angelegt werden, das ist eine Eins-zu-eins Beziehung."
   edit_associations: Verbindungen ändern
   hello: Hallo
   details_here: Mehr Details über den Job hier
