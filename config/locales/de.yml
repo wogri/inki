@@ -118,7 +118,6 @@ de:
         bill_template: Rechnungsvorlage
         payed: Bezahlt
         comment: Kommentar
-      bill:
         expense_date: Datum
         expense: Ausgabe
         price: Preise
