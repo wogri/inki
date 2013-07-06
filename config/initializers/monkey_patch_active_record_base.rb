@@ -239,7 +239,9 @@ class ActiveRecord::Base
 
 	# strong parameters - we just return every parameter for now. 
 	def self.strong_parameters
-		(self.attribute_names - ["created_at", "updated_at", "id"]).collect do |a|
+		attrs = self.attribute_names - ["created_at", "updated_at", "id"]
+		attrs.push(:_color) if colored? # add the color attribute to the permitted attributes if the object is colorable
+		attrs.collect do |a|
 			a.to_sym
 		end
 	end
@@ -329,13 +331,13 @@ class ActiveRecord::Base
 	end
 
 	def self.colored?
-		if defined? @colored
+		if defined? @_colored
 			true
 		end
 	end
 
 	def self.can_be_colored
-		@colored = true
+		@_colored = true
 	end
 
 	def self.can_be_dispatched
