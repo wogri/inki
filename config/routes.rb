@@ -45,7 +45,7 @@ Development::Application.routes.draw do
 
 		resources :bills do
 			member do
-				put 'save_time_elements'
+				patch 'save_time_elements'
 				get 'get_pdf'
 				get 'search'
 				post 'search'
