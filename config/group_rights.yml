@@ -10,4 +10,5 @@ read_only:
   :all: :read
 admins:
   :all: :write
+  bill_templates: :read
 
