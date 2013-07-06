@@ -54,6 +54,7 @@ de:
   rights: Rechte
   network_component_types: Komponenten Typen
   bill_templates: Rechnungsvorlagen
+  create_pdf: PDF erzeugen
   activerecord:
     models:
       exam_question: Prüfungsfragen
