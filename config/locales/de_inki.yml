@@ -211,11 +211,11 @@ de:
     page_entries_info:
       one_page:
         display_entries:
-          zero: "Kein(en) %{entry_name} gefunden"
-          one: "<b>1</b> %{entry_name} gefunden"
-          other: "Zeige <b>alle %{count}</b> %{entry_name}"
+          zero: "Keinen Eintrag gefunden"
+          one: "<b>1</b> Eintrag gefunden"
+          other: "<b>%{count}</b> Einträge gefunden"
     more_pages:
-      display_entries: "Zeige <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> von gesamt %{entry_name} Einträgen" 
+      display_entries: "Zeige <b>%{first}&nbsp;-&nbsp;%{last}</b> von gesamt <b>%{total}</b> Einträgen" 
   number:
     currency:
       format:
