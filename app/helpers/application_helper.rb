@@ -518,7 +518,8 @@ module ApplicationHelper
 		html = ""
 		html << ajax_html('#popup', render(:file => "layouts/modal", :handlers => [:erb], :locals => {:title => title, :body => body}), false)
 		# html << "$('#modal_#{@ajax_id}').modal().css({position: 'fixed', width: 'auto'});"
-		html << "$('#modal_#{@ajax_id}').modal().css({ width: 'auto', 'margin-left': function () { return -($(this).width() / 2); }});"
+		# html << "$('#modal_#{@ajax_id}').modal().css({ width: 'auto', 'margin-left': function () { return -($(this).width() / 2); }});"
+		html << "$('#modal_#{@ajax_id}').modal();"
 		html.html_safe
 	end
 
