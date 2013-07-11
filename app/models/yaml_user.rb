@@ -15,7 +15,6 @@ class YamlUser < ActiveRecord::Base
 			logger.info("inspecting group #{group} with digest #{digest}: #{yaml_auth[group][username].inspect}")
 			if yaml_auth[group][username] and yaml_auth[group][username]["password"] == digest
 				logger.info("user #{username} authenticated successfully against yaml auth source.")
-				# get the local user from the database, but don't care about the password, it's been set in ldap before
 				user = OpenStruct.new
 				user.name = yaml_auth[group][username]["name"]
 				user.id = username
