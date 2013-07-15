@@ -373,7 +373,7 @@ module ApplicationHelper
 			when :string
 				form_object.text_field attribute, :disabled => disabled
 			when :float
-				form_object.number_field attribute, :disabled => disabled
+				form_object.number_field attribute, :disabled => disabled, :step => "any"
 			when :inet
 				form_object.text_field attribute, :disabled => disabled
 			when :integer
