@@ -46,19 +46,12 @@ class ApplicationController < ActionController::Base
 
   def index(options = {:render => true})
     _class = model_class
-		#if params[:help]
-			#@help_attribute = params[:attribute]
-			# @help_text = t(model_class.help_text(params[:attribute].to_sym)) 
-			#render :file => "layouts/help"
-			#return
-		#end
 		@special_option = params[:special_option]
 		# this calls a special controller (the special option name is the controller function) that handles the rendering of the special option.
-		special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
-		if special_option_description 
-			if special_option_description[:graph] # this is a graph, so we don't call the special option general syntax, but render the modal directly.
-				# now: differentiate between modal creation (basically just input the jpeg as html source), and graph creation (render the jpg)
-				render_graph_data(@special_option)
+		if @special_option and special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
+			if special_option_description[:graph] 
+				@special_render = "layouts/graph"
+				@special_title = t(controller_name.to_sym)
 			else
 				self.send(@special_option) if @special_option 
 				if not @special_render
@@ -137,6 +130,7 @@ class ApplicationController < ActionController::Base
 				format.json { render :json => @objects }
 				format.xml { render :xml => @objects }
 				format.csv { send_data @objects.to_csv }
+				format.png { render_graph_data(@special_option) if @special_option }
 			end
 		end
   end
@@ -258,11 +252,11 @@ class ApplicationController < ActionController::Base
 	# renders gluplot data generically - attribute is the table column (string)
 	def render_graph_data(attribute)
 		elements = model_class.order("created_at ASC")
-		datapoints = ""
+		datapoints = []
 		elements.each do |element|
-			datapoints << "#{element.created_at.to_i} #{element.attributes[attribute]}\n"
+			datapoints << "#{element.created_at.to_i} #{element.attributes[attribute]}"
 		end
-		gnuplot(datapoints)
+		gnuplot(datapoints.join("\n"))
 	end
 
 	# strong parameters abstraction
