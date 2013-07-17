@@ -62,9 +62,6 @@ GEM
     minitest (4.7.5)
     multi_json (1.7.7)
     net-ldap (0.3.1)
-    paper_trail (1.6.4)
-      actionpack (>= 2.3)
-      activerecord (>= 2.3)
     pg (0.15.1)
     polyglot (0.3.3)
     rack (1.5.2)
@@ -129,7 +126,6 @@ DEPENDENCIES
   kaminari
   libv8
   net-ldap
-  paper_trail
   pg
   rails
   sass-rails (~> 4.0.0)

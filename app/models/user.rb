@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-	has_paper_trail
 
 	sort_by :username, "ASC"
 	attr_accessor :dispatch_log

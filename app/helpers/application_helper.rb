@@ -123,10 +123,10 @@ module ApplicationHelper
 			delete_path = self.send("#{object_name}_path", object, link_hash)
 			if options[:non_dropdown_view]
 				html << link_to(edit_text, edit_path, :class => "btn btn-small spinner")
-				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :confirm => t(:sure) + "?")
+				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"})
 			else
 				html << link_to(edit_text, edit_path, :remote => true, :class => "spinner")
-				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :confirm => t(:sure) + "?", :remote => true)
+				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"}, :remote => true)
 			end
 		end
 		# the standard-exporters are listed here
@@ -240,7 +240,7 @@ module ApplicationHelper
 	def get_standard_show_options(object)
 		options = []
 		options.push(link_to(image_tag('icons/pencil.png', :alt => "edit", :class => "icon") + ' ' + t(:edit), self.send("edit_#{object.class.to_s.underscore}_path", object))) if @right == :write
-		options.push(link_to(image_tag('icons/bin_closed.png', :alt => "delete", :class => "icon") + ' ' + t(:delete), object, :method => :delete, :confirm => t(:sure) + "?")) if @right == :write
+		options.push(link_to(image_tag('icons/bin_closed.png', :alt => "delete", :class => "icon") + ' ' + t(:delete), object, :method => :delete, :data => { :confirm => t(:sure) + "?"})) if @right == :write
 		options
 	end
 

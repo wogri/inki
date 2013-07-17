@@ -31,6 +31,6 @@ gem 'acts_as_indexed'
 
 gem 'net-ldap'
 # versioning
-gem 'paper_trail' # , '~> 2'
+#gem 'paper_trail' # , '~> 2'
 gem 'coderay' # syntax highlighting => http://coderay.rubychan.de/doc/; print CodeRay.scan_file('ruby.h').html.div
 gem 'snmp'
