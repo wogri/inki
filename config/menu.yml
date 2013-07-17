@@ -1,8 +1,0 @@
-- various_data:
-  - ipv6_routes
-- internal:
-  - dispatch_jobs
-  - colors
-  - rgbs
-  - users
-  - usergroups
