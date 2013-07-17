@@ -270,17 +270,27 @@ module Inki
 		end
 
 		def has_special_controller_buttons?
+			hash = {}
 			if defined? @_special_buttons
-				hash = {}
 				@_special_buttons.each do |key, value|
 					if value[:controller_option]
 						hash[key] = value
 					end
 				end
 				hash
-			else
-				{}
 			end
+			# go through the attribute properties, and find :graph values. for these behave as if special buttons had been set. yay.
+			attribute_description.each do |key, value|
+				if value == :graph
+					hash[key] = {
+						:description => :show_graph, 
+						:icon => "icons/chart_line.png", 
+						:controller_option => true, 
+						:graph => true # this tells the controller to treat this one special
+					}
+				end
+			end
+			hash
 		end
 
 		def has_special_buttons?

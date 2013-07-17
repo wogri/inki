@@ -54,9 +54,17 @@ class ApplicationController < ActionController::Base
 		#end
 		@special_option = params[:special_option]
 		# this calls a special controller (the special option name is the controller function) that handles the rendering of the special option.
-		self.send(@special_option) if @special_option and model_class.has_special_controller_buttons?[@special_option.to_sym]
-		if not @special_render
-			@special_render = "#{controller_name}/#{@special_option}"
+		special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
+		if special_option_description 
+			if special_option_description[:graph] # this is a graph, so we don't call the special option general syntax, but render the modal directly.
+				# now: differentiate between modal creation (basically just input the jpeg as html source), and graph creation (render the jpg)
+				render_graph_data(@special_option)
+			else
+				self.send(@special_option) if @special_option 
+				if not @special_render
+					@special_render = "#{controller_name}/#{@special_option}"
+				end
+			end
 		end
 
     @order_by, @order_direction = _class.default_order
@@ -246,6 +254,16 @@ class ApplicationController < ActionController::Base
 	end
 
   private
+
+	# renders gluplot data generically - attribute is the table column (string)
+	def render_graph_data(attribute)
+		elements = model_class.order("created_at ASC")
+		datapoints = ""
+		elements.each do |element|
+			datapoints << "#{element.created_at.to_i} #{element.attributes[attribute]}\n"
+		end
+		gnuplot(datapoints)
+	end
 
 	# strong parameters abstraction
 	def model_parameters
