@@ -258,7 +258,7 @@ class ApplicationController < ActionController::Base
 		elements = model_class.order("#{x_axis} ASC")
 		datapoints = []
 		elements.each do |element|
-			datapoints << "#{element.send(x_axis.to_s).to_i} #{element.attributes[attribute]}"
+			datapoints << "#{element.send(x_axis.to_s).to_time.to_i} #{element.attributes[attribute]}"
 		end
 		gnuplot(datapoints.join("\n"))
 	end
