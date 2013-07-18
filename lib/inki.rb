@@ -262,7 +262,11 @@ module Inki
 		end
 
 		def special_buttons(hash)
-			@_special_buttons = hash
+			if @_special_butttons
+				@_special_buttons.merge!(hash)
+			else
+				@_special_buttons = hash
+			end
 		end
 		
 		def attribute_properties(hash)
@@ -291,6 +295,23 @@ module Inki
 				end
 			end
 			hash
+		end
+
+		# sets up special buttons hash in a way that graphs can be created from datasets without writing controller or view code
+		def graph_for(attribute, options = {})
+			hash = {}
+			hash[attribute] = {
+				:description => :show_graph, 
+				:icon => "icons/chart_line.png", 
+				:controller_option => true, 
+				:graph => true, # this tells the controller to treat this one special
+				:graph_options => options
+			}
+			if @_special_buttons
+				@_special_buttons.merge! hash
+			else
+				@_special_buttons = hash
+			end
 		end
 
 		def has_special_buttons?
