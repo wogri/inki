@@ -130,7 +130,7 @@ class ApplicationController < ActionController::Base
 				format.json { render :json => @objects }
 				format.xml { render :xml => @objects }
 				format.csv { send_data @objects.to_csv }
-				format.png { render_graph_data(@special_option) if @special_option }
+				format.png { render_graph_data(@special_option, special_option_description[:graph_options]) if defined? special_option_description }
 			end
 		end
   end
@@ -250,11 +250,15 @@ class ApplicationController < ActionController::Base
   private
 
 	# renders gluplot data generically - attribute is the table column (string)
-	def render_graph_data(attribute)
-		elements = model_class.order("created_at ASC")
+	def render_graph_data(attribute, options)
+		x_axis = "created_at"
+		if x_option = options[:x]
+			x_axis = x_option
+		end
+		elements = model_class.order("#{x_axis} ASC")
 		datapoints = []
 		elements.each do |element|
-			datapoints << "#{element.created_at.to_i} #{element.attributes[attribute]}"
+			datapoints << "#{element.attributes[x_axis.to_s].to_i} #{element.attributes[attribute]}"
 		end
 		gnuplot(datapoints.join("\n"))
 	end
