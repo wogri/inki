@@ -260,7 +260,7 @@ class ApplicationController < ActionController::Base
 		elements.each do |element|
 			datapoints << "#{element.send(x_axis.to_s).to_time.to_i} #{element.attributes[attribute]}"
 		end
-		gnuplot(datapoints.join("\n"))
+		gnuplot(datapoints.join("\n"), :y_axis => model_class.human_attribute_name(attribute))
 	end
 
 	# strong parameters abstraction
@@ -278,7 +278,7 @@ class ApplicationController < ActionController::Base
 			set timefmt "%s"
 			set grid
 			set xlabel "Date"
-			set ylabel "#{options[:name]}"
+			set ylabel "#{options[:y_axis] || options[:name]}"
 			#{options[:format]}
 			set title "#{options[:name]}"
 			set key left box 
