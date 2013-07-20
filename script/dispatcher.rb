@@ -111,6 +111,7 @@ while true do
 		todos = job.find_todos($config)
 		# if there are no todos, set the dispatch-job-status to 'done' 
 		if todos.size == 0
+			ActiveRecord::Base.clear_active_connections! # garbage collect db sessions
 			debug("no more todos for job-id #{job.id}. setting it to done.")
 			job.done!
 			job.unlock!
