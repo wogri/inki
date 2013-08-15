@@ -315,7 +315,8 @@ module ApplicationHelper
 					sanitize(date)
 				end
 			when :text
-				simple_format(value, {}, :sanitize => true)
+				simple_format(value)
+				# was: simple_format(value, {}, :sanitize => true)
 			else
 				flash[:error] = "unknown attribute #{attribute}:#{description}/#{description.class}. Don't know how to handle this"
 			end
