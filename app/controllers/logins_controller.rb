@@ -7,6 +7,7 @@ class LoginsController < ApplicationController
   end
 
   def create 
+		reset_session
 		user = Auth.authenticate(params[:username], params[:password], Rails.configuration.inki.auth_source)
     @menu_items = []
     if user
@@ -27,10 +28,11 @@ class LoginsController < ApplicationController
   end
 
   def destroy
-    session.delete(:user_id)
-    session.delete(:user_name)
-    session.delete(:user_mailaddress)
-    session.delete(:group)
+    #session.delete(:user_id)
+    #session.delete(:user_name)
+    #session.delete(:user_mailaddress)
+    #session.delete(:group)
+		reset_session
     redirect_to :action => "index"
   end
 
