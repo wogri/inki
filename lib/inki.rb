@@ -89,7 +89,7 @@ module Inki
 			:model_name => self.class.table_name,
 			:model_id => self.id,
 			:model_operation => self._operation.to_s,
-			:model_description = self._dispatch_model_description
+			:model_description => self._dispatch_model_description,
 			:retry_at => Time.now,
 			:done => false,
 			:locked => false
