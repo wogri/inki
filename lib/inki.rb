@@ -11,6 +11,14 @@ module Inki
 		@operation
 	end
 
+	def _dispatch_model_description=(value)
+		@_dispatch_model_description = value
+	end
+
+	def _dispatch_model_description
+		@_dispatch_model_description
+	end
+
 	def _dispatch_id=(value)
 		@dispatch_id = value
 	end
@@ -81,17 +89,19 @@ module Inki
 			:model_name => self.class.table_name,
 			:model_id => self.id,
 			:model_operation => self._operation.to_s,
+			:model_description = self._dispatch_model_description
 			:retry_at => Time.now,
 			:done => false,
 			:locked => false
 		}
 		dispatch = DispatchJob.new(dispatch_hash)
-		# there's nothing to do if there is already a dispatch-job in the queue that matches our dispatch-job.
-		if self._operation == :destroy # if a model is destroyed, we need to save the model data for later
-			dispatch.model_description = self.to_yaml
-		end
+		# if a model is destroyed or updated, we need to save the model data for later
+		#if self._operation == :destroy or self._operation == :update 
+			#dispatch.model_description = self.to_yaml
+		#end
 		search_filter = dispatch_hash.clone
 		search_filter.delete(:retry_at)
+		# there's nothing to do if there is already a dispatch-job in the queue that matches our dispatch-job.
 		if DispatchJob.where(search_filter).first
 			logger.warn("Not inserting Dispatch-Job for #{dispatch_hash.inspect}, as this dispatch job already exists in the database.")
 			return
@@ -465,6 +475,14 @@ module Inki
 
 			after_create do |model|
 				model._operation = :create
+			end
+
+			before_destroy do |model|
+				model._dispatch_model_description = model.to_yaml
+			end
+
+			before_update do |model|
+				model._dispatch_model_description = model.to_yaml
 			end
 
 			after_commit :dispatch

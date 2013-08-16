@@ -3,8 +3,7 @@ class DispatchJob < ActiveRecord::Base
 	attr_accessor :success, :log
 
 	# returns all dispatches that are not done yet
-	scope :undone_dispatches, lambda { where(:retry_at => (Time.now - 1.year)..(Time.now), :done => false, :locked => false) }
-	# scope :undone_dispatches, lambda { where(:updated_at => (Time.now - 1.year)..(Time.now - 1.minutes), :done => false) }
+	scope :undone_dispatches, lambda { where(:retry_at => (Time.now - 1.year)..(Time.now), :done => false, :locked => false).order(:id, "ASC") }
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies
 	scope :zombie_locks, lambda { where(:locked_at => (Time.now - 1.year)..(Time.now - 2.days), :locked => true, :done => false) }
 	scope :locked, lambda { where(:locked => true, :done => false) }
