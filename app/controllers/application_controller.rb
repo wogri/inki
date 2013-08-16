@@ -391,7 +391,11 @@ EOF
     if not @user_id 
 			request_uri = request.env['REQUEST_URI']
 			session[:request_uri] = request_uri if not request_uri =~ /logins/
-      redirect_to logins_path
+			if request.xhr?
+				render js: "window.location.pathname = #{logins_path.to_json}"
+			else
+      	redirect_to logins_path
+			end
     else
       @menu_items = generate_menu
       @rights = get_rights
