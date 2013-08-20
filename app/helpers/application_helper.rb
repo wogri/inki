@@ -110,7 +110,7 @@ module ApplicationHelper
 			end
 		end
 		unless options[:non_dropdown_view] or @non_dropdown_view
-			loupe = image_tag("icons/zoom.png", :alt => "show", :class => "icon")
+			loupe = image_tag("icons/table.png", :alt => "show", :class => "icon")
 			html << link_to(loupe + ' ' + t(:show), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
 			html << link_to(loupe + ' ' + t(:show_no_remote), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
 		end
