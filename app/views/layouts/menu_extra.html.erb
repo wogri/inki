@@ -1,9 +1,10 @@
-<ul class="nav pull-right">
-	<li class="divider-vertical">
-	</li>
+<!-- <p class="navbar-text pull-right">Wolfgang Hennerbi</p> -->
+<ul class="nav navbar-nav navbar-right">
+	<!-- <li class="divider-vertical">
+	</li> -->
 	<% if @right -%>
 		<li class="pull-right">
-			<%= button_to(t(:logout), {:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning btn_small") %>
+			<%= button_to(t(:logout), {:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning navbar-btn") %>
 		</li>
 	<% end -%>
 	<li class="pull-right dropdown">

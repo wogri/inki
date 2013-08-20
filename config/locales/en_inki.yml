@@ -56,6 +56,7 @@ en:
   modify_existing_model: Modify Existing Associations
   color: Color
   create_pdf: Create PDF
+  toggle_navigation: Toggle navigation
   views:
     pagination:
       previous: "&#171;"

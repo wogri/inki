@@ -73,7 +73,7 @@ module ApplicationHelper
 	def split_button(elements)
 		html = ""
 		html << elements.shift
-		html << link_to(content_tag(:span, "", :class => "caret"), '#', :class => "btn dropdown-toggle btn-small", "data-toggle" => "dropdown")
+		html << link_to(content_tag(:span, "", :class => "caret"), '#', :class => "btn dropdown-toggle btn-sm btn-default", "data-toggle" => "dropdown")
 		sub_elements = ""
 		elements.each do |element|
 			sub_elements << content_tag(:li, element)
@@ -111,7 +111,7 @@ module ApplicationHelper
 		end
 		unless options[:non_dropdown_view] or @non_dropdown_view
 			loupe = image_tag("icons/zoom.png", :alt => "show", :class => "icon")
-			html << link_to(loupe + ' ' + t(:show), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-small spinner")
+			html << link_to(loupe + ' ' + t(:show), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
 			html << link_to(loupe + ' ' + t(:show_no_remote), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
 		end
 		if @right == :write and not @add_existing_model # add_existing_model means a has_and_belongs_to_many realtionship selection view :) 
@@ -122,7 +122,7 @@ module ApplicationHelper
 			delete_text = (delete_image + ' ' + t(:delete)).html_safe
 			delete_path = self.send("#{object_name}_path", object, link_hash)
 			if options[:non_dropdown_view]
-				html << link_to(edit_text, edit_path, :class => "btn btn-small spinner")
+				html << link_to(edit_text, edit_path, :class => "btn btn-default btn-sm spinner")
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"})
 			else
 				html << link_to(edit_text, edit_path, :remote => true, :class => "spinner")
@@ -191,7 +191,7 @@ module ApplicationHelper
 		end
 		link = link_to(link_text.html_safe, self.send("#{object_name}_path", object, link_hash), :remote => true) 
 		if options[:non_dropdown_view]
-			link = link_to(link_text.html_safe, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn") 
+			link = link_to(link_text.html_safe, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-default") 
 		end
 		link
 	end
@@ -207,12 +207,12 @@ module ApplicationHelper
 		end
 		html_class = ["close"]
 		if options[:button]
-			html_class = ["btn", "spinner"]
+			html_class = ["btn", "btn-default", "spinner"]
 		end
 		object_name = object.class.to_s.underscore
 		if options[:non_dropdown_view] 
 			if options[:button]
-				link = link_to(t(:cancel), self.send("#{object_name}_path", object), :class => "btn spinner") 
+				link = link_to(t(:cancel), self.send("#{object_name}_path", object), :class => "btn btn-default spinner") 
 			else
 				nil # return nothing, important for empty buttons
 			end
@@ -422,7 +422,7 @@ module ApplicationHelper
 
 	def back_link(object)
 		img = image_tag("icons/arrow_undo.png", :class => "icon") 
-		link = link_to(img + " " + t(controller_name), index_path(object), :class => "spinner btn btn-small")
+		link = link_to(img + " " + t(controller_name), index_path(object), :class => "spinner btn btn-default btn-sm")
 		# content_tag(:div, link, :class => "back_link")
 	end
 
@@ -438,7 +438,7 @@ module ApplicationHelper
 			foreign_object = object.send(relation)
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
-				title = content_tag(:span, "#{title_prefix}: #{foreign_object.title}".html_safe, :class => "label")
+				title = content_tag(:span, "#{title_prefix}: #{foreign_object.title}".html_safe, :class => "label label-default")
 				title = (content_tag(:span, nil, :class => "arrow-left") + title).html_safe
 				content_tag(:div, link_to(title, foreign_object), :class => "left-aligned spinner")
 			else
@@ -463,8 +463,8 @@ module ApplicationHelper
 			else
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
-			link_text = "#{t(pluralized_relation.to_sym)} (#{content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}")})".html_safe
-			link_text = (content_tag(:span, nil, :class => open_status) + content_tag(:span, link_text, :class => "label label-info")).html_safe
+			link_text = t(pluralized_relation.to_sym) +  content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge")
+			link_text = (content_tag(:span, nil, :class => open_status) + content_tag(:span, link_text.html_safe, :class => "label label-primary")).html_safe
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
 				:from_show_table => object.class.name.tableize, 

@@ -7,10 +7,15 @@
 		:add_existing_model => @add_existing_model,
 		:previous_ajax_id => @previous_ajax_id,
 	}) if @from_show_table -%>
-	<%= form_tag(link_hash, :method => 'post', :class => "form-search", :remote => true) do %>
-		 	<div class="input-append">
-				<%= text_field_tag('search', @search_string, :type => "search", :class => "search-query") %>
-				<%= button_tag(t(:search), :class => "btn spinner") %>
+	<%= form_tag(link_hash, :method => 'post', :remote => true) do %>
+		 	<div class="input-group">
+				<%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
+				<span class="input-group-btn">
+					<label for="search_button_<%= @ajax_id %>" class="btn btn-default">
+						<%= image_tag "icons/magnifier.png", :class => "icon" %>
+					</label>
+					<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_buton_#{@ajax_id}") %>
+				</span>
 			</div>
 	<% end -%>
 <% end -%>

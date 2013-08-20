@@ -11,6 +11,6 @@
  *= require_self
  *= require jquery.ui.all
  *= require bootstrap
- *= require bootstrap.responsive
+ *= require bootstrap-theme
  *= require style
  */

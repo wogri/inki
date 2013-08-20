@@ -54,6 +54,7 @@ de:
   users: Benutzer
   usergroups: Benutzergruppen
   dropdown_fields: Dropdowns
+  toggle_navigation: Navigation umschalten
   views:
     pagination:
       first: "Anfang"
