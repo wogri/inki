@@ -27,7 +27,6 @@ form input {
 }
 
 .table {
-  border-spacing: 0;
 	width: auto;
 	margin-bottom: 2pt;
 }
@@ -36,6 +35,7 @@ form input {
 	white-space: nowrap;
 }
 
+/*
 .navbar .brand {
 	background-color: #3a87ad;
   font-weight: bold;
@@ -49,6 +49,7 @@ form input {
 	margin: 0;
 }
 
+*/
 /*
 h1 {
 	color: #444444;
@@ -57,10 +58,11 @@ h1 {
 	text-shadow: -1px -1px 1px #000000, 1px 1px 1px #CCCCCC;
 }*/
 
+/*
 .pagination ul { 
 	display: inline;
 }
-
+*/
 .arrow_ASC,
 .arrow-up {
 	width: 0; 
@@ -191,14 +193,12 @@ form {
 }
 
 .show_table_row td {
-	padding-left: 15pt;
+	padding-left: 15pt !important;
 }
 
-
+/*
 .table-bordered th,
 .table-bordered tfoot td {
-	//background-color: #ddd;
-	//border: solid 0;
 	background-color: #FBFBFB;
 	background-image: -moz-linear-gradient(top, white, #efefef);
 	background-image: -ms-linear-gradient(top, white, #efefef);
@@ -211,8 +211,8 @@ form {
 	-webkit-box-shadow: inset 0 1px 0 white;
 	-moz-box-shadow: inset 0 1px 0 #ffffff;
 	box-shadow: inset 0 1px 0 white;
-
 }
+*/
 
 select {
 	width: auto;
