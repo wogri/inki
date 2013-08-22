@@ -9,8 +9,8 @@
 					<%= flash[:error] %>
 				</div>
 			<% end -%>
-			<%= text_field_tag(:username, nil, :class => "input-block-level", :placeholder => t(:username)) %>
-			<%= password_field_tag(:password, nil, :class => "input-block-level", :placeholder => t(:password)) %>
+			<%= text_field_tag(:username, nil, :class => "input-block-level form-control", :placeholder => t(:username)) %>
+			<%= password_field_tag(:password, nil, :class => "input-block-level form-control", :placeholder => t(:password)) %>
 			<%= button_tag(t(:login), :class => "btn btn-large btn-warning spinner", :type => "submit", :disable_with => t(:login)) %>
 		<% end %>
 </div> <!-- /container -->

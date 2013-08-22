@@ -1,6 +1,6 @@
 <div id="list_<%= @ajax_id -%>">
 	<% if @objects and @objects.size > 0 or @search_string %>
-		<table class="table table-condensed table-hover table-bordered">
+		<table class="table table-condensed table-hover ">
 			<thead>
 				<% if @relation != :has_one %>
 					<tr>
@@ -12,11 +12,10 @@
 							search_rest = 1
 						end
 						%>
-						<%= render :partial => "layouts/index_pagination" if not defined? no_pagination %>
 						<th colspan="<%= search_width -%>" class="search_th">
 							<%= render :partial => "layouts/search_form" %>
 						</th>
-						<th colspan="<%= search_rest -%>">
+						<th colspan="<%= search_rest -%>" class="search_rest_th">
 						</th>
 					</tr>
 				<% end -%>
@@ -64,9 +63,6 @@
 					<td colspan="<%= @fields.count + 1 -%>">
 						<%= render :partial => "layouts/index_pagination" if not defined? no_pagination %>
 					</td>
-					<!--<td class="table_widener">
-					</td>
-					-->
 				</tr>
 			</tfoot>
 		</table>

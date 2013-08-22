@@ -338,7 +338,7 @@ module ApplicationHelper
 				:include_blank => true
 			)
 		elsif description == :password
-			form_object.password_field(attribute, {:value => value})
+			form_object.password_field(attribute, {:value => value, :class => "form-control"})
 		elsif description == :method
 			nil
     elsif description == :hidden
@@ -370,22 +370,23 @@ module ApplicationHelper
 			)
 		else
 			description = object.class.columns_hash[attribute.to_s].type
+			html_default_options = {:disabled => disabled, :class => 'form-control'}
 			case(description)
 			when :string
-				form_object.text_field attribute, :disabled => disabled
+				form_object.text_field attribute, html_default_options
 			when :float
-				form_object.number_field attribute, :disabled => disabled, :step => "any"
+				form_object.number_field attribute, html_default_options.merge({:step => "any"})
 			when :inet
-				form_object.text_field attribute, :disabled => disabled
+				form_object.text_field attribute, html_default_options
 			when :integer
-				form_object.number_field attribute, :disabled => disabled
+				form_object.number_field attribute, html_default_options
 			when :boolean
-				form_object.check_box attribute, :disabled => disabled
+				form_object.check_box attribute, html_default_options
 			when :text
 				if not value 
 					value = ""
 				end
-				form_object.text_area(attribute, :cols => 25, :rows => value.lines.count + 3, :disabled => disabled)
+				form_object.text_area(attribute, html_default_options.merge({:cols => 25, :rows => (value.lines.count + 3)}))
 			when :time
       	content_tag(:span, form_object.time_select(attribute, :include_blank => true), :class => "tiny_input_width")
 			when :datetime
