@@ -26,6 +26,10 @@ form input {
 	height: 20px; 
 }
 
+.panel {
+	width: auto;
+}
+
 .table {
 	width: auto;
 	margin-bottom: 2pt;
@@ -44,12 +48,11 @@ form input {
   white-space: nowrap;
 
 }
-
+*/
 .pagination {
 	margin: 0;
 }
 
-*/
 /*
 h1 {
 	color: #444444;
@@ -194,6 +197,30 @@ form {
 
 .show_table_row td {
 	padding-left: 15pt !important;
+}
+
+.table thead {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  color: #333333;
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+  border-top-color: #dddddd;
+}
+
+.table tfoot {
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #dddddd;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-color: #dddddd;
+}
+
+.search_th {
+	border-right: 0 !important;
 }
 
 /*
