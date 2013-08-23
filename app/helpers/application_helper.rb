@@ -78,7 +78,7 @@ module ApplicationHelper
 		elements.each do |element|
 			sub_elements << content_tag(:li, element)
 		end
-		html << content_tag(:ul, sub_elements.html_safe, :class => "dropdown-menu")
+		html << content_tag(:ul, sub_elements.html_safe, :class => "dropdown-menu", :role => "menu")
 		content_tag(:div, html.html_safe, :class => "btn-group") 
 	end
 
