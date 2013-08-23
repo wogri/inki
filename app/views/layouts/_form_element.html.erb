@@ -1,4 +1,4 @@
-<% div_class = 'class="control-group error"'.html_safe if object.errors.messages[attribute] %>
+<% div_class = 'class="form-group has-error"'.html_safe if object.errors.messages[attribute] %>
 <tr <%= div_class %>>
 	<td>
 		<% if attribute == :_color %>

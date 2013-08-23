@@ -365,8 +365,9 @@ module ApplicationHelper
 				base_class.order(base_class.default_order.join(" ")).all,
 				base_class.primary_key,
 				:reference_attribute,
-				:include_blank => (not object.send(foreign_key) or new),   # if the object is new and not pre-filled, show a form with an empty default value.
-				:disabled => disabled
+				{ :include_blank => (not object.send(foreign_key) or new) },   # if the object is new and not pre-filled, show a form with an empty default value.
+				:disabled => disabled,
+				:class => "form-control",
 			)
 		else
 			description = object.class.columns_hash[attribute.to_s].type
@@ -388,11 +389,11 @@ module ApplicationHelper
 				end
 				form_object.text_area(attribute, html_default_options.merge({:cols => 25, :rows => (value.lines.count + 3)}))
 			when :time
-      	content_tag(:span, form_object.time_select(attribute, :include_blank => true), :class => "tiny_input_width")
+      	content_tag(:span, form_object.time_select(attribute, :include_blank => true), :class => "tiny_input_width form-control")
 			when :datetime
-      	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true), :class => "tiny_input_width")
+      	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true), :class => "tiny_input_width form-control")
 			when :date
-      	content_tag(:span, form_object.date_select(attribute), :class => "tiny_input_width")
+      	content_tag(:span, form_object.date_select(attribute), :class => "tiny_input_width form-control")
 			else
 				"sorry, unknown attribute: #{description}"
 			end
