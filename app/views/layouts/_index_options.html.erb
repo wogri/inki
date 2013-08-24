@@ -1,5 +1,5 @@
 <div class="btn-group">
-	<%= link_to((t(:options) + ' <span class="caret"></span>').html_safe, '/#', :class => "btn btn-default dropdown-toggle", "data-toggle" => "dropdown") %>
+	<%= link_to( content_tag(:span, nil, :class => "glyphicon glyphicon-cog") + " " + t(:options) + " " + content_tag(:span, nil, :class => "caret"), '/#', :class => "btn btn-default dropdown-toggle", "data-toggle" => "dropdown") %>
 	<ul class="dropdown-menu">
 		<li>
 			<%= special_controller_button(@model_class, :csv_export, {:description => :csv_export, :icon => "icons/document_export.png", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "csv"))) %>

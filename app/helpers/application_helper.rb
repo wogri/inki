@@ -423,9 +423,8 @@ module ApplicationHelper
 	end
 
 	def back_link(object)
-		img = image_tag("icons/arrow_undo.png", :class => "icon") 
+		img = content_tag(:span, nil, :class => "glyphicon glyphicon-circle-arrow-left")
 		link = link_to(img + " " + t(controller_name), index_path(object), :class => "spinner btn btn-default btn-sm")
-		# content_tag(:div, link, :class => "back_link")
 	end
 
   # finds the relation between objects, and returns corresponding links

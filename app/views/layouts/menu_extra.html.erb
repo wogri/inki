@@ -4,7 +4,9 @@
 	</li> -->
 	<% if @right -%>
 		<li class="pull-right">
-			<%= button_to(t(:logout), {:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning navbar-btn") %>
+			<%= button_to({:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning navbar-btn") do %>
+				<%= (content_tag(:span, nil, :class => "glyphicon glyphicon-log-out") + " " + t(:logout)).html_safe %>
+			<% end -%>
 		</li>
 	<% end -%>
 	<li class="pull-right dropdown">
