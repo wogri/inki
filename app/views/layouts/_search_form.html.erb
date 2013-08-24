@@ -8,22 +8,16 @@
 		:previous_ajax_id => @previous_ajax_id,
 	}) if @from_show_table -%>
 	<%= form_tag(link_hash, :method => 'post', :remote => true) do %>
-		 	<div class="input-group">
-				<%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
-				<span class="input-group-btn">
-					<label for="search_button_<%= @ajax_id %>" class="btn btn-default">
-						<span class="glyphicon glyphicon-search"></span>
-					</label>
-					<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
-				</span>
-				<span class="input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
-					<!--<label for="search_reset_button_<%= @ajax_id %>" class="btn btn-default">
-						<span class="glyphicon glyphicon-remove-circle"></span>
-					</label>
-					-->
-					<%#= button_tag(t(:search), :class => "hidden spinner", :id => "search_reset_button_#{@ajax_id}") %>
+		<div class="input-group">
+			<span class="input-group-btn">
+				<label for="search_button_<%= @ajax_id %>" class="btn btn-default">
+					<span class="glyphicon glyphicon-search"></span>
+				</label>
+				<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
+			</span>
+			<%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
+			<span class="input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
 					<%= link_to '<span class="glyphicon glyphicon-remove-circle"></span>'.html_safe, link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default" %>
-				</span>
-			</div>
+			</span>
 	<% end -%>
 <% end -%>
