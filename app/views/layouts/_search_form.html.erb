@@ -12,9 +12,17 @@
 				<%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
 				<span class="input-group-btn">
 					<label for="search_button_<%= @ajax_id %>" class="btn btn-default">
-						<%= image_tag "icons/magnifier.png", :class => "icon" %>
+						<span class="glyphicon glyphicon-search"></span>
 					</label>
-					<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_buton_#{@ajax_id}") %>
+					<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
+				</span>
+				<span class="input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
+					<!--<label for="search_reset_button_<%= @ajax_id %>" class="btn btn-default">
+						<span class="glyphicon glyphicon-remove-circle"></span>
+					</label>
+					-->
+					<%#= button_tag(t(:search), :class => "hidden spinner", :id => "search_reset_button_#{@ajax_id}") %>
+					<%= link_to '<span class="glyphicon glyphicon-remove-circle"></span>'.html_safe, link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default" %>
 				</span>
 			</div>
 	<% end -%>
