@@ -599,4 +599,24 @@ module ApplicationHelper
 		$('#{div_id}').html(counter+1);".html_safe
 	end
 
+	# translates a given object depending on it's state (create model_name or update model_name) 
+	def submit_default_value(object)
+		object = object.respond_to?(:to_model) ? object.to_model : object
+		key    = object ? (object.persisted? ? :update : :create) : :submit
+
+		model = if object.class.respond_to?(:model_name)
+			object.class.model_name.human
+		else
+			"unknown"
+		end
+
+		defaults = []
+		#defaults << :"helpers.submit.#{object_name}.#{key}"
+		defaults << :"helpers.submit.#{key}"
+		defaults << "#{key.to_s.humanize} #{model}"
+
+		I18n.t(defaults.shift, :model => model, :default => defaults)
+	end
+
+
 end

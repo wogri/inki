@@ -39,7 +39,7 @@
 			<% end -%>
 		<% end -%>
 
-		<%= f.submit(:class => "btn btn-success spinner") %>
+		<%= f.submit(:class => "btn btn-success spinner", data: {disable_with: submit_default_value(object)}) %>
 		<%= close_button(@object, :button_text => t(:cancel), :button => true, :new => new_object, :non_dropdown_view => (defined? non_dropdown_view)) %>
 		
 		<div id="ajax_placeholder">
