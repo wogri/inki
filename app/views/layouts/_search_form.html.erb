@@ -19,6 +19,6 @@
 			<span class="input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
 					<%= link_to '<span class="glyphicon glyphicon-remove-circle"></span>'.html_safe, link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default" %>
 			</span>
-		</div>
+		</div> <!-- input-group-->
 	<% end -%>
 <% end -%>
