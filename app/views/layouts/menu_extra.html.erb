@@ -1,15 +1,17 @@
-<!-- <p class="navbar-text pull-right">Wolfgang Hennerbi</p> -->
 <ul class="nav navbar-nav navbar-right">
 	<!-- <li class="divider-vertical">
 	</li> -->
+	<li class="pull-right" style="width: 16px;">
+		<%= image_tag "spinner.gif", :id => "waiting_bar", :class => "spinner", :style => "display:none; padding-top: 10pt;" %>
+	</li>
 	<% if @right -%>
-		<li class="pull-right">
+		<li>
 			<%= button_to({:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning navbar-btn") do %>
 				<%= (content_tag(:span, nil, :class => "glyphicon glyphicon-log-out") + " " + t(:logout)).html_safe %>
 			<% end -%>
 		</li>
 	<% end -%>
-	<li class="pull-right dropdown">
+	<li class="dropdown">
 		<%# get all available languages %>
 		<% locales = I18n.available_locales %>
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -28,7 +30,5 @@
 			<% end -%>
 		</ul>
 	</li>
-	<li class="pull-right" style="width: 16px;">
-		<%= image_tag "spinner.gif", :id => "waiting_bar", :class => "spinner", :style => "display:none; padding-top: 10pt;" %>
-	</li>
 </ul>
+<p class="navbar-text pull-right visible-lg"><%= @user_name %> &nbsp;</p>
