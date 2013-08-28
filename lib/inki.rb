@@ -298,7 +298,7 @@ module Inki
 				if value == :graph
 					hash[key] = {
 						:description => :show_graph, 
-						:icon => "icons/chart_line.png", 
+						:icon => "icon-bar-chart", 
 						:controller_option => true, 
 						:graph => true # this tells the controller to treat this one special
 					}
