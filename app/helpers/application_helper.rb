@@ -461,16 +461,16 @@ module ApplicationHelper
 				pluralized_relation = relation
 			end
 			open = ""
-			open_status = "arrow-right"
+			open_status = "icon-expand icon-large"
 			if close
 				open = "open_"
 				ajax_id = @ajax_id
-				open_status = "arrow-down" 
+				open_status = "icon-collapse icon-large" 
 			else
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
 			link_text = t(pluralized_relation.to_sym) +  content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge")
-			link_text = (content_tag(:span, nil, :class => open_status) + content_tag(:span, link_text.html_safe, :class => "label label-primary")).html_safe
+			link_text = (icon(open_status) + " " + content_tag(:span, link_text.html_safe, :class => "label label-primary")).html_safe
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
 				:from_show_table => object.class.name.tableize, 
