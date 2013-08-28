@@ -1,6 +1,11 @@
 # -*- encoding : utf-8 -*-
 module ApplicationHelper
 
+	# returns an font-awesome icon
+	def icon(name)
+		content_tag(:i, nil, :class => name)
+	end
+
 	# returns the active main menu name to generate a wonderful highlight in the menu
 	def active_menu(menu)
 		c = controller_name
@@ -110,15 +115,15 @@ module ApplicationHelper
 			end
 		end
 		unless options[:non_dropdown_view] or @non_dropdown_view
-			loupe = image_tag("icons/table.png", :alt => "show", :class => "icon")
+			loupe = icon("icon-reorder")
 			html << link_to(loupe + ' ' + t(:show), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
 			html << link_to(loupe + ' ' + t(:show_no_remote), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
 		end
 		if @right == :write and not @add_existing_model # add_existing_model means a has_and_belongs_to_many realtionship selection view :) 
-			edit_image = image_tag('icons/pencil.png', :alt => "edit", :class => "icon")
+			edit_image = icon("icon-pencil")
 			edit_text = (edit_image + ' ' + t(:edit)).html_safe
 			edit_path = self.send("edit_#{object_name}_path", object, link_hash)
-			delete_image = image_tag('icons/bin_closed.png', :alt => "delete", :class => "icon")
+			delete_image = icon("icon-trash")
 			delete_text = (delete_image + ' ' + t(:delete)).html_safe
 			delete_path = self.send("#{object_name}_path", object, link_hash)
 			if options[:non_dropdown_view]
@@ -131,11 +136,11 @@ module ApplicationHelper
 		end
 		# the standard-exporters are listed here
 		if not @add_existing_model
-			image = image_tag("icons/document_export.png", :alt => "export", :class => "icon")
+			image = icon("icon-external-link")
 			html << link_to(image + ' ' + t(:csv_export), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
-			image = image_tag("icons/tag.png", :alt => "xml-tag", :class => "icon")
+			image = icon("icon-code")
 			html << link_to(image + ' ' + t(:xml_export), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
-			image = image_tag("icons/json.png", :alt => "json-logo", :class => "icon")
+			image = icon("icon-external-link-sign")
 			html << link_to(image + ' ' + t(:json_export), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
 			html += build_special_buttons(object, link_hash, options)
 			split_button(html) # split_button generates a split button (a button with more options)
@@ -155,7 +160,7 @@ module ApplicationHelper
 	def special_controller_button(model_class, option_name, option, link_target = nil)
 		link_hash = {}
 		link_hash[:special_option] = option_name unless link_target
-		link_text = image_tag(option[:icon], :alt => t(option[:description]), :class => "icon") + " " + t(option[:description])
+		link_text = icon(option[:icon]) + " " + t(option[:description])
 		if not link_target
 			link_target = self.send("#{@controller_name}_path", params.merge(link_hash))
 		end
@@ -167,7 +172,7 @@ module ApplicationHelper
 	def special_button(option_name, option, link_hash, object = nil)
 		object_name = object.class.to_s.underscore
 		link_hash[:special_option] = option_name
-		link_text = image_tag(option[:icon], :alt => t(option[:description]), :class => "icon") + " " + t(option[:description])
+		link_text = icon(option[:icon]) + " " + t(option[:description])
 		link = link_to(link_text.html_safe, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "spinner")
 	end
 
@@ -294,9 +299,9 @@ module ApplicationHelper
 				sanitize(value.to_s)
 			when :boolean
 				if value
-					image_tag("icons/tick.png", :alt => "yes", :class => "icon")
+					icon("icon-ok")
 				else
-					image_tag("icons/cross.png", :alt => "no", :class => "icon")
+					icon("icon-remove")
 				end
 			when :time
       	value.strftime("%H:%M")

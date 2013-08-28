@@ -2,13 +2,13 @@
 	<%= link_to( content_tag(:span, nil, :class => "glyphicon glyphicon-cog") + " " + t(:options) + " " + content_tag(:span, nil, :class => "caret"), '/#', :class => "btn btn-default dropdown-toggle", "data-toggle" => "dropdown") %>
 	<ul class="dropdown-menu">
 		<li>
-			<%= special_controller_button(@model_class, :csv_export, {:description => :csv_export, :icon => "icons/document_export.png", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "csv"))) %>
+			<%= special_controller_button(@model_class, :csv_export, {:description => :csv_export, :icon => "icon-external-link", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "csv"))) %>
 		</li>
 		<li>
-			<%= special_controller_button(@model_class, :xml_export, {:description => :xml_export, :icon => "icons/tag.png", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "xml"))) %>
+			<%= special_controller_button(@model_class, :xml_export, {:description => :xml_export, :icon => "icon-code", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "xml"))) %>
 		</li>
 		<li>
-			<%= special_controller_button(@model_class, :json_export, {:description => :json_export, :icon => "icons/json.png", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "json"))) %>
+			<%= special_controller_button(@model_class, :json_export, {:description => :json_export, :icon => "icon-external-link-sign", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "json"))) %>
 		</li>
 		<% build_special_controller_buttons(@model_class).each do |button| %>
 			<li><%= button %></li>

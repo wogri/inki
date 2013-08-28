@@ -1,9 +1,4 @@
 <ul class="nav navbar-nav navbar-right">
-	<!-- <li class="divider-vertical">
-	</li> -->
-	<li class="pull-right" style="width: 16px;">
-		<%= image_tag "spinner.gif", :id => "waiting_bar", :class => "spinner", :style => "display:none; padding-top: 10pt;" %>
-	</li>
 	<% if @right -%>
 		<li>
 			<%= button_to({:controller => "logins", :action => "destroy", :id => nil}, :disable_with => t(:logout), :class => "btn btn-warning navbar-btn") do %>
@@ -32,3 +27,6 @@
 	</li>
 </ul>
 <p class="navbar-text pull-right visible-lg"><%= @user_name %> &nbsp;</p>
+<p class="navbar-text pull-right visible-lg">
+	<i class="icon-spinner icon-spin icon-large" style="display:none" id="waiting_bar"></i>
+</p>
