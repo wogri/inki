@@ -285,6 +285,10 @@ input[type="color"],
 	max-width: 500px;
 }
 
+.spinner:hover {
+	text-decoration: none;
+}
+
 /* just a try to get dropdown-submenus back */
 .dropdown-submenu{position:relative;}
 .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
