@@ -187,12 +187,8 @@ td.show_table_column:hover {
 	width: 16px;
 }
 
-.spinner {
-  z-index: 500;
-}
-
 form {
-	  margin: 0;
+	margin: 0;
 }
 
 .show_table_row td {
@@ -285,7 +281,7 @@ input[type="color"],
 	max-width: 500px;
 }
 
-.spinner:hover {
+.no-text-decoration:hover {
 	text-decoration: none;
 }
 
