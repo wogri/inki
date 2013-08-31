@@ -7,12 +7,3 @@
 	<% link_hash.delete(:ajax_id) %>
 	<%= link_to(icon("icon-tasks icon-large") + t(:modify_existing_model), self.send("new_#{@model_class.to_s.underscore}_path", link_hash), :remote => true, :class => "btn btn-info") %>
 <% end %>
-<span id="close_<%= @ajax_id %>" style="display: none;">
-</span>
-<div class="row">
-	<div class="col-md-8" id="new_<%= @ajax_id -%>" style="float: left; clear: left; display: none;">
-		<!-- AJAX-Placeholder -->
-	</div>
-	<div class="col-md-4">
-	</div>
-</div>

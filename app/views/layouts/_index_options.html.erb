@@ -1,5 +1,8 @@
+<% if not defined? @suppress_new_button and @right == :write -%>
+	<%= render :partial => "layouts/index_new_button" %>
+<% end -%>
 <div class="btn-group">
-	<%= link_to(icon("icon-cog icon-large") + t(:options) + " " + content_tag(:span, nil, :class => "caret"), '/#', :class => "btn btn-default dropdown-toggle", "data-toggle" => "dropdown") %>
+	<%= link_to(icon("icon-cog icon-large") + t(:options) + " " + content_tag(:span, nil, :class => "caret"), '/#', :class => "btn btn-warning dropdown-toggle", "data-toggle" => "dropdown") %>
 	<ul class="dropdown-menu">
 		<li>
 			<%= special_controller_button(@model_class, :csv_export, {:description => :csv_export, :icon => "icon-external-link", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "csv"))) %>
@@ -15,7 +18,11 @@
 		<% end -%>
 	</ul>
 </div>
-<% if not defined? @suppress_new_button and @right == :write -%>
-	<%= render :partial => "layouts/index_new_button" %>
-<% end -%>
 
+<div class="row"><!-- placeholder for new button -->
+	<div class="col-md-8" id="new_<%= @ajax_id -%>" style="float: left; clear: left; display: none;">
+		<!-- AJAX-Placeholder -->
+	</div>
+	<div class="col-md-4">
+	</div>
+</div>
