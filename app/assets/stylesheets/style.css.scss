@@ -281,8 +281,14 @@ input[type="color"],
 	max-width: 500px;
 }
 
+// used for removing underlines on specific elements 
 .no-text-decoration:hover {
 	text-decoration: none;
+}
+
+
+.label-listing {
+  padding-top: .4em;
 }
 
 /* just a try to get dropdown-submenus back */
