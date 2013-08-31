@@ -444,9 +444,9 @@ module ApplicationHelper
 			foreign_object = object.send(relation)
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
-				title = content_tag(:span, "#{title_prefix}: #{foreign_object.title}".html_safe, :class => "label label-default label-listing")
-				title = (icon("icon-expand icon-large icon-rotate-180") + title).html_safe
-				content_tag(:div, link_to(title, foreign_object, :class => "no-text-decoration spinnner"), :class => "left-aligned")
+				title = "#{title_prefix}: #{foreign_object.title}"
+				title = icon("icon-expand icon-large icon-rotate-180") + title
+				content_tag(:div, link_to(title, foreign_object, :class => "list-group-item info spinnner"), :class => "list-group-inki list-group")
 			else
 				nil
 			end
@@ -469,16 +469,17 @@ module ApplicationHelper
 			else
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
-			link_text = t(pluralized_relation.to_sym) +  content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge")
-			link_text = (icon(open_status) + " " + content_tag(:span, link_text.html_safe, :class => "label label-primary label-listing")).html_safe
+			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + t(pluralized_relation.to_sym)
+			link_text = (icon(open_status) + link_text).html_safe
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
 				:from_show_table => object.class.name.tableize, 
 				:show_id => object.id,
 				:show_relation => relation,
 				:close => close
-			}), :remote => true, :class => "spinner no-text-decoration")
-			content_tag(:div, link, :id => "#{open}dropdown_#{ajax_id}", :class => "left-aligned")
+			}), :remote => true, :class => "spinner no-text-decoration list-group-item active")
+			list_group = content_tag(:div, link, :class => "list-group-inki list-group")
+			content_tag(:div, list_group, :id => "#{open}dropdown_#{ajax_id}", :class => "")
     end
   end
 

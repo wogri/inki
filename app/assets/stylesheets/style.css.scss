@@ -286,10 +286,25 @@ input[type="color"],
 	text-decoration: none;
 }
 
-
-.label-listing {
-  padding-top: .4em;
+.list-group-inki {
+  width: 200pt;
+  margin-bottom: 4pt;
 }
+
+.list-group-item.info,
+.list-group-item.info:hover,
+.list-group-item.info:focus {
+  z-index: 2;
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+a.list-group-item.info > .badge {
+  color: #428bca;
+  background-color: #ffffff;
+}
+
 
 /* just a try to get dropdown-submenus back */
 .dropdown-submenu{position:relative;}
