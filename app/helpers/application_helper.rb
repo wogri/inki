@@ -467,7 +467,7 @@ module ApplicationHelper
 				ajax_id = @ajax_id
 				open_status = "icon-collapse icon-large" 
 			else
-				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
+				ajax_id = @ajax_id # get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
 			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + t(pluralized_relation.to_sym)
 			link_text = (icon(open_status) + link_text).html_safe
@@ -479,7 +479,8 @@ module ApplicationHelper
 				:close => close
 			}), :remote => true, :class => "spinner no-text-decoration list-group-item active")
 			list_group = content_tag(:div, link, :class => "list-group-inki list-group")
-			content_tag(:div, list_group, :id => "#{open}dropdown_#{ajax_id}", :class => "")
+			element = content_tag(:div, list_group, :class => "col-md-12")
+			content_tag(:div, element, :id => "#{open}dropdown_#{ajax_id}")
     end
   end
 
@@ -550,10 +551,14 @@ module ApplicationHelper
 	end
 
   # provides an ajax update to any div id. it also uses fancy ajax-animations thx to jquery. 
-  def ajax_html(div_id, body, slide = true) 
+  def ajax_html(div_id, body, slide = true, options = {}) 
     element = "$('#{div_id}')"
-		html = "#{element}.empty();" 
-		html << "#{element}.html('#{escape_javascript(body)}');" 
+		ajax_method = if options[:replace] 
+			"replaceWidth"
+		else
+			"html"
+		end
+		html = "#{element}.#{ajax_method}('#{escape_javascript(body)}');" 
 		if slide
 			html << ajax_slidedown(div_id) 
 		else
@@ -561,6 +566,10 @@ module ApplicationHelper
 		end
 		html.html_safe
   end
+
+	def ajax_replace(div_id, body, slide = true)
+		ajax_html(div_id, body, slide, :replace => true)
+	end
 
 	def ajax_show(div_id)
 		"$('#{div_id}').show();".html_safe
