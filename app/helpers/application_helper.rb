@@ -479,7 +479,7 @@ module ApplicationHelper
 				:close => close
 			}), :remote => true, :class => "spinner no-text-decoration list-group-item active")
 			list_group = content_tag(:div, link, :class => "list-group-inki list-group")
-			element = content_tag(:div, list_group, :class => "col-md-12")
+			element = content_tag(:div, list_group)
 			content_tag(:div, element, :id => "#{open}dropdown_#{ajax_id}") # important for ajax
     end
   end
