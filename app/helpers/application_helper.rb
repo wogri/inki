@@ -446,7 +446,7 @@ module ApplicationHelper
 				title_prefix = foreign_object.class.model_name.human
 				title = content_tag(:span, "#{title_prefix}: #{foreign_object.title}".html_safe, :class => "label label-default label-listing")
 				title = (icon("icon-expand icon-large icon-rotate-180") + title).html_safe
-				content_tag(:div, link_to(title, foreign_object, :class => "no-text-decoration"), :class => "left-aligned spinner")
+				content_tag(:div, link_to(title, foreign_object, :class => "no-text-decoration spinnner"), :class => "left-aligned")
 			else
 				nil
 			end
