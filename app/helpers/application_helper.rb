@@ -467,7 +467,7 @@ module ApplicationHelper
 				ajax_id = @ajax_id
 				open_status = "icon-collapse icon-large" 
 			else
-				ajax_id = @ajax_id # get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
+				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
 			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + t(pluralized_relation.to_sym)
 			link_text = (icon(open_status) + link_text).html_safe
