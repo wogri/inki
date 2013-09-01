@@ -331,6 +331,13 @@ module Inki
 				{}
 			end
 		end
+	
+		# returns the property hash for a special button
+		def special_button(option)
+			if defined? @_special_buttons and return_value = @_special_buttons[option.to_sym]
+				return_value
+			end
+		end
 
 		def index_order(*values)
 			@_index_fields = []

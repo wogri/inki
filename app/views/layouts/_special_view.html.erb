@@ -1,8 +1,13 @@
-<div class="show_table" id="slider_<%= @ajax_id %>_<%= @object.class %>_<%= @object.id %>" style="display:none;">
-	<div class="pull-right">
-		<%= close_button(@object) %>
-	</div>
-	<div class="pull-left">
+<div class="panel panel-primary" id="slider_<%= @ajax_id %>_<%= @object.class %>_<%= @object.id %>" style="display:none; margin-top: 4pt;">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<%= t(@special_title) %>
+			<div class="pull-right">
+				<%= close_button(@object) %>
+			</div>
+		</h3>
+	</div> <!-- panel-heading -->
+	<div class="panel-body">
 		<%= render(:file => @special_render, :handlers => [:erb]) %>
 	</div>
 </div>

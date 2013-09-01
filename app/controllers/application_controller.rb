@@ -24,10 +24,14 @@ class ApplicationController < ActionController::Base
     @object = model_class.find(params[:id])
 		@div_id = create_div_id(@object)
 		@special_option = params[:special_option]
+		# if there is a special option set, we have to get different content
+		if @special_option and model_class.has_special_buttons?[@special_option.to_sym]
 		# this calls a special controller (the special option name is the controller function) that handles the rendering of the special option.
-		self.send(@special_option, @object) if @special_option and model_class.has_special_buttons?[@special_option.to_sym]
-		if not @special_render
-			@special_render = "#{controller_name}/#{@special_option}"
+			@special_title = model_class.special_button(@special_option)[:description]
+			self.send(@special_option, @object) 
+			if not @special_render
+				@special_render = "#{controller_name}/#{@special_option}"
+			end
 		end
 		respond_to do |format|
     	format.js { 
