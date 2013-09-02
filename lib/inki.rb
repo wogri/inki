@@ -27,6 +27,13 @@ module Inki
 		@dispatch_id
 	end
 
+	def _serialized=(value)
+		@_serialized = value
+	end
+
+	def _serialized
+		@_serialized
+	end
 	# creates or updates ownership for a model.
 	# if owner doesn't exist, it will be created.
 	def update_owner(owner_id, owner_name)
@@ -111,6 +118,18 @@ module Inki
 			dispatch.update_owner(self._owner_id, self._owner_name)
 		end
 
+	end
+
+	# save the previous version of the element 
+	def create_version
+		return if not _serialized
+		ObjectVersion.create(
+			:format => 1, 
+			:model_owner_id => self._owner_id,
+			:model_id => self.id,
+			:model_name => self.class.table_name,
+			:serialized_object => _serialized
+		)
 	end
 
 	# this function returns values of belongs-to relationships
@@ -469,6 +488,21 @@ module Inki
 		def can_be_colored
 			@_colored = true
 		end
+		
+		# this enables a object lifecycle to be stored in the object_versions table
+		def is_versioned
+			before_destroy do |model|
+				model._serialized = model.to_yaml
+			end
+
+			before_update do |model|
+				# save the model as it was BEFORE it was updated
+				model._serialized = self.class.find(model.id).to_yaml
+			end
+
+			after_commit :create_version
+		end
+
 
 		# this enables a model to be dispatchable. different callbacks will be registered right here
 		def can_be_dispatched
