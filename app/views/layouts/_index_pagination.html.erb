@@ -15,7 +15,9 @@
 			</li>
 		</ul>
 	<% end -%>
-	<div class="left_aligned">
-		<%= page_entries_info @objects %>
-	</div>
+	<% if not defined?(no_summary) %>
+		<div class="left_aligned">
+			<%= page_entries_info @objects %>
+		</div>
+	<% end -%>
 <% end %>
