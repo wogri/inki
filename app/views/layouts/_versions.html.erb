@@ -1,3 +1,19 @@
-<p>
-<%= @object.versions(@user_id).pluck("created_at") %>
-</p>
+<div class="row" id="modal-content">
+	<div class="col-md-4">
+		<div class="list-group">
+			<% @object.versions(@user_id).each do |version| %>
+				<% html_class = ["list-group-item"] %>
+				<% html_class.push "active" if @version_id.to_i == version.id %>
+				<%= link_to(
+					version.created_at.to_s(:long), 
+					self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :version_id => version.id), 
+					:remote => true, 
+					:class => html_class.join(' ')
+				) %>
+			<% end -%>
+		</div> <!-- list-group -->
+	</div> <!-- col-md-4 -->
+	<div class="col-md-8">
+		<%= @show_version.to_yaml %>
+	</div> <!-- col-md-8 -->
+</div> <!-- row -->

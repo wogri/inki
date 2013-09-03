@@ -34,6 +34,9 @@ class ApplicationController < ActionController::Base
 				@special_render = "#{controller_name}/#{@special_option}"
 			end
 		end
+		if @vcs and @version_id = params[:version_id]
+			@show_version = ObjectVersion.where(:id => @version_id, :model_owner_id => @user_id)
+		end
 		respond_to do |format|
     	format.js { 
 				if @close
