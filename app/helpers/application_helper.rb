@@ -133,6 +133,11 @@ module ApplicationHelper
 				html << link_to(edit_text, edit_path, :remote => true, :class => "spinner")
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"}, :remote => true)
 			end
+			if object.class.is_versioned?
+				version_text = icon("icon-mail-reply-all") + t(:versions)
+				version_path = self.send("#{object_name}_path", object, :vcs => true) # vcs means: return a modal with a popup of model versions
+				html << link_to(version_text, version_path, :remote => true)
+			end
 		end
 		# the standard-exporters are listed here
 		if not @add_existing_model
@@ -367,7 +372,7 @@ module ApplicationHelper
 			base_class = attribute.to_s.camelize.constantize
 			form_object.collection_select(
 				foreign_key,
-				base_class.order(base_class.default_order.join(" ")).all,
+				base_class.order(base_class.default_order.join(" ")).to_a,
 				base_class.primary_key,
 				:reference_attribute,
 				{ :include_blank => (not object.send(foreign_key) or new) },   # if the object is new and not pre-filled, show a form with an empty default value.

@@ -55,6 +55,7 @@ de:
   usergroups: Benutzergruppen
   dropdown_fields: Dropdowns
   toggle_navigation: Navigation umschalten
+  versions: Versionen
   views:
     pagination:
       first: "Anfang"

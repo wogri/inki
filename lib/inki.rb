@@ -123,6 +123,14 @@ module Inki
 	# save the previous version of the element 
 	def create_version
 		return if not _serialized
+		if not defined?(ObjectVersion)
+			logger.error("object_version.rb Class doesn't exist in /app/models.")
+			return 
+		end
+		if not ActiveRecord::Base.connection.table_exists? 'object_versions'
+			logger.error("object_versions table doesn't exist. Run rake db:migrate RAILS_ENV=#{Rails.env}")
+			return
+		end
 		ObjectVersion.create(
 			:format => 1, 
 			:model_owner_id => self._owner_id,
@@ -130,6 +138,15 @@ module Inki
 			:model_name => self.class.table_name,
 			:serialized_object => _serialized
 		)
+	end
+
+	def versions(owner_id)
+		ObjectVersion.where(
+			:format => 1,
+			:model_owner_id => owner_id, 
+			:model_id => self.id, 
+			:model_name => self.class.table_name, 
+		).order("created_at DESC")
 	end
 
 	# this function returns values of belongs-to relationships
@@ -491,6 +508,7 @@ module Inki
 		
 		# this enables a object lifecycle to be stored in the object_versions table
 		def is_versioned
+			@is_versioned = true
 			before_destroy do |model|
 				model._serialized = model.to_yaml
 			end
@@ -503,6 +521,10 @@ module Inki
 			after_commit :create_version
 		end
 
+		# returns true if the class is versioned
+		def is_versioned?
+			@is_versioned 
+		end
 
 		# this enables a model to be dispatchable. different callbacks will be registered right here
 		def can_be_dispatched

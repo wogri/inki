@@ -57,6 +57,7 @@ en:
   color: Color
   create_pdf: Create PDF
   toggle_navigation: Toggle navigation
+  versions: Versions
   views:
     pagination:
       previous: "&#171;"
