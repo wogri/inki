@@ -36,6 +36,8 @@ class ApplicationController < ActionController::Base
 		end
 		if @vcs and @version_id = params[:version_id]
 			@show_version = ObjectVersion.where(:id => @version_id, :model_owner_id => @user_id)
+		else
+			@show_version = @object
 		end
 		respond_to do |format|
     	format.js { 

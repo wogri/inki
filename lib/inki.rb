@@ -135,7 +135,7 @@ module Inki
 			:format => 1, 
 			:model_owner_id => self._owner_id,
 			:model_id => self.id,
-			:model_name => self.class.table_name,
+			:model_name => self.class.to_s,
 			:serialized_object => _serialized
 		)
 	end
@@ -145,7 +145,7 @@ module Inki
 			:format => 1,
 			:model_owner_id => owner_id, 
 			:model_id => self.id, 
-			:model_name => self.class.table_name, 
+			:model_name => self.class.to_s, 
 		).order("created_at DESC")
 	end
 
