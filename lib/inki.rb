@@ -34,6 +34,7 @@ module Inki
 	def _serialized
 		@_serialized
 	end
+
 	# creates or updates ownership for a model.
 	# if owner doesn't exist, it will be created.
 	def update_owner(owner_id, owner_name)
@@ -140,13 +141,25 @@ module Inki
 		)
 	end
 
-	def versions(owner_id)
+	# returns an active record relation with all the model versions in it (ObjectVersion instances)
+	def versions
 		ObjectVersion.where(
 			:format => 1,
-			:model_owner_id => owner_id, 
 			:model_id => self.id, 
 			:model_name => self.class.to_s, 
 		).order("created_at DESC")
+	end
+
+	# returns the previous version of this element - can only be used with "real" elements, no pseudo elements like ObjectVersion deserialized objects will work with this.
+	def previous_version
+		if not self.class.is_versioned?
+			raise "object is not versioned, configure versioning in model file"
+		end
+		if previous_object_version = self.versions.first
+			previous_object_version.to_inki_object
+		else
+			nil
+		end
 	end
 
 	# this function returns values of belongs-to relationships

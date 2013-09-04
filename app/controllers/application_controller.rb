@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
 		# this is for the version control system. 
 		if @vcs 
 			if @version_id = params[:version_id]
-				@object = ObjectVersion.where(:id => @version_id, :model_owner_id => @user_id).first.to_inki_object
+				@object = ObjectVersion.where(:id => @version_id).first.to_inki_object
 			else
 				@current_element_selected = true
 				@show_version = @object
