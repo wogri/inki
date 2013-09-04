@@ -58,6 +58,8 @@ en:
   create_pdf: Create PDF
   toggle_navigation: Toggle navigation
   versions: Versions
+  current_element: Current Element
+  restore: Restore
   views:
     pagination:
       previous: "&#171;"

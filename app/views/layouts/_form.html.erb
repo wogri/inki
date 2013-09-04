@@ -1,11 +1,15 @@
 <% new_object = false %>
 <% new_object = true if defined? new %>
-<div <%= 'class="bubble"'.html_safe if new_object -%> id="<%= "new_" if new_object -%>slider_<%= @ajax_id %>_<%= @object.class -%>_<%= @object.id -%>" <%= 'style="display:none;"'.html_safe if request.xhr? %>>
+<div <%= 'class="bubble"'.html_safe if new_object -%> id="<%= "new_" if new_object -%>slider_<%= @ajax_id %>_<%= @object.class -%>_<%= @object.id -%>" <%= 'style="display:none;"'.html_safe if request.xhr? and not defined? from_vcs %>>
 	<%= form_for object, :remote => request.xhr? do |f| %>
 		<%= hidden_field_tag(:ajax_id, @ajax_id) %>
 		<%= hidden_field_tag(:show_id, @show_id) if @show_id %>
+		<%= hidden_field_tag(:vcs, true) if defined? from_vcs %>
 		<%= hidden_field_tag(:from_show_table, @from_show_table) if @from_show_table %>
 		<%= f.error_messages %>
+		<% if defined? from_vcs %>
+			<div class="hidden">
+		<% end -%>
 		<table class="table table-condensed table-hover table-bordered table-striped">
 			<thead>
 				<tr>
@@ -27,20 +31,26 @@
 				<%= render(:partial => "layouts/form_element", :locals => {:attribute => :_color, :f => f, :object => object, :new_object => new_object}) if object.class.colored? and not new_object %>
 			</tbody>
 		</table>
+		<% if defined? from_vcs %>
+			</div> <!-- hidden div -->
+		<% end -%>
 		<% object.class.hidden_fields.each do |attribute| -%>
 			<%= f.hidden_field(attribute) %>
 		<% end -%>
 		<% object.class.belongs_to_hidden_fields.each do |attribute| %>
 			<%= f.hidden_field("#{attribute}_id".to_sym) %>
 		<% end -%>
-		<% if defined? additional_partials -%>
+		<% if defined? additional_partials and not defined? from_vcs -%>
 			<% additional_partials.each do |partial| %>
 				<%= render :partial => partial, :locals => {:f => f, :object => object} %>
 			<% end -%>
 		<% end -%>
-
-		<%= f.submit(:class => "btn btn-success spinner", data: {disable_with: submit_default_value(object)}) %>
-		<%= close_button(@object, :button_text => t(:cancel), :button => true, :new => new_object, :non_dropdown_view => (defined? non_dropdown_view)) %>
+		<% if not defined? from_vcs %>
+			<%= f.submit(:class => "btn btn-success spinner", data: {disable_with: submit_default_value(object)}) %>
+			<%= close_button(@object, :button_text => t(:cancel), :button => true, :new => new_object, :non_dropdown_view => (defined? non_dropdown_view)) %>
+		<% else -%>
+			<%= submit_tag(t(:restore), :class => "btn btn-success spinner", data: {disable_with: t(:restore)}) %>
+		<% end -%>
 		
 		<div id="ajax_placeholder">
 			<!-- nothing in here, ajax may put stuff in here. -->

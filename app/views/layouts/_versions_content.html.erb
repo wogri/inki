@@ -1,7 +1,20 @@
 <div class="col-md-4">
 	<div class="list-group">
+		<% 
+			html_class = if not @current_element_selected
+				"list-group-item spinner" 
+			else 
+				"list-group-item active spinner" 
+			end 
+		%>
+		<%= link_to(
+			t(:current_element), 
+			self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :current_element => true), 
+			:remote => true, 
+			:class => html_class 
+		) %>
 		<% @object.versions(@user_id).each do |version| %>
-			<% html_class = ["list-group-item"] %>
+			<% html_class = ["list-group-item", "spinner"] %>
 			<% html_class.push "active" if @version_id.to_i == version.id %>
 			<%= link_to(
 				version.created_at.to_s(:long), 
@@ -13,5 +26,6 @@
 	</div> <!-- list-group -->
 </div> <!-- col-md-4 -->
 <div class="col-md-8">
-	<%= @show_version.to_yaml %>
+	<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) %>
+	<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :object => @object}) %>
 </div> <!-- col-md-8 -->

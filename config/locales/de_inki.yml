@@ -56,6 +56,8 @@ de:
   dropdown_fields: Dropdowns
   toggle_navigation: Navigation umschalten
   versions: Versionen
+  current_element: Aktuelles Element
+  restore: Wiederherstellen
   views:
     pagination:
       first: "Anfang"

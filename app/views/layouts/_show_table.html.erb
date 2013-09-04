@@ -1,4 +1,4 @@
-<div <%= 'class="bubble"'.html_safe if defined?(create) -%> id="<%= "new_" if defined?(create) -%>slider_<%= @div_id %>" <%= 'style="display:none;"'.html_safe if request.xhr? -%>>
+<div <%= 'class="bubble"'.html_safe if defined?(create) -%> id="<%= "new_" if defined?(create) -%>slider_<%= @div_id %>" <%= 'style="display:none;"'.html_safe if request.xhr? and not defined? from_vcs -%>>
 	<table class="table table-condensed table-hover table-bordered table-striped">
 		<thead>
 			<tr>
@@ -41,16 +41,18 @@
 	</table>
 
 	<div>
-		<!-- show partials if defined in the model -->
-		<% if defined? @object.class.show_partials -%>
-			<% @object.class.show_partials.each do |partial| -%>
-				<%= render :partial => partial %>
+		<% if not defined? from_vcs %>
+			<!-- show partials if defined in the model -->
+			<% if defined? @object.class.show_partials -%>
+				<% @object.class.show_partials.each do |partial| -%>
+					<%= render :partial => partial %>
+				<% end -%>
 			<% end -%>
-		<% end -%>
 
-		<% if visible_relations = @object.class.visible_relations %>
-			<% visible_relations.each do |relation| %>
-				<%= object_relation_link(@object, relation) %>
+			<% if visible_relations = @object.class.visible_relations %>
+				<% visible_relations.each do |relation| %>
+					<%= object_relation_link(@object, relation) %>
+				<% end -%>
 			<% end -%>
 		<% end -%>
 	</div>

@@ -34,10 +34,17 @@ class ApplicationController < ActionController::Base
 				@special_render = "#{controller_name}/#{@special_option}"
 			end
 		end
-		if @vcs and @version_id = params[:version_id]
-			@show_version = ObjectVersion.where(:id => @version_id, :model_owner_id => @user_id)
-		else
-			@show_version = @object
+		# this is for the version control system. 
+		if @vcs 
+			if @version_id = params[:version_id]
+				@object = ObjectVersion.where(:id => @version_id, :model_owner_id => @user_id).first.to_inki_object
+			else
+				@current_element_selected = true
+				@show_version = @object
+			end
+			if params[:current_element]
+				@version_id = 0
+			end
 		end
 		respond_to do |format|
     	format.js { 
@@ -50,7 +57,7 @@ class ApplicationController < ActionController::Base
     	format.html { render :file => "layouts/show" }
     	format.json { render :json => @object }
 			format.xml { render :xml => @object }
-			format.csv { send_data @object.class.to_csv([@object]) } # TODO: this doesn't work yet. I didn't understand how the guy wrote to_csv, he calls a class-method. 
+			format.csv { send_data @object.class.to_csv([@object]) }
 		end
   end
 
@@ -187,11 +194,18 @@ class ApplicationController < ActionController::Base
 				format.html { render :nothing => true } # actually this will never happen.
 			end	
 		elsif @object.update_attributes(model_parameters)
-			# changed = @object.changed? # this doesn't work with update_attributes
 			@object.update_owner(@user_id, @user_name)
-			#@object.dispatch!(:update)
 			flash[:notice] = "#{@object.title if defined? @object.title} #{t(:updated)}."
 			get_colors
+			if @vcs = params[:vcs]
+				@current_element_selected = true
+				@version_id = 0
+				@restored = true
+				respond_to do |format|
+					format.js { render :file => 'layouts/show' }
+				end
+				return
+			end
 			respond_to do |format|
 				format.js { render :file => 'layouts/update' }
 				format.html { redirect_to @object }
