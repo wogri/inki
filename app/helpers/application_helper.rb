@@ -399,11 +399,11 @@ module ApplicationHelper
 				end
 				form_object.text_area(attribute, html_default_options.merge({:cols => 25, :rows => (value.lines.count + 3)}))
 			when :time
-      	content_tag(:span, form_object.time_select(attribute, :include_blank => true), :class => "tiny_input_width form-control")
+      	content_tag(:span, form_object.time_select(attribute, :include_blank => true))
 			when :datetime
-      	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true), :class => "tiny_input_width form-control")
+      	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true))
 			when :date
-      	content_tag(:span, form_object.date_select(attribute), :class => "tiny_input_width form-control")
+      	content_tag(:span, form_object.date_select(attribute))
 			else
 				"sorry, unknown attribute: #{description}"
 			end
