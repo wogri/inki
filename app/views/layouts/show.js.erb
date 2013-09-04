@@ -1,14 +1,20 @@
-<% if @vcs %>
-	<%= modal(t(:versions), render(:partial => "layouts/versions")) %>
-<% else -%>
-	<% if @special_option %>
-		<%# if @non_dropdown_view -%>
-			<%#= ajax_html("##{@div_id}_options" , render(:partial => "layouts/show_options"), false) %> 
-		<%# end -%>
-		<%= ajax_html("#" + @div_id, render(:partial => "layouts/special_view"), false) %>
-	<% else -%>
-		<%= ajax_html("#" + @div_id, render(:partial => "layouts/show_table", :locals => {:options => false}), false) %>
-	<% end -%>
-	<%= ajax_html("##{@div_id}_options", option_buttons(@object)) if not @non_dropdown_view %>
-	<%= ajax_slidedown("#slider_#{@div_id}") %>
-<% end -%>
+<%= 
+if @vcs 
+	if @version_id
+		ajax_html("#versions_modal", render(:partial => "layouts/versions_content"))
+	else
+		modal(t(:versions), render(:partial => "layouts/versions"))
+	end
+else
+	if @special_option
+		#if @non_dropdown_view 
+			# ajax_html("##{@div_id}_options" , render(:partial => "layouts/show_options"), false) 
+		# end 
+		ajax_html("#" + @div_id, render(:partial => "layouts/special_view"), false)
+	else
+		ajax_html("#" + @div_id, render(:partial => "layouts/show_table", :locals => {:options => false}), false)
+	end 
+	ajax_html("##{@div_id}_options", option_buttons(@object)) if not @non_dropdown_view
+	ajax_slidedown("#slider_#{@div_id}")
+end
+%>
