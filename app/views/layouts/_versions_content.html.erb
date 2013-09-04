@@ -9,7 +9,7 @@
 		%>
 		<%= link_to(
 			t(:current_element), 
-			self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :current_element => true), 
+			self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :current_element => true, :ajax_id => @ajax_id), 
 			:remote => true, 
 			:class => html_class 
 		) %>
@@ -18,7 +18,7 @@
 			<% html_class.push "active" if @version_id.to_i == version.id %>
 			<%= link_to(
 				version.created_at.to_s(:long), 
-				self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :version_id => version.id), 
+				self.send("#{@object.class.to_s.underscore}_path", :vcs => true, :version_id => version.id, :ajax_id => @ajax_id), 
 				:remote => true, 
 				:class => html_class.join(' ')
 			) %>

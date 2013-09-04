@@ -200,7 +200,7 @@ class ApplicationController < ActionController::Base
 			if @vcs = params[:vcs]
 				@current_element_selected = true
 				@version_id = 0
-				@restored = true
+				@restore = true
 				respond_to do |format|
 					format.js { render :file => 'layouts/show' }
 				end

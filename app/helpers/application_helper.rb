@@ -135,7 +135,7 @@ module ApplicationHelper
 			end
 			if object.class.is_versioned?
 				version_text = icon("icon-mail-reply-all") + t(:versions)
-				version_path = self.send("#{object_name}_path", object, :vcs => true) # vcs means: return a modal with a popup of model versions
+				version_path = self.send("#{object_name}_path", object, :vcs => true, :ajax_id => @ajax_id) # vcs means: return a modal with a popup of model versions
 				html << link_to(version_text, version_path, :remote => true)
 			end
 		end
