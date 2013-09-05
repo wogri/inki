@@ -204,14 +204,24 @@ class ApplicationController < ActionController::Base
 				respond_to do |format|
 					format.js { render :file => 'layouts/show' }
 				end
-				return
-			end
-			respond_to do |format|
-				format.js { render :file => 'layouts/update' }
-				format.html { redirect_to @object }
+			else	
+				respond_to do |format|
+					format.js { render :file => 'layouts/update' }
+					format.html { redirect_to @object }
+				end	
 			end	
 		else
-			render :file => "layouts/edit"
+			if @vcs = params[:vcs]
+				@version_id = 0
+				@restore = true
+				@current_element_selected = true
+				flash.now[:error] = t(:could_not_save_element)
+				respond_to do |format|
+					format.js { render :file => 'layouts/show' }
+				end
+			else
+				render :file => "layouts/edit"
+			end
 		end
 	end
 

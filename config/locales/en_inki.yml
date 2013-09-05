@@ -60,6 +60,7 @@ en:
   versions: Versions
   current_element: Current Element
   restore: Restore
+  could_not_save_element: Could not save element
   views:
     pagination:
       previous: "&#171;"

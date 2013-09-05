@@ -26,6 +26,11 @@
 	</div> <!-- list-group -->
 </div> <!-- col-md-4 -->
 <div class="col-md-8">
+	<% if msg = flash[:error] %>
+		<div class="alert alert-danger">
+			<%= flash[:error] %>
+		</div>
+	<% end -%>
 	<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) %>
 	<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :object => @object}) %>
 </div> <!-- col-md-8 -->

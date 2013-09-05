@@ -315,7 +315,7 @@ module ApplicationHelper
 				begin
 					l(date, :format => :shorter)
 				rescue
-					sanitize(date)
+					sanitize(date.to_s)
 				end
 			when :date
 				date = value
