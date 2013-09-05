@@ -26,9 +26,7 @@ gem 'therubyracer', '~> 0.11.0'
 gem 'kaminari'
 gem 'dynamic_form'
 gem 'attribute-defaults'
-
 gem 'acts_as_indexed'
-
 gem 'net-ldap'
 gem 'coderay' # syntax highlighting => http://coderay.rubychan.de/doc/; print CodeRay.scan_file('ruby.h').html.div
 gem 'snmp'
