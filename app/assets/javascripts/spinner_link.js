@@ -15,24 +15,12 @@ $(document).ready(function() {
       $('#waiting_bar').fadeOut(1000); 
     });
   });
-	/*$('.has_and_belongs_to_many_check_box').click(function() {
-		alert('Hooray!');
-		$(this).closest("form").submit();
-		// $("#form").trigger('submit');
-	});
-	$('.check_box_form').click(function() { 
-		var $checkbox = $(this).find(':checkbox');
-		alert('schnacksi');
-	});
-	$("input[name='associated']").click(function(){
-		alert("aaaaaa");
-	});
-	$(':checkbox').change(function() {
-		alert("bbbbb");
-		$(this).closest('form').submit();
-	});
-	$(":checkbox[name='associated']").click(function(){
-		alert("aaaaaa");
-	});
-	*/
+	/*
+  $("#tool-form")
+    .bind("ajax:loading",  toggleLoading)
+    .bind("ajax:complete", toggleLoading)
+    .bind("ajax:success", function(event, data, status, xhr) {
+      $("#response").html(data);
+    });
+  */
 });

@@ -15,6 +15,7 @@ class LoginsController < ApplicationController
       session[:user_name] = user.name
       session[:user_mailaddress] = user.mailaddress
       session[:group] = user.usergroup.name
+      session[:undo] = OpenStruct.new
 			if uri = session[:request_uri]
 				redirect_to uri
 				session.delete(:request_uri)

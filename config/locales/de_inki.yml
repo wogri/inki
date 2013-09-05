@@ -59,6 +59,8 @@ de:
   current_element: Aktuelles Element
   restore: Wiederherstellen
   could_not_save_element: Konnte Element nicht speichern
+  object_restore_successful: Objekt wurde erfolgreich wiederhergestellt
+  undo: Rückgängig
   views:
     pagination:
       first: "Anfang"

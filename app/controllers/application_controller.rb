@@ -64,6 +64,7 @@ class ApplicationController < ActionController::Base
   def index(options = {:render => true})
     _class = model_class
 		@special_option = params[:special_option]
+		@undo = params[:undo]
 		# this calls a special controller (the special option name is the controller function) that handles the rendering of the special option.
 		if @special_option and special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
 			if special_option_description[:graph] 
@@ -166,6 +167,9 @@ class ApplicationController < ActionController::Base
 		#object.dispatch!(:destroy)
 		params.delete(:id) # parameter removal is essential for the pagination plugin
 		params.delete(:action) # parameter removal is essential for the pagination plugin
+		session[:undo].action = :destroy
+		session[:undo].model_id = object.id
+		session[:undo].model_name = object.class.to_s
 		flash[:notice] = flashmsg
 		index(:render => false) # call index so ajax-views can re-render the index-view
 		@div_id = create_div_id(object)
@@ -195,12 +199,16 @@ class ApplicationController < ActionController::Base
 			end	
 		elsif @object.update_attributes(model_parameters)
 			@object.update_owner(@user_id, @user_name)
+			session[:undo].action = :update
+			session[:undo].model_id = @object.id
+			session[:undo].model_name = @object.class.to_s
 			flash[:notice] = "#{@object.title if defined? @object.title} #{t(:updated)}."
 			get_colors
 			if @vcs = params[:vcs]
 				@current_element_selected = true
 				@version_id = 0
 				@restore = true
+				flash.now[:notice] = t(:object_restore_successful)
 				respond_to do |format|
 					format.js { render :file => 'layouts/show' }
 				end
@@ -231,6 +239,9 @@ class ApplicationController < ActionController::Base
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:create)
 			@relation = relation_type
+			session[:undo].action = :create
+			session[:undo].model_id = @object.id
+			session[:undo].model_name = @object.class.to_s
 			@div_id = create_div_id(@object)
 			if @relation == :has_and_belongs_to_many
 				show_class.find(@show_id).send(controller_name).send("push", @object)

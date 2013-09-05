@@ -61,6 +61,8 @@ en:
   current_element: Current Element
   restore: Restore
   could_not_save_element: Could not save element
+  object_restore_successful: Object has been restored successfully
+  undo: Undo
   views:
     pagination:
       previous: "&#171;"

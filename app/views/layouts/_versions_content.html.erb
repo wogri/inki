@@ -31,6 +31,11 @@
 			<%= flash[:error] %>
 		</div>
 	<% end -%>
+	<% if msg = flash[:notice] %>
+		<div class="alert alert-success">
+			<%= flash[:notice] %>
+		</div>
+	<% end -%>
 	<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) %>
-	<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :object => @object}) %>
+	<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :object => @object}) if not @current_element_selected %>
 </div> <!-- col-md-8 -->
