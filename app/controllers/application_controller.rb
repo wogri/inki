@@ -247,6 +247,7 @@ class ApplicationController < ActionController::Base
 			session[:undo].model_id = @object.id
 			session[:undo].model_name = @object.class.to_s
 			@div_id = create_div_id(@object)
+			@undo = params[:undo]
 			if @relation == :has_and_belongs_to_many
 				show_class.find(@show_id).send(controller_name).send("push", @object)
 			end	

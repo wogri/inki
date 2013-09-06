@@ -1,6 +1,10 @@
-<% div_id = "#{@ajax_id}_#{@object.class.to_s}_#{@object.id}" -%>
-<%= ajax_html("#list_#{@ajax_id}", render(:partial => "layouts/index_table")) %>
-<%= ajax_html("#new_#{@ajax_id}", render(:partial => "layouts/show_table", :locals => {:create => true})) %>
-<%= ajax_show("#new_slider_#{div_id}") %>
-<%= ajax_increment("#dropdown_counter_#{@ajax_id}") if @from_show_table %>
-<%= ajax_html("div.pagination_#{@ajax_id}", paginate(@objects, :params => {:ajax_id => @ajax_id}, :remote => true)) if @relation != :has_one %>
+<% if @undo -%>
+	<%= ajax_html("#undo_message", alert(:success, t(:undo_successful))) %>
+	<%= ajax_close("#undo") %>
+<% else -%>
+	<%= ajax_html("#list_#{@ajax_id}", render(:partial => "layouts/index_table")) %>
+	<%= ajax_html("#new_#{@ajax_id}", render(:partial => "layouts/show_table", :locals => {:create => true})) %>
+	<%= ajax_show("#new_slider_#{@div_id}") %>
+	<%= ajax_increment("#dropdown_counter_#{@ajax_id}") if @from_show_table %>
+	<%= ajax_html("div.pagination_#{@ajax_id}", paginate(@objects, :params => {:ajax_id => @ajax_id}, :remote => true)) if @relation != :has_one %>
+<% end -%>
