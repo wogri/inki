@@ -1,13 +1,25 @@
-<%= ajax_close("##{@div_id}") %>
-<%= ajax_html("##{@div_id}", render(:partial => "layouts/show_table")) %>
-<%= ajax_html("##{@div_id}_options", option_buttons(@object, {:action_name => "show"})) %>
-<%= ajax_slidedown("#slider_#{@div_id}") %>
-<% @object.class.index_fields.each do |field| %>
-	<%= ajax_html("##{@div_id}_#{field}", show_attribute_value(@object, field)) %>
-<% end %>
-<%-# update the color of the whole row by setting the css model %>
-<% color = get_model_color(@object, @colors) %>
-<% if color %>
-	<%= "$('#tr_#{@ajax_id}_#{@div_id}').removeClass('tr_even tr_odd');".html_safe %>
-	<%= "$('#tr_#{@ajax_id}_#{@div_id}').css({'background-color': '##{color}'});".html_safe %>
+<% if @undo or @restore -%>
+	<% @object.class.index_fields.each do |field| %>
+		<%= ajax_html("##{@div_id}_#{field}", show_attribute_value(@object, field)) %>
+	<% end %>
+	<%= ajax_close("#slider_#{@div_id}") %>
+	<%= ajax_html("#versions_modal", render(:partial => "layouts/versions_content")) %>
+<% end -%>
+<% if @undo %>
+	<%= ajax_html("#undo_message", alert(:success, t(:undo_successful))) %>
+	<%= ajax_close("#undo") %>
+<% elsif not @undo and not @restore -%>
+	<%= ajax_close("##{@div_id}") %>
+	<%= ajax_html("##{@div_id}", render(:partial => "layouts/show_table")) %>
+	<%= ajax_html("##{@div_id}_options", option_buttons(@object, {:action_name => "show"})) %>
+	<%= ajax_slidedown("#slider_#{@div_id}") %>
+	<% @object.class.index_fields.each do |field| %>
+		<%= ajax_html("##{@div_id}_#{field}", show_attribute_value(@object, field)) %>
+	<% end %>
+	<%-# update the color of the whole row by setting the css model %>
+	<% color = get_model_color(@object, @colors) %>
+	<% if color %>
+		<%= "$('#tr_#{@ajax_id}_#{@div_id}').removeClass('tr_even tr_odd');".html_safe %>
+		<%= "$('#tr_#{@ajax_id}_#{@div_id}').css({'background-color': '##{color}'});".html_safe %>
+	<% end %>
 <% end %>

@@ -22,7 +22,7 @@
 		<% end %>
 	<% end -%>
 <% elsif @undo %>
-	<%= modal(t(:versions), render(:partial => "layouts/undo")) %>
+	<%= modal(t(:undo), render(:partial => "layouts/undo")) %>
 <% else -%>
 	<%= ajax_html("#list_#{@ajax_id}", render(:partial => "layouts/index_table")) %>
 	<%= ajax_html("##{@ajax_id}_index_options", render(:partial => "layouts/index_options")) %>

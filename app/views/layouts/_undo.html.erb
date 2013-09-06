@@ -1,1 +1,30 @@
-<%= debug(session[:undo]) %>
+<div id="undo_message">
+</div>
+<div id="undo">
+	<% @object = @undo_object %>
+	<% table = render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) %>
+	<% if not session[:undo] or not session[:undo].action %>
+		<%= alert(:info, t(:nothing_to_undo)) %>
+	<% elsif not @undo_object and flash[:error] %>
+		<%= alert(:danger, flash[:error]) %>
+	<% elsif session[:undo].action == :create -%>
+		<%= alert(:warning, content_tag(:b, t(:click_undo_will_delete_element) + ":")) %>
+		<%= table %>
+		<%= link_to(icon("icon-trash") + t(:delete), 
+			self.send("#{@object.class.to_s.underscore}_path", @object, :undo => true),
+			:method => :delete, 
+			:class => "btn btn-danger spinner", 
+			data: {disable_with: t(:delete)}
+		) %>
+	<% elsif session[:undo].action == :update -%>
+		<%= alert(:warning, content_tag(:b, t(:click_undo_will_restore_element) + ":")) %>
+		<%= table %>
+		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :undo => true, :object => @object}) %>
+	<% elsif session[:undo].action == :destroy -%>
+		<%= alert(:warning, content_tag(:b, t(:click_undo_will_create_element) + ":")) %>
+		<%= table %>
+		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :undo => true, :object => @object}) %>
+	<% else %>
+		Undo Error. Don't know what <%= session[:undo].action %> is. 
+	<% end -%>
+</div>

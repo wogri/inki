@@ -64,7 +64,9 @@ class ApplicationController < ActionController::Base
   def index(options = {:render => true})
     _class = model_class
 		@special_option = params[:special_option]
-		@undo = params[:undo]
+		if @undo = params[:undo]
+			create_undo_elements(model_class, @user_id)
+		end
 		# this calls a special controller (the special option name is the controller function) that handles the rendering of the special option.
 		if @special_option and special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
 			if special_option_description[:graph] 
@@ -204,20 +206,22 @@ class ApplicationController < ActionController::Base
 			session[:undo].model_name = @object.class.to_s
 			flash[:notice] = "#{@object.title if defined? @object.title} #{t(:updated)}."
 			get_colors
-			if @vcs = params[:vcs]
+			@undo = params[:undo]
+			if @vcs = params[:vcs] and not @undo
 				@current_element_selected = true
 				@version_id = 0
 				@restore = true
 				flash.now[:notice] = t(:object_restore_successful)
-				respond_to do |format|
-					format.js { render :file => 'layouts/show' }
-				end
-			else	
-				respond_to do |format|
-					format.js { render :file => 'layouts/update' }
-					format.html { redirect_to @object }
-				end	
+			end
+				#respond_to do |format|
+					#format.js { render :file => 'layouts/show' }
+				#end
+			#else	
+			respond_to do |format|
+				format.js { render :file => 'layouts/update' }
+				format.html { redirect_to @object }
 			end	
+			#end	
 		else
 			if @vcs = params[:vcs]
 				@version_id = 0
@@ -293,6 +297,55 @@ class ApplicationController < ActionController::Base
 	end
 
   private
+
+	# generate the necessary objects for the undo-operation
+	def create_undo_elements(model_class, user_id)
+		begin
+			if not session[:undo] or not session[:undo].action
+				return
+			end
+			undo_class = session[:undo].model_name.constantize
+			if session[:undo].action == :create
+				object = undo_class.find(session[:undo].model_id)
+			elsif session[:undo].action == :update
+				object = undo_class.find(session[:undo].model_id)
+				if undo_class.is_versioned?
+					object = object.previous_version
+				else
+					flash.now[:error] = t(:not_versioned_error)
+					return
+				end
+			elsif session[:undo].action == :destroy
+				if undo_class.is_versioned?
+					version_object = ObjectVersion.where(:model_name => undo_class.to_s, :model_id => session[:undo].model_id, :model_owner_id => user_id).order("created_at DESC").first
+					if version_object
+						@undo_object = version_object.to_inki_object
+						@undo_object.new_record!
+					else
+						flash.now[:error] = t(:undo_error)
+						logger.error("undo error. can't find object version of #{undo_class} / #{session[:undo].model_id}.")
+					end
+				else
+					flash.now[:error] = t(:not_versioned_error)
+					return
+				end
+			end
+			@undo_object = object if object and check_undo_ownership(object, user_id) and not session[:undo].action == :destroy
+		rescue StandardError => e
+			flash.now[:error] = t(:undo_error)
+			logger.error(e)
+		end
+
+	end
+
+	def check_undo_ownership(object, user_id)
+		if object._owner_id == user_id
+			true
+		else
+			flash.now[:error] = t(:other_user_changed_element, :user_name => object._owner_name)
+			false
+		end
+	end
 
 	# renders gluplot data generically - attribute is the table column (string)
 	def render_graph_data(attribute, options)

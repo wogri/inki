@@ -35,6 +35,10 @@ module Inki
 		@_serialized
 	end
 
+	def new_record!
+		@new_record = true
+	end
+
 	# creates or updates ownership for a model.
 	# if owner doesn't exist, it will be created.
 	def update_owner(owner_id, owner_name)

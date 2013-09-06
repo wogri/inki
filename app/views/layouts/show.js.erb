@@ -1,10 +1,4 @@
 <% if @vcs -%>
-	<% if @restore %>
-		<% @object.class.index_fields.each do |field| %>
-			<%= ajax_html("##{@div_id}_#{field}", show_attribute_value(@object, field)) %>
-		<% end %>
-		<%= ajax_close("#slider_#{@div_id}") %>
-	<% end -%>
 	<% if @version_id -%>
 		<%= ajax_html("#versions_modal", render(:partial => "layouts/versions_content")) %>
 	<% else -%>

@@ -5,7 +5,7 @@
 	<%= link_to(icon("icon-cog icon-large") + t(:options) + " " + content_tag(:span, nil, :class => "caret"), '/#', :class => "btn btn-warning dropdown-toggle", "data-toggle" => "dropdown") %>
 	<ul class="dropdown-menu">
 		<li>
-			<%= special_controller_button(@model_class, :undo, {:description => :undo, :icon => "icon-undo", :non_xhr_link => false}, self.send("#{@controller_name}_path", params.merge(:undo => true))) %>
+			<%= special_controller_button(@model_class, :undo, {:description => :undo, :icon => "icon-undo", :non_xhr_link => false}, self.send("#{@controller_name}_path", :undo => true, :ajax_id => @ajax_id)) %>
 		</li>
 		<li>
 			<%= special_controller_button(@model_class, :csv_export, {:description => :csv_export, :icon => "icon-external-link", :non_xhr_link => true}, self.send("#{@controller_name}_path", params.merge(:format => "csv"))) %>

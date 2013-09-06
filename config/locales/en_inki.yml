@@ -63,6 +63,13 @@ en:
   could_not_save_element: Could not save element
   object_restore_successful: Object has been restored successfully
   undo: Undo
+  click_undo_will_delete_element: When you click Undo the following object will be deleted
+  click_undo_will_restore_element: When you click Undo the following object will be restored
+  click_undo_will_create_element: When you click Undo the following object will be re-created
+  undo_error: Error while loading undo data. Check the log for details.
+  undo_successful: Undo was susccessful.
+  not_versioned_error: This object is not in version control (Parameter is_versioned in the configuration), therefore we can not undo your action.
+  other_user_changed_element: The user {%user_name} changed this object in the mean time. For safety reasons you can not undo your action.
   views:
     pagination:
       previous: "&#171;"

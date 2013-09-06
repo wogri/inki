@@ -61,6 +61,13 @@ de:
   could_not_save_element: Konnte Element nicht speichern
   object_restore_successful: Objekt wurde erfolgreich wiederhergestellt
   undo: Rückgängig
+  click_undo_will_delete_element: Das folgende Objekt wird mit einem Klick auf Rückgängig gelöscht
+  click_undo_will_restore_element: Das folgende Objekt wird mit einem Klick auf Rückgängig wiederhergestellt
+  click_undo_will_create_element: Das folgende Objekt wird mit einem Klick auf Rückgängig erstellt
+  undo_error: Fehler in der Rückgängig-Funktion. Bitte die Logdatei aufrufen, um Details zu erfahren.
+  undo_successful: Aktion wurde erfolgreich rückgängig gemacht.
+  not_versioned_error: Dieses Objekt ist nicht versioniert (Parameter is_versioned in der Konfiguration), daher kann die Aktion nicht rückgängig gemacht werden. 
+  other_user_changed_element: Der Benutzer {%user_name} hat dieses Objekt in der Zwischenzeit geändet. Sie können Ihr Aktion daher nicht rückgängig machen. 
   views:
     pagination:
       first: "Anfang"

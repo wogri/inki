@@ -336,7 +336,7 @@ module ApplicationHelper
 	# displays attributes in the edit-view
 	def edit_attribute_value(object, attribute, form_object, new)
 		description = object.class.attribute_description[attribute]
-		disabled = object.class.read_only?(attribute, new)
+		readonly = object.class.read_only?(attribute, new)
     value = object.send(attribute.to_s)
 		logger.info("#{attribute.inspect} / #{description.inspect} / #{value}")
 		if attribute == :_color and object.class.colored?
@@ -376,12 +376,12 @@ module ApplicationHelper
 				base_class.primary_key,
 				:reference_attribute,
 				{ :include_blank => (not object.send(foreign_key) or new) },   # if the object is new and not pre-filled, show a form with an empty default value.
-				:disabled => disabled,
+				:readonly => readonly,
 				:class => "form-control",
 			)
 		else
 			description = object.class.columns_hash[attribute.to_s].type
-			html_default_options = {:disabled => disabled, :class => 'form-control'}
+			html_default_options = {:readonly => readonly, :class => 'form-control'}
 			case(description)
 			when :string
 				form_object.text_field attribute, html_default_options
@@ -637,6 +637,10 @@ module ApplicationHelper
 
 		I18n.t(defaults.shift, :model => model, :default => defaults)
 	end
-
+	
+	# displays a bootstrap alert-box
+	def alert(type, text)
+		content_tag(:div, text, :class => "alert alert-#{type}")
+	end
 
 end

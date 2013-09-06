@@ -5,6 +5,7 @@
 		<%= hidden_field_tag(:ajax_id, @ajax_id) %>
 		<%= hidden_field_tag(:show_id, @show_id) if @show_id %>
 		<%= hidden_field_tag(:vcs, true) if defined? from_vcs %>
+		<%= hidden_field_tag(:undo, true) if defined? undo %>
 		<%= hidden_field_tag(:from_show_table, @from_show_table) if @from_show_table %>
 		<%= f.error_messages %>
 		<% if defined? from_vcs %>
