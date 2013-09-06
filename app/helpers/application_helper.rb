@@ -84,7 +84,7 @@ module ApplicationHelper
 			sub_elements << content_tag(:li, element)
 		end
 		html << content_tag(:ul, sub_elements.html_safe, :class => "dropdown-menu", :role => "menu")
-		content_tag(:div, html.html_safe, :class => "btn-group") 
+		content_tag(:div, html.html_safe, :class => "btn-group", :style => "width: #{t(:show).size * 5 + 50}pt;") 
 	end
 
 	# creates the typical edit, show and delete buttons
