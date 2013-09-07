@@ -442,7 +442,7 @@ module ApplicationHelper
 		return nil if @add_existing_model # we don't want to see any object-relation-links if we look at a m:n table
 		relationship_class = relation.to_s.classify.constantize
 		return nil if not relationship_class.show_relation?(object)
-    relationship = object.reflections[relation].macro
+    relationship = object.rails_relation(relation)
     # relationship can contain :belongs_to, :has_many, etc
 		logger.info("relationship detected: #{relationship} / #{relationship.class}")
     if relationship == :belongs_to
@@ -460,7 +460,7 @@ module ApplicationHelper
 			if relationship == :has_one
 				relation_elements = 1 if object.send(relation)
 				pluralized_relation = relation.to_s.pluralize.to_sym # attention: from now on we need the relation pluralized!
-			else
+			else # has many, has_and_belongs_to_many, has_many_through
 				logger.info("relation is: #{relation}")
       	relation_elements = object.send(relation).size
 				pluralized_relation = relation

@@ -192,10 +192,10 @@ class ApplicationController < ActionController::Base
 			end
 			@object.update_owner(@user_id, @user_name)
 			# manual dispatching. it seems rails can't do this without tricks
-			@object._operation = :update
-			@show_object._operation = :update
-			@object.dispatch
-			@show_object.dispatch
+			#@object._operation = :update
+			#@show_object._operation = :update
+			#@object.dispatch
+			#@show_object.dispatch
 			# end of manual dispatching
 			@add_existing_model = nil
 			@ajax_id = @previous_ajax_id 
@@ -253,7 +253,7 @@ class ApplicationController < ActionController::Base
 			session[:undo].model_name = @object.class.to_s
 			@div_id = create_div_id(@object)
 			@undo = params[:undo]
-			if @relation == :has_and_belongs_to_many
+			if @relation == :has_and_belongs_to_many or @relation == :has_many_through
 				show_class.find(@show_id).send(controller_name).send("push", @object)
 			end	
 			index(:render => false) # call index so ajax-views can re-render the index-view
@@ -269,7 +269,7 @@ class ApplicationController < ActionController::Base
 		@object = model_class.new
 		if @from_show_table # this is a new object UNDER another object, so pre-fill the relation 
 			@relation = relation_type
-			if @relation != :has_and_belongs_to_many
+			if @relation != :has_and_belongs_to_many and @relation != :has_many_through
 				@object.send(@from_show_table.classify.underscore + "_id=", @show_id) 
 			else
 				# the user wants to add an existing model, that means we have to present him an index-view of all available objects. 
@@ -438,12 +438,10 @@ EOF
 	def relation_type
 		return if not @from_show_table
 		singularized_controller_name = controller_name.singularize.to_sym
-		r = show_class.new.reflections[singularized_controller_name]
-		if r
-			return r.macro
+		if r = show_class.new.rails_relation(singularized_controller_name)
+			return r
 		else
-			r = show_class.new.reflections[controller_name.to_sym]
-			return r.macro if r
+			show_class.new.rails_relation(controller_name)
 		end
 	end
 

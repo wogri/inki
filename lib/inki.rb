@@ -71,6 +71,7 @@ module Inki
 		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
 		owner.model_owner_id if owner
 	end
+
 	# this returns the reference attribute (as it can be called by class above)
 	def reference_attribute
 		content = self.send(self.class.reference_attribute)
@@ -78,6 +79,16 @@ module Inki
 			content = "#{content} #{extra.call(self)}"
 		end
 		content
+	end
+
+	# returns the type of relationship of this property - can either be: has_many, belongs_to, has_and_belongs_to_many, has_one or has_many_through
+	def rails_relation(attribute)
+		reflection = self.reflections[attribute.to_sym]
+		if reflection.class == ActiveRecord::Reflection::ThroughReflection
+			return :has_many_through
+		elsif reflection.class == ActiveRecord::Reflection::AssociationReflection
+			return reflection.macro
+		end
 	end
 
 	def title
@@ -274,11 +285,19 @@ module Inki
 			end
 		end 
 
+		# returns the (user-) visible relationships between elements
 		def visible_relations 
 			if defined? @visible_relations 
 				@visible_relations
 			else
-				self.reflections.keys - [:versions]
+				association_helper_models = []
+				# find 
+				self.reflections.keys.each do |key|
+					if self.reflections[key].class == ActiveRecord::Reflection::ThroughReflection
+						association_helper_models.push self.reflections[key].options[:through]
+					end
+				end
+				self.reflections.keys - association_helper_models
 			end
 		end 
 
