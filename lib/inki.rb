@@ -184,18 +184,6 @@ module Inki
 	end
 
 	# this function returns values of belongs-to relationships
-	def __has_and_belongs_to_many
-		return_string = []
-		self.class.reflect_on_all_associations(:belongs_to).each do |association| 
-			model = self.send(association.name)
-			if model
-				return_string.push model.reference_attribute 
-			end
-		end
-		return_string.join " "
-	end
-
-	# this function returns values of belongs-to relationships
 	def __belongs_to__
 		return_string = []
 		self.class.reflect_on_all_associations(:belongs_to).each do |association| 
@@ -596,11 +584,11 @@ module Inki
 				model._dispatch_model_description = model.to_yaml
 				# find associations. associations need to be notified if they're m:n (after the commit)
 				@notify_after_dispatch = []
-				reflect_on_all_associations(:has_many).each do |association|
-					@notify_after_dispatch.push assocation.name if assocation.class == ActiveRecord::Reflection::ThroughReflection
+				model.class.reflect_on_all_associations(:has_many).each do |association|
+					@notify_after_dispatch.push association.name if association.class == ActiveRecord::Reflection::ThroughReflection
 				end
-				reflect_on_all_associations(:has_and_belongs_to_many).each do |association|
-					@notify_after_dispatch.push assocation.name 
+				model.class.reflect_on_all_associations(:has_and_belongs_to_many).each do |association|
+					@notify_after_dispatch.push association.name 
 				end
 			end
 
