@@ -102,7 +102,8 @@ module Inki
 	end
 
 	# create a dispatch-job according to the called C(R)UD Function
-	def dispatch
+	def dispatch(operation = nil) # we can overwrite the operation if we want to
+		self._operation = operation if operation
 		if not self.class.dispatchable? or not self._operation
 			logger.info("#{self.class}/#{self._operation} not dispatchable, will not dispatch anything.")
 			return
@@ -118,10 +119,6 @@ module Inki
 			:locked => false
 		}
 		dispatch = DispatchJob.new(dispatch_hash)
-		# if a model is destroyed or updated, we need to save the model data for later
-		#if self._operation == :destroy or self._operation == :update 
-			#dispatch.model_description = self.to_yaml
-		#end
 		search_filter = dispatch_hash.clone
 		search_filter.delete(:retry_at)
 		# there's nothing to do if there is already a dispatch-job in the queue that matches our dispatch-job.
@@ -133,10 +130,19 @@ module Inki
 			logger.info("owner id: #{self._owner_id}")
 			dispatch.update_owner(self._owner_id, self._owner_name)
 		end
-
+		# find out if this object has been deleted and if there is either a has_and_belongs_to_many or has_many_through association. 
+		# why? because the object on the "other side" has to be notified about the change (:update) - rails hasn't consistelnty im-
+		# plemented that: http://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association
+		if @notify_after_dispatch
+			@notify_after_dispatch.each do |association|
+				self.send(association).each do |other_object|
+					other_object.dispatch(:update)
+				end
+			end
+		end
 	end
 
-	# save the previous version of the element 
+	# save the previous version of the object
 	def create_version
 		return if not _serialized
 		if not defined?(ObjectVersion)
@@ -178,14 +184,24 @@ module Inki
 	end
 
 	# this function returns values of belongs-to relationships
+	def __has_and_belongs_to_many
+		return_string = []
+		self.class.reflect_on_all_associations(:belongs_to).each do |association| 
+			model = self.send(association.name)
+			if model
+				return_string.push model.reference_attribute 
+			end
+		end
+		return_string.join " "
+	end
+
+	# this function returns values of belongs-to relationships
 	def __belongs_to__
 		return_string = []
-		self.class.reflect_on_all_associations.each do |association| 
-			if association.macro == :belongs_to
-				model = self.send(association.name)
-				if model
-					return_string.push model.reference_attribute 
-				end
+		self.class.reflect_on_all_associations(:belongs_to).each do |association| 
+			model = self.send(association.name)
+			if model
+				return_string.push model.reference_attribute 
 			end
 		end
 		return_string.join " "
@@ -578,6 +594,14 @@ module Inki
 
 			before_destroy do |model|
 				model._dispatch_model_description = model.to_yaml
+				# find associations. associations need to be notified if they're m:n (after the commit)
+				@notify_after_dispatch = []
+				reflect_on_all_associations(:has_many).each do |association|
+					@notify_after_dispatch.push assocation.name if assocation.class == ActiveRecord::Reflection::ThroughReflection
+				end
+				reflect_on_all_associations(:has_and_belongs_to_many).each do |association|
+					@notify_after_dispatch.push assocation.name 
+				end
 			end
 
 			before_update do |model|

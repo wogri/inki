@@ -189,14 +189,13 @@ class ApplicationController < ActionController::Base
 				@object.send(@from_show_table) << @show_object
 			else
 				@object.send(@from_show_table).delete(@show_object)
+				# unfortunately rails internals can't handle this with a callback, see
+				# http://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association
+				#, so we have to take care of this by ourselves
+				@object.dispatch(:update)
+				@show_object.dispatch(:update)
 			end
 			@object.update_owner(@user_id, @user_name)
-			# manual dispatching. it seems rails can't do this without tricks
-			#@object._operation = :update
-			#@show_object._operation = :update
-			#@object.dispatch
-			#@show_object.dispatch
-			# end of manual dispatching
 			@add_existing_model = nil
 			@ajax_id = @previous_ajax_id 
 			index(:render => false) # call index so the index-view can be refreshed. 
