@@ -7,6 +7,7 @@ class LoginsController < ApplicationController
   end
 
   def create 
+		uri = session[:request_uri]
 		reset_session
 		user = Auth.authenticate(params[:username], params[:password], Rails.configuration.inki.auth_source)
     @menu_items = []
@@ -16,7 +17,7 @@ class LoginsController < ApplicationController
       session[:user_mailaddress] = user.mailaddress
       session[:group] = user.usergroup.name
       session[:undo] = OpenStruct.new
-			if uri = session[:request_uri]
+			if uri
 				redirect_to uri
 				session.delete(:request_uri)
 			else
