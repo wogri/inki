@@ -474,7 +474,7 @@ module ApplicationHelper
 			else
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
-			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + t(pluralized_relation.to_sym)
+			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + object.send(relation).new.class.model_name.human(:count => relation_elements)
 			link_text = (icon(open_status) + link_text).html_safe
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
