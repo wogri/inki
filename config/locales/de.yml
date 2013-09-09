@@ -1,15 +1,12 @@
 de:
   groups: "Gruppen"
   users: "Users"
-  help_mailaddress: "Mail Address that the user has. Needs to be a valid mail address."
   exam_questions: Prüfungsfragen
   exam_answers: Prüfungsantworten
   create_diagram: Diagramm erstellen
   wogri_at_system: System Management
   ip_addresses: IP Addressen
   show_graph: Graph anzeigen
-  help_snmp_counter: Für ständig ansteigende Interface Counter, wie Netzwerk-Verkehr.
-  help_data_lifetime: So viele Tage werden aufgehoben
   courses: Fächer
   time_elements: Zeitelemente
   bills: Rechnungen
@@ -179,6 +176,9 @@ de:
         network_component: Netzwerk Komponente
         snmp_poller: SNMP Poller
         data_lifetime: Daten Lebenszeit
+        help_data_lifetime: So viele Tage werden aufgehoben
+      snmp_poller:
+        help_snmp_counter: Für ständig ansteigende Interface Counter, wie Netzwerk-Verkehr.
       snmp_data_set:
         data_value: Datenwert
         graph_data_set: Graph Datenset

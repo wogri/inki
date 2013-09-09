@@ -2,7 +2,6 @@ en:
   groups: "Groups"
   internal: "Internal"
   users: "Users"
-  help_mailaddress: "Mail Address that the user has. Needs to be a valid mail address."
   exam_questions: Exam Questions
   exam_answers: Exam Answers
   create_diagram: Create Diagram
@@ -10,8 +9,6 @@ en:
   wogri_at_system: System Management
   ip_addresses: IP Addresses
   show_graph: Show Graph
-  help_snmp_counter: Check this box if your values are rising constantly - like interface counters, but you want a steady graph to be shown. 
-  help_data_lifetime: We will keep these many data points (days) 
   courses: Courses
   time_elements: Time Elements
   _owner_name: Owner
@@ -56,3 +53,7 @@ en:
       group_account:
         group_name: Name of Group
         help_short_name: The short name is the name for your ldap Directory. Only use the letters A-z and numbers for this name. No blanks or other fancy stuff is allowed here.
+      snmp_poller:
+        help_snmp_counter: Check this box if your values are rising constantly - like interface counters, but you want a steady graph to be shown. 
+      graph_data_set:
+        help_data_lifetime: We will keep these many data points (days) 
