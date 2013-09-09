@@ -38,7 +38,6 @@ de:
   close: "Schließen"
   dispatch_errors: Fehler
   completed_dispatches: Erfolgreich
-  colors: Farben
   all: Alle
   paginate: Seitenweise
   dispatch_todos: Dispatch Todos
@@ -51,8 +50,6 @@ de:
   dispatch_errors_occured: Leider sind ein paar Fehler während eines Dispatch Jobs passiert
   modify_existing_model: Verbindungen ändern
   color: Farbe
-  users: Benutzer
-  usergroups: Benutzergruppen
   dropdown_fields: Dropdowns
   toggle_navigation: Navigation umschalten
   versions: Versionen
@@ -77,8 +74,15 @@ de:
       last: "Ende"
   activerecord:
     models:
-      user: User
-      usergroup: "Gruppe"
+      user:
+        one: Benutzer
+        other: Benutzer
+      usergroup:
+        one: Gruppe
+        other: Gruppen
+      color:
+        one: Farbe
+        other: Farben
     attributes:
       usergroup:
         name: "Gruppen Name"
@@ -92,3 +96,13 @@ de:
         created_at: "Erstellt um"
         usergroup: "Gruppe"
 
+#helpers.page_entries_info.one_page.display_entries
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "Keine %{entry_name} gefunden"
+          one: "<b>1</b> %{entry_name}"
+          other: "<b>Alle %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "<b>%{first}&nbsp;-&nbsp;%{last}</b> von gesamt <b>%{total}</b> %{entry_name}"

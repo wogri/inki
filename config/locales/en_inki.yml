@@ -94,12 +94,4 @@ en:
   time:
     formats:
       shorter: "%-d.%-m.%Y - %H:%M"
-  helpers:
-    page_entries_info:
-      one_page:
-        display_entries:
-          zero: "No %{entry_name} found"
-          one: "Displaying <b>1</b> %{entry_name}"
-          other: "Displaying <b>all %{count}</b> %{entry_name}"
-    more_pages:
-      display_entries: "Displaying <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> %{entry_name} in total"
+

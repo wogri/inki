@@ -64,11 +64,11 @@ module ApplicationHelper
 				menu << content_tag(:li, submenu, :class => html_class.join(" "))
 			end
 		elsif element.class == String # just a normal menu with a fixed target
-			link =  self.send("#{element}_path")
+			link =  self.send("#{element.tableize}_path")
 			if options[:just_the_link]
 				return link
 			end
-			link = link_to(t(element), link, :class => "spinner")
+			link = link_to(t(Object.const_get(element).model_name.human(:count => 2)), link, :class => "spinner")
 			menu << content_tag(:li, link.html_safe)
 		end
 		menu.join("\n").html_safe

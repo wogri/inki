@@ -1,94 +1,120 @@
 de:
-  groups: "Gruppen"
-  users: "Users"
-  exam_questions: Prüfungsfragen
-  exam_answers: Prüfungsantworten
   create_diagram: Diagramm erstellen
   wogri_at_system: System Management
-  ip_addresses: IP Addressen
   show_graph: Graph anzeigen
   courses: Fächer
-  time_elements: Zeitelemente
-  bills: Rechnungen
-  projects: Projekte
-  customer_ip_ranges: Kunden IP Bereiche
-  user_rights: Rechte
-  user_homepages: Homepages
-  user_mail_addresses: Mail Addressen
-  user_spamassassin_settings: Spam Einstellungen
-  user_emails: Mail Archiv
-  bookmarks: Bookmarks
-  user_homepage_aliases: Aliases
-  wogriusers: Wogri.at Benutzer
-  user_mail_settings: Mail Einstellungen
-  group_accounts: Gruppen Accounts
-  user_accounts: Benutzer Accounts
-  user_web_settings: Web Einstellungen
-  webserver_templates: Webserver Templates
-  webservers: Webserver
   summarizes_all_unbilled_elements: Zusammenfassung
   adds_bill_elements: Elemente hinzufügen
   can_be_empty: Kann auch leer bleiben, wird dann automatisch berechnet
   download_pdf: Download PDF
   show_source_code: Quell-Code anzeigen
-  time_elements: Zeit Management
   my_company: Meine Firma
   various_data: Diverse Daten
-  customers: Kunden
-  expenses: Ausgaben
-  rides: Fahrten
-  network_components: Netzwerk Komponenten
-  bookmark_categories: Bookmark Kategorien
-  ipv6_routes: IPv6 Routen
-  jabber_message_archives: Jabber Archiv
-  weather_forecasts: Wettervorhersage
-  question_difficulties: Schwierigkeitsgrade
-  graph_data_sets: Graph Datensets
-  snmp_data_sets: SNMP Datensets
-  snmp_pollers: SNMP Poller
-  exam_answers: Prüfungsantworten
-  rgbs: RGB Werte
-  rights: Rechte
-  network_component_types: Komponenten Typen
-  bill_templates: Rechnungsvorlagen
   create_pdf: PDF erzeugen
   activerecord:
     models:
-      exam_question: Prüfungsfragen
+      exam_question: 
+        one: Prüfungsfrage
+        other: Prüfungsfragen
       course: Fach
-      user_account: Benutzer Account
-      ip_address: IP Adresse
-      project: Projekt
-      customer: Kunde
-      bill: Rechnung
-      bill_template: Rechnungsvorlage
-      expense: Ausgabe
-      ride: Fahrt
-      user_account: Benutzer Account
-      right: Recht
-      user_right: Recht
+        one: Fach
+        other: Fächer
+      user_account: 
+        one: Benutzer Account
+        other: Benutzer Accounts
+      ip_address: 
+        one: IP Adresse
+        other: IP Adressen
+      project: 
+        one: Projekt
+        other: Projekte
+      customer:
+        one: Kunde
+        other: Kunden
+      bill:
+        one: Rechnung
+        other: Rechnungen
+      bill_template: 
+        one: Rechnungsvolage
+        other: Rechnungsvolagen
+      expense: 
+        one: Ausgabe
+        other: Ausgaben
+      ride: 
+        one: Fahrt
+        other: Fahrten
+      user_account: Account
+        one: Benutzer Account
+        other: Benutzer Accounts
+      right: 
+        one: Recht
+        other: Rechte
+      user_right: 
+        one: Recht
+        other: Rechte
       user_mail_address: Mail Adresse
+        one: Recht
+        other: Rechte
       user_mail_setting: Mail Einstellung
+        one: Recht
+        other: Rechte
       user_email: Mail Archiv
+        one: Recht
+        other: Rechte
       group_account: Gruppenaccount
+        one: Recht
+        other: Rechte
       network_component: Netzwerk Komponente
-      graph_data_set: Graph Datenset
-      snmp_data_set: SNMP Datenset
-      snmp_poller: SNMP Poller
-      ip_address: IP Adresse
-      bookmark: Bookmark
-      bookmark_category: Bookmark Kategorie
-      ipv6_route: IPv6 Route
-      jabber_message_archive: Jabber Archiv
-      weather_forecast: Wetter Vorhersage
-      inki_doc: Inki Dokument
-      exam_question: Prüfungsfrage
-      exam_answer: Prüfungsantwort
-      question_difficulty: Schwierigkeitsgrad
-      dispatch_job: Dispatch Job
-      rgb: RGB
-      right: Recht
-      network_component_type: Komponenten Typ
+        one: Recht
+        other: Rechte
+      graph_data_set: 
+        one: Graph Datenset
+        other: Graph Datensets
+      snmp_data_set: 
+        one: SNMP Datenset
+        other: SNMP Datensets
+      snmp_poller: 
+        one: SNMP Poller
+        other: SNMP Poller
+      ip_address: 
+        one: IP Adresse
+        other: IP Adressen
+      bookmark: 
+        one: Bookmark
+        other: Bookmarks
+      bookmark_category: 
+        one: Bookmark Kategorie
+        other: Bookmark Kategorien
+      ipv6_route: 
+        one: IPv6 Route
+        other: IPv6 Routen
+      jabber_message_archive: 
+        one: Jabber Archiv
+        other: Jabber Archive
+      weather_forecast: 
+        one: Wetter Vorhersage
+        other: Wetter Vorhersagen
+      inki_doc: 
+        one: Inki Dokument
+        other: Inki Dokumente
+      exam_question: 
+        one: Prüfungsfrage
+        other: Prüfungsfragen
+      question_difficulty: 
+        one: Schwierigkeitsgrad
+        other: Schwierigkeitsgrade
+      dispatch_job: 
+        one: Dispatch Job
+        other: Dispatch Jobs
+      rgb: 
+        one: RGB Farbe
+        other: RGB Farben
+      right: 
+        one: Recht
+        other: Rechte
+      network_component_type: 
+        one: Komponenten Typ
+        other: Komponenten Typen
     attributes:
       time_element:
         action: Aktion 
