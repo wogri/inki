@@ -16,7 +16,7 @@ de:
       exam_question: 
         one: Prüfungsfrage
         other: Prüfungsfragen
-      course: Fach
+      course: 
         one: Fach
         other: Fächer
       user_account: 
@@ -43,7 +43,7 @@ de:
       ride: 
         one: Fahrt
         other: Fahrten
-      user_account: Account
+      user_account: 
         one: Benutzer Account
         other: Benutzer Accounts
       right: 
@@ -52,21 +52,21 @@ de:
       user_right: 
         one: Recht
         other: Rechte
-      user_mail_address: Mail Adresse
-        one: Recht
-        other: Rechte
-      user_mail_setting: Mail Einstellung
-        one: Recht
-        other: Rechte
-      user_email: Mail Archiv
-        one: Recht
-        other: Rechte
-      group_account: Gruppenaccount
-        one: Recht
-        other: Rechte
-      network_component: Netzwerk Komponente
-        one: Recht
-        other: Rechte
+      user_mail_address: 
+        one: Mail Adresse
+        other: Mail Adressen
+      user_mail_setting: 
+        one: Mail Einstellung
+        other: Mail Einstellungen
+      user_email: 
+        one: Mail Archiv
+        other: Mail Archive
+      group_account: 
+        one: Gruppen Account
+        other: Gruppen Accounts
+      network_component: 
+        one: Netzwerk Komponente
+        other: Netzwerk Komponenten
       graph_data_set: 
         one: Graph Datenset
         other: Graph Datensets
