@@ -115,6 +115,9 @@ de:
       network_component_type: 
         one: Komponenten Typ
         other: Komponenten Typen
+      time_element:
+        one: Zeiterfassung
+        other: Zeiterfassungen
     attributes:
       time_element:
         action: Aktion 
