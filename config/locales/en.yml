@@ -53,3 +53,6 @@ en:
         fqdn: FQDN
         help_fqdn: A Fully Qualified Domain (DNS) Name, e. g. webserver.go-inki.com - without the trailing dot. 
         help_use_ipv6: Use IPv6 for polling this Host (for example via SNMP)
+      group_account:
+        group_name: Name of Group
+        help_short_name: The short name is the name for your ldap Directory. Only use the letters A-z and numbers for this name. No blanks or other fancy stuff is allowed here.

@@ -524,9 +524,13 @@ module Inki
 			end
 		end
 
+		# returns the (already translated) help text for an object
 		def help_text(field)
-			if defined? @help_array and help_text = @help_array.member?(field.to_sym)
-				"help_#{field}".to_sym
+			translation = self.human_attribute_name("help_#{field}", :default => 0)
+			if translation != 0
+				translation
+			else
+				nil
 			end
 		end
 		

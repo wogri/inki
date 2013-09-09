@@ -23,7 +23,7 @@
 							<%= t(:color) %>
 						<% else %>
 							<% if help = @object.class.help_text(attribute) %>
-								<abbr title="<%= @object.class.human_attribute_name(help) %>">
+								<abbr title="<%= help %>">
 							<% end %>
 							<%= @object.class.human_attribute_name(attribute) %>
 							<% if help %>

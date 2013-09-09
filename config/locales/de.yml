@@ -139,6 +139,7 @@ de:
         contact_mail_address: Kontaktmailadresse
         jabber_uid: Jabber UID
         login_shell: Login Shell
+        help_password: Das Kennwort muß mindestens 200 Zeichen haben
       user_right:
         right: Recht
         comment: Kommentar
