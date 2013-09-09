@@ -157,6 +157,7 @@ de:
       group_account:
         group_name: Gruppenname
         short_name: Kurzname
+        help_short_name: Der Kurzname für ein LDAP Directory. Hier sind nur die Zeichen A-z und 0-9 erlaubt. Keine Sonderzeichen oder Leerzeichen.
       user_homepage:
         homepage: Homepage Adresse
         automatic_update: Automatisches Update am Webserver
