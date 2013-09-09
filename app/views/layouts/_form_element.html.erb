@@ -7,7 +7,7 @@
 			<% if help = object.class.help_text(attribute) %>
 				<abbr title="<%= help %>">
 			<% end %>
-			<%#= f.label attribute %>
+			<%#= f.label attribute # why is this removed?%>
 			<%= object.class.human_attribute_name(attribute) %>
 			<% if help %>
 				</abbr>
