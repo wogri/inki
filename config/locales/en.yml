@@ -38,7 +38,7 @@ en:
   time_elements: Time Management
   activerecord:
     models:
-     exam_question: 
+      exam_question: 
         one: Exam Question
         other: Exam Questions
       course: 
