@@ -65,7 +65,16 @@ class Menu
 
 	# reduces the menu according to the rights of the user
 	def merge_with_rights(rights)
-		# to be written
+		if rights[:all]
+			return
+		end
+		allowed_controllers = rights.keys.collect do |controller|
+      right = rights[controller] 
+      if right == :read or right == :write
+        controller
+      end
+		end
+		# TODO: delete the corresponding menu entries	
 	end
 	
 

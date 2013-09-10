@@ -77,8 +77,12 @@ en:
       truncate: "..."
   activerecord:
     models:
-      user: User
-      group: Group
+      user: 
+        one: User
+        other: Users
+      usergroup: 
+        one: Group
+        other: Groups
     attributes:
       group:
         GroupName: "Group Name"
