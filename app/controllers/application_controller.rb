@@ -506,7 +506,7 @@ EOF
         redirect_to logins_path
         return
       end
-      @menu.merge_with_rights(@rights)
+      @menu.merge_with_rights!(@rights)
       modifier_rights = ["new", "edit", "create", "update", "destroy"]
       if modifier_rights.member? action_name
         time = Time.now.strftime("%y-%m-%d %H:%M:%S")
@@ -523,7 +523,7 @@ EOF
     end
   end
 
-   # generating menu by reading it from a yaml file
+   # generating menu by reading it from a yaml file and sending it to the Menu Class
   def generate_menu 
     # logger.warn("Rails-Root is: #{Rails.root}")
     Menu.new(YAML::load_file("#{Rails.root}/config/menu.yml"))
@@ -546,35 +546,6 @@ EOF
     end
     rights
   end
-
-  def merge_menu_with_rights(menu, rights)
-    if rights[:all] # if this user right is defined - either read or write - all menus will be presented, nothing to do
-      return menu
-    end
-    allowed_controllers = rights.keys.collect do |controller|
-      right = rights[controller] 
-      if right == :read or right == :write
-        controller
-      end
-    end
-		build_menu_with_rights(menu, allowed_controllers)
-  end
-
-	def build_menu_with_rights(menu, allowed_controllers, new_menu = [])
-		if menu.class == Array
-			menu.each do |m|
-				menu_item = build_menu_with_rights(m, allowed_controllers)
-				new_menu += menu_item if menu_item.size > 0
-			end
-		elsif menu.class == String and allowed_controllers.member?(menu)
-			new_menu.push(menu)
-		elsif menu.class == Hash
-			first_hash_element = menu[menu.keys.first]
-			menu_item = build_menu_with_rights(first_hash_element, allowed_controllers)
-			new_menu.push({menu.keys.first => menu_item}) if menu_item.size > 0
-		end
-		return new_menu
-	end
 
   def set_sort_order(new_order)
     order_by, order_direction = model_class.default_order

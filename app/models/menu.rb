@@ -64,7 +64,7 @@ class Menu
 	end
 
 	# reduces the menu according to the rights of the user
-	def merge_with_rights(rights)
+	def merge_with_rights!(rights)
 		if rights[:all]
 			return
 		end
@@ -74,8 +74,25 @@ class Menu
         controller
       end
 		end
-		# TODO: delete the corresponding menu entries	
+		self.submenu = self.menu_elements
+		remove_unmatched_elements(self, allowed_controllers)
 	end
-	
+
+	def remove_unmatched_elements(submenu, allowed_controllers)
+		if submenu.menu_type == :entry
+			if not allowed_controllers.member?(submenu.menu_string)
+				Rails.logger.info("removing #{submenu.menu_string}")
+				return true
+			else 
+				return false
+			end
+		elsif submenu.menu_type == :container
+			submenu.submenu = submenu.submenu.delete_if do |sub|
+				remove_unmatched_elements(sub, allowed_controllers)
+			end
+			Rails.logger.info("remaining submenu: #{submenu.submenu.to_yaml}")
+		end
+		false
+	end
 
 end

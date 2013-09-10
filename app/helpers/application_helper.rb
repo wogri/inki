@@ -37,6 +37,7 @@ module ApplicationHelper
 	end
 
 	def generate_menu(menu)
+		return nil if not @menu or not @menu.menu_elements
 		@menu.menu_elements.map do |sub_menu|
 			generate_menu_html(sub_menu)
 		end.join("\n").html_safe

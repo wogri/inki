@@ -2,7 +2,7 @@ users:
   user_accounts: :write
   user_homepages: :read
   startpages: :read
-  courses: :read
+  users: :read
 accounting:
   participants: :write
   startpages: :read
