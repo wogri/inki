@@ -254,6 +254,16 @@ module Inki
 			end
 		end
 
+		# sets an icon
+		def has_icon(icon)
+			@inki_icon = icon.to_sym
+		end
+
+		# returns the icon symbol
+		def inki_icon
+			@inki_icon
+		end
+
 		def sort_by(attribute, order = "ASC")
 			@_default_order_attribute = attribute
 			@_default_order_direction = order
