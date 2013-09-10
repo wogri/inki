@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
 	validates :password, :username, :name, :mailaddress, :usergroup_id, :presence => true
   validates :username, :uniqueness => true
 	is_versioned
-
   paginates_per 10
 
   # the convention is to present the password as 'xxxxxxxxxx', and only if it was changed it will be overwritten.
