@@ -1,7 +1,7 @@
 # implements the menu, able to build recursive stuff
 class Menu
 
-	attr_accessor :klass, :icon, :parent, :depth, :menu_string, :submenu, :children, :url_for_path, :root, :menu_elements
+	attr_accessor :klass, :icon, :parent, :depth, :menu_string, :submenu, :url_for_path, :root, :menu_elements
 
 	def initialize(menu_config, depth = 0)
 		self.depth = depth
@@ -30,5 +30,24 @@ class Menu
 			logger.error("unknown class #{menu_config.class} for menu")
 		end
 	end
+
+	def is_active_subtree_for?(controller_name)
+		controller_name.to_s!
+		if self.menu_string == controller_name
+			return true
+		else
+			self.submenu.each do |sub|
+				if sub.is_active_subtree_for?(controller_name)
+					return true
+				end
+			end
+		end
+	end
+
+	def first_submenu_entry
+		self.submenu.first if self.submenu
+	end
+
+	
 
 end
