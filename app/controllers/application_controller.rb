@@ -498,7 +498,7 @@ EOF
       	redirect_to logins_path
 			end
     else
-      @menu_items = generate_menu
+      @menu = generate_menu
       @rights = get_rights
       if not @rights # something happened with group-rights - destroy the session so another user can login
         session.delete(:user_id)
@@ -506,8 +506,7 @@ EOF
         redirect_to logins_path
         return
       end
-      @menu_items = merge_menu_with_rights(@menu_items, @rights)
-      @menu_items = [] unless @menu_items
+      @menu.merge_with_rights(@rights)
       modifier_rights = ["new", "edit", "create", "update", "destroy"]
       if modifier_rights.member? action_name
         time = Time.now.strftime("%y-%m-%d %H:%M:%S")
@@ -527,7 +526,7 @@ EOF
    # generating menu by reading it from a yaml file
   def generate_menu 
     # logger.warn("Rails-Root is: #{Rails.root}")
-    YAML::load_file("#{Rails.root}/config/menu.yml")
+    Menu.new(YAML::load_file("#{Rails.root}/config/menu.yml"))
   end
 
    # return a hash of rights 

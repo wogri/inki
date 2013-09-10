@@ -7,7 +7,7 @@ module ApplicationHelper
 	end
 
 	# returns the active main menu name to generate a wonderful highlight in the menu
-	def active_menu(menu)
+	def legacy_active_menu(menu)
 		c = controller_name
 		if menu.class == Array
 			menu.each do |m|
@@ -36,8 +36,55 @@ module ApplicationHelper
 		end
 	end
 
+	def generate_menu(menu)
+		@menu.menu_elements.map do |sub_menu|
+			generate_menu_html(sub_menu)
+		end.join("\n").html_safe
+	end
+
+	def generate_menu_html(sub_menu)
+		link_html_class = []
+		li_html_class = []
+		html_options = {}
+		link_target = '/#'
+		html = ""
+		text = if sub_menu.menu_type == :container
+			t(sub_menu.menu_string)
+		elsif sub_menu.menu_type == :entry
+			link_target = self.send(sub_menu.url_for_path)
+			sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
+		end
+		if sub_menu.depth == 1 # main menu entries
+			text = (text + " " + content_tag(:b, nil, :class => "caret")).html_safe
+			if sub_menu.is_active_subtree_for?(controller_name)
+				li_html_class << "active"
+			end
+			html_options["data-toggle"] = "dropdown"
+			link_html_class << "dropdown-toggle"
+		end
+		link = link_to(text, link_target, html_options.merge(:class => link_html_class.join(" ")))
+		if sub_menu.has_submenus? and sub_menu.depth == 1
+			li_html_class << "dropdown"
+			sub_submenus = sub_menu.submenu.map do |sub_submenu|
+				generate_menu_html(sub_submenu)
+			end.join("\n").html_safe
+			html << link
+			html << content_tag(:ul, sub_submenus, :class => "dropdown-menu")
+			content_tag(:li, html.html_safe, :class => li_html_class.join(" "))
+		elsif sub_menu.has_submenus? and sub_menu.depth > 1
+			html << content_tag(:li, nil, :class => "divider")
+			html << content_tag(:li, text, :class => "dropdown-header")
+			html << sub_menu.submenu.map do |sub_submenu|
+				generate_menu_html(sub_submenu)
+			end.join("\n")
+			html
+		elsif sub_menu.menu_type == :entry
+			content_tag(:li, link)
+		end
+	end
+
 	# builds the whole bootstrap menu, including all hierachies
-	def menu_link(element, iteration = 0, options = {})
+	def legacy_menu_link(element, iteration = 0, options = {})
 		iteration += 1
 		menu = []
 		if element.class == Array # this is a list of elements. re-call menu-link again.

@@ -32,14 +32,13 @@ class Menu
 	end
 
 	def is_active_subtree_for?(controller_name)
-		controller_name.to_s!
+		controller_name = controller_name.to_s
 		if self.menu_string == controller_name
+			logger.info("found #{controller_name}")
 			return true
-		else
+		elsif self.has_submenus?
 			self.submenu.each do |sub|
-				if sub.is_active_subtree_for?(controller_name)
-					return true
-				end
+				sub.is_active_subtree_for?(controller_name)
 			end
 		end
 	end
@@ -48,6 +47,25 @@ class Menu
 		self.submenu.first if self.submenu
 	end
 
+	def has_submenus?
+		if self.submenu.class == Array and self.submenu.size > 0
+			true
+		end
+	end
+
+	# returns the type of the menu entry
+	def menu_type
+		if self.klass
+			:entry
+		else
+			:container
+		end
+	end
+
+	# reduces the menu according to the rights of the user
+	def merge_with_rights(rights)
+		# to be written
+	end
 	
 
 end
