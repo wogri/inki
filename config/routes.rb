@@ -25,8 +25,6 @@ Development::Application.routes.draw do
 				get 'get_spamassassin_settings'
 				get 'get_vacation_settings'
 				get 'get_user_rights'
-				get 'search'
-				post 'search'
 				post 'set_mail_setting'
 			end
 		end
@@ -47,23 +45,21 @@ Development::Application.routes.draw do
 			member do
 				patch 'save_time_elements'
 				get 'get_pdf'
-				get 'search'
-				post 'search'
 			end
 		end
 
 		res.uniq.each do |r|
-			resources r do
-				collection do
-					post 'search'
-					get 'search'
-				end
-			end	
+			resources r # do
+				#collection do
+					#post 'search'
+					#get 'search'
+				#end
+			#end	
 		end
 
 	end
 
-	match '/icons' => 'icons#show_icons', via: [:get]
+	#match '/icons' => 'icons#show_icons', via: [:get]
 	match '/:locale' => 'startpages#index', via: [:get]
 
   # The priority is based upon order of creation:

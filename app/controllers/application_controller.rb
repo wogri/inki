@@ -284,23 +284,6 @@ class ApplicationController < ActionController::Base
     render :file => "layouts/new"
 	end
 
-	#def close
-	#	if params[:close] and params[:index]  # if the close has been issued from the index-view we need to render things differently than in 'new'-view
-	#		@index = true
-	#		@object = model_class.find(params[:id])
-	#		@div_id = create_div_id(@object)
-	#	end
-  #  render :file => "layouts/close"
-	#end
-
-	def help_text
-    render :file => "layouts/help_text"
-	end
-
-	def search
-		index
-	end
-
   private
 
 	# generate the necessary objects for the undo-operation

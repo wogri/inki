@@ -1,5 +1,5 @@
 <% if @right and @model_class.searching_enabled? -%>
-	<% link_hash = {:action => :search, :ajax_id => @ajax_id} -%>
+	<% link_hash = {:action => :index, :ajax_id => @ajax_id} -%>
 	<% link_hash.merge!({
 		:show_id => @show_object.id, 
 		:from_show_table => @from_show_table, 
@@ -7,7 +7,7 @@
 		:add_existing_model => @add_existing_model,
 		:previous_ajax_id => @previous_ajax_id,
 	}) if @from_show_table -%>
-	<%= form_tag(link_hash, :method => 'post', :remote => true) do %>
+	<%= form_tag(link_hash, :method => 'get', :remote => true) do %>
 		<div class="input-group">
 			<span class="input-group-btn">
 				<label for="search_button_<%= @ajax_id %>" class="btn btn-default">
