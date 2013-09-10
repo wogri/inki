@@ -6,6 +6,7 @@ class Usergroup < ActiveRecord::Base
 		:comment => :nowrap # don't wrap blanks empty 
 	}
 
+	has_icon "icon-group"
   paginates_per 10
 
   has_many :users, :dependent => :delete_all

@@ -52,7 +52,12 @@ module ApplicationHelper
 			t(sub_menu.menu_string)
 		elsif sub_menu.menu_type == :entry
 			link_target = self.send(sub_menu.url_for_path)
-			sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
+			name = sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
+			if sub_menu.klass.inki_icon
+				icon(sub_menu.klass.inki_icon) + name
+			else
+				name
+			end
 		end
 		if sub_menu.depth == 1 # main menu entries
 			text = (text + " " + content_tag(:b, nil, :class => "caret")).html_safe
