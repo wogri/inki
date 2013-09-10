@@ -43,7 +43,7 @@ module ApplicationHelper
 		end.join("\n").html_safe
 	end
 
-	def generate_menu_html(sub_menu)
+	def generate_menu_html(sub_menu, menu_index = 0)
 		link_html_class = []
 		li_html_class = []
 		html_options = {}
@@ -70,19 +70,22 @@ module ApplicationHelper
 			link_html_class << "dropdown-toggle"
 		end
 		link = link_to(text, link_target, html_options.merge(:class => link_html_class.join(" ")))
+		index = 0
 		if sub_menu.has_submenus? and sub_menu.depth == 1
 			li_html_class << "dropdown"
 			sub_submenus = sub_menu.submenu.map do |sub_submenu|
-				generate_menu_html(sub_submenu)
+				index += 1
+				generate_menu_html(sub_submenu, index)
 			end.join("\n").html_safe
 			html << link
 			html << content_tag(:ul, sub_submenus, :class => "dropdown-menu")
 			content_tag(:li, html.html_safe, :class => li_html_class.join(" "))
 		elsif sub_menu.has_submenus? and sub_menu.depth > 1
-			html << content_tag(:li, nil, :class => "divider")
+			html << content_tag(:li, nil, :class => "divider") unless menu_index == 1
 			html << content_tag(:li, text, :class => "dropdown-header")
 			html << sub_menu.submenu.map do |sub_submenu|
-				generate_menu_html(sub_submenu)
+				index += 1
+				generate_menu_html(sub_submenu, index)
 			end.join("\n")
 			html
 		elsif sub_menu.menu_type == :entry
