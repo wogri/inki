@@ -34,13 +34,14 @@ class Menu
 	def is_active_subtree_for?(controller_name)
 		controller_name = controller_name.to_s
 		if self.menu_string == controller_name
-			logger.info("found #{controller_name}")
 			return true
 		elsif self.has_submenus?
 			self.submenu.each do |sub|
-				sub.is_active_subtree_for?(controller_name)
+				success = sub.is_active_subtree_for?(controller_name)
+				return true if success
 			end
 		end
+		return false
 	end
 
 	def first_submenu_entry

@@ -56,7 +56,8 @@ module ApplicationHelper
 		end
 		if sub_menu.depth == 1 # main menu entries
 			text = (text + " " + content_tag(:b, nil, :class => "caret")).html_safe
-			if sub_menu.is_active_subtree_for?(controller_name)
+			if x = sub_menu.is_active_subtree_for?(controller_name)
+				logger.info("found active submenu: #{x} in controller #{controller_name}")
 				li_html_class << "active"
 			end
 			html_options["data-toggle"] = "dropdown"
