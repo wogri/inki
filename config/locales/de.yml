@@ -11,6 +11,8 @@ de:
   my_company: Meine Firma
   various_data: Diverse Daten
   create_pdf: PDF erzeugen
+  earnings: Erträge
+  expenses: Ausgaben
   activerecord:
     models:
       exam_question: 
