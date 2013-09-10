@@ -6,10 +6,8 @@ class User < ActiveRecord::Base
 	index_order :username, :name, :mailaddress, :usergroup
 	attribute_order :username, :password, :name, :mailaddress, :usergroup, :created_at
 	attribute_properties :password => :password 
-	
 	has_icon "icon-user"
 	read_only :username
-  
 	validates :password, :username, :name, :mailaddress, :usergroup_id, :presence => true
   validates :username, :uniqueness => true
 	is_versioned
