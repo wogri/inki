@@ -86,6 +86,9 @@ en:
       user_email: 
         one: Mail Archive
         other: Mail Archives
+      user_homepages: 
+        one: Homepage
+        other: Homepages
       group_account: 
         one: Group Account
         other: Group Accounts
