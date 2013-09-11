@@ -2,8 +2,12 @@
 module ApplicationHelper
 
 	# returns an font-awesome icon
-	def icon(name)
-		content_tag(:i, nil, :class => name)  + " "
+	def icon(name, options = {})
+		html_options = {:class => name.to_s}
+		if options[:fixed_width]
+			html_options[:class] += " icon-fixed-width"
+		end
+		content_tag(:i, nil, html_options)  + " "
 	end
 
 	# returns the active main menu name to generate a wonderful highlight in the menu
@@ -55,7 +59,7 @@ module ApplicationHelper
 			link_target = self.send(sub_menu.url_for_path)
 			name = sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
 			if sub_menu.klass.inki_icon
-				icon(sub_menu.klass.inki_icon) + name
+				icon(sub_menu.klass.inki_icon, :fixed_width => true) + name
 			else
 				name
 			end
