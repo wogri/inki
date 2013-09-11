@@ -10,36 +10,7 @@ module ApplicationHelper
 		content_tag(:i, nil, html_options)  + " "
 	end
 
-	# returns the active main menu name to generate a wonderful highlight in the menu
-	def legacy_active_menu(menu)
-		c = controller_name
-		if menu.class == Array
-			menu.each do |m|
-				if active_menu(m)
-					if m.class == Hash
-						#logger.info("returning #{m.keys.first} in interation #{iteration}")
-						return m.keys.first
-					else
-						return true
-					end
-				end
-			end
-			return nil
-		end
-		if menu.class == Hash
-			first_hash_element = menu[menu.keys.first]
-		end
-		if menu.class == String 
-			if menu == c
-				return true
-			else
-				return false
-			end
-		else
-			return active_menu(first_hash_element) if first_hash_element
-		end
-	end
-
+	# builds a menu around the menu model and runs generate_menu_html
 	def generate_menu(menu)
 		return nil if not @menu or not @menu.menu_elements
 		@menu.menu_elements.map do |sub_menu|
@@ -47,6 +18,7 @@ module ApplicationHelper
 		end.join("\n").html_safe
 	end
 
+	# generates a bootstrap 3.0 menu
 	def generate_menu_html(sub_menu, menu_index = 0)
 		link_html_class = []
 		li_html_class = []
@@ -95,44 +67,6 @@ module ApplicationHelper
 		elsif sub_menu.menu_type == :entry
 			content_tag(:li, link)
 		end
-	end
-
-	# builds the whole bootstrap menu, including all hierachies
-	def legacy_menu_link(element, iteration = 0, options = {})
-		iteration += 1
-		menu = []
-		if element.class == Array # this is a list of elements. re-call menu-link again.
-			element.each do |e|
-				menu << menu_link(e, iteration, options)
-			end
-			return menu.join("\n").html_safe
-		elsif element.class == Hash  # there is a sub-menu below this element
-			html_class = ["dropdown"]	
-			first_key = element.keys.first
-			link_text = "#{t(first_key)} <b class=\"caret\"></b>".html_safe
-			if iteration == 2 # first sub-element
-				html_class << "active" if options[:active_menu] == first_key
-				link = link_to(link_text, '/#', {:class => "dropdown-toggle", "data-toggle" => "dropdown"})
-				submenu = link
-				submenu << content_tag(:ul, menu_link(element[first_key], iteration, options), :class => "dropdown-menu")
-				menu << content_tag(:li, submenu, :class => html_class.join(" "))
-			else # deeper sub-elements need to be rendered differently
-				html_class = ["dropdown-submenu"]
-				link_text = t(first_key)
-				link = link_to(link_text, menu_link(element[first_key].first, iteration, :just_the_link => true))
-				submenu = link
-				submenu << content_tag(:ul, menu_link(element[first_key], iteration, options), :class => "dropdown-menu")
-				menu << content_tag(:li, submenu, :class => html_class.join(" "))
-			end
-		elsif element.class == String # just a normal menu with a fixed target
-			link =  self.send("#{element.tableize}_path")
-			if options[:just_the_link]
-				return link
-			end
-			link = link_to(t(Object.const_get(element).model_name.human(:count => 2)), link, :class => "spinner")
-			menu << content_tag(:li, link.html_safe)
-		end
-		menu.join("\n").html_safe
 	end
 
 	# generate a split button element
