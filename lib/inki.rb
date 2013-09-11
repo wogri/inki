@@ -503,7 +503,7 @@ module Inki
 				begin
 					@show_if.call(object)
 				rescue StandardError => e
-					logger.error("show_relation? monkey patch function crashed. this might be okay if the lambda-function doesn't check intensively on classes or such. error was: ")
+					logger.error("show_relation? monkey patch function crashed. this might be okay if the lambda-function doesn't check intensively on classes or such. error was: #{e}")
 					logger.error(e.backtrace.join("\n"))
 					false
 				end
