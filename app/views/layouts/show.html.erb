@@ -1,12 +1,21 @@
-<h1><%= @object.title if defined? @object.title %></h1>
-<div class="left_aligned">
-	<%= back_link(@object) %>
-	<span id="<%= @div_id %>_options">
+<h1>
+	<%= icon(@object.class.inki_icon) -%>
+	<%= @object.title if defined? @object.title %>
+</h1>
+<div class="row">
+	<div class="col-md-12">
+		<%= back_link(@object) %>
 		<%= render :partial => "layouts/show_options" %>
-	</span>
-	<div class="left_aligned">
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div id="<%= @div_id %>">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
 		<%= render :partial => "layouts/show_table", :locals => {:non_dropdown_view => true} %>
 	</div>
 </div>
-
-

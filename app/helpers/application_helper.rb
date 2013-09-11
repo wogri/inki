@@ -3,6 +3,7 @@ module ApplicationHelper
 
 	# returns an font-awesome icon
 	def icon(name, options = {})
+		return nil if not name
 		html_options = {:class => name.to_s}
 		if options[:fixed_width]
 			html_options[:class] += " icon-fixed-width"
@@ -79,7 +80,7 @@ module ApplicationHelper
 			sub_elements << content_tag(:li, element)
 		end
 		html << content_tag(:ul, sub_elements.html_safe, :class => "dropdown-menu", :role => "menu")
-		content_tag(:div, html.html_safe, :class => "btn-group", :style => "width: #{t(:show).size * 5 + 50}pt;") 
+		content_tag(:div, html.html_safe, :class => "btn-group") 
 	end
 
 	# creates the typical edit, show and delete buttons
