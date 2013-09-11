@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
 		if @special_option and special_option_description = model_class.has_special_controller_buttons?[@special_option.to_sym]
 			if special_option_description[:graph] 
 				@special_render = "layouts/graph"
-				@special_title = t(_class.model_name.human(:count = 2))
+				@special_title = _class.model_name.human(:count = 2)
 			else
 				self.send(@special_option) if @special_option 
 				if not @special_render
