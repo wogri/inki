@@ -15,12 +15,4 @@ $(document).ready(function() {
       $('#waiting_bar').fadeOut(1000); 
     });
   });
-	/*
-  $("#tool-form")
-    .bind("ajax:loading",  toggleLoading)
-    .bind("ajax:complete", toggleLoading)
-    .bind("ajax:success", function(event, data, status, xhr) {
-      $("#response").html(data);
-    });
-  */
 });
