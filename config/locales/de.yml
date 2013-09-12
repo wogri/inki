@@ -45,9 +45,6 @@ de:
       ride: 
         one: Fahrt
         other: Fahrten
-      user_account: 
-        one: Benutzer Account
-        other: Benutzer Accounts
       right: 
         one: Recht
         other: Rechte
@@ -168,6 +165,7 @@ de:
         jabber_uid: Jabber UID
         login_shell: Login Shell
         help_password: Das Kennwort muß mindestens 200 Zeichen haben
+        help_name: Der volle Name des Benutzers - z. b. John Doe
       user_right:
         right: Recht
         comment: Kommentar

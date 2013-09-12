@@ -152,3 +152,8 @@ en:
         help_snmp_counter: Check this box if your values are rising constantly - like interface counters, but you want a steady graph to be shown. 
       graph_data_set:
         help_data_lifetime: We will keep these many data points (days) 
+      user_account:
+        user_id: Unix UID
+        jabber_uid: Jabber UID
+        login_shell: Login Shell
+        help_name: The full name of the user - e. g. John Doe
