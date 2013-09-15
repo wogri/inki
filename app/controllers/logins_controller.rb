@@ -30,11 +30,9 @@ class LoginsController < ApplicationController
   end
 
   def destroy
-    #session.delete(:user_id)
-    #session.delete(:user_name)
-    #session.delete(:user_mailaddress)
-    #session.delete(:group)
+		uri = session[:request_uri]
 		reset_session
+		session[:request_uri] = uri
     redirect_to :action => "index"
   end
 
