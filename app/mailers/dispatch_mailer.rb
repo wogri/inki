@@ -1,5 +1,5 @@
 class DispatchMailer < ActionMailer::Base
-  default from: "Inki Database Dispatcher <noreply@inki-db.com>"
+  default from: "Inki Database Dispatcher <noreply@inki.io>"
 
 	def error_mail(mail, body)
 		@body = body
