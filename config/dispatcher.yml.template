@@ -28,17 +28,10 @@ development:
           :base: dc=wogri,dc=at
         :ldap_user_tree: ou=People,o=wogriAtUsers
         :ldap_group_tree: ou=Groups,o=wogriAtUsers
-  
-    #localhost:
-      #:ldap:
-        #:lifetime: 60 # can take up to 30 seconds
-        #:interested_in_objects: # is only executed when the following objects are dispatched
-        #- user_accounts
-        #- user_mail_addresses
-        #- user_rights
-        #- user_homepages
-        #- user_spamassassin_settings
-        #:server: ldap.wogri.at
-        #:bind_dn: cn=admin,dc=wogri,dc=at
-        #:bind_pw: cR5sl2t
-        #:mode: :user
+
+    localhost:
+      :inki_doc:
+        :lifetime: 10 # can take up to 30 seconds
+        :interested_in_objects: # is only executed when the following objects are dispatched
+        - inki_docs
+
