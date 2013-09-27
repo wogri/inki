@@ -67,7 +67,7 @@ en:
   click_undo_will_restore_element: The following object can be restored
   click_undo_will_create_element: The following object can be re-created
   undo_error: Error while loading undo data. Check the log for details.
-  undo_successful: Undo was susccessful.
+  undo_successful: Undo was successful.
   not_versioned_error: This object is not in version control (Parameter is_versioned in the configuration), therefore we can not undo your action.
   other_user_changed_element: The user {%user_name} changed this object in the mean time. For safety reasons you can not undo your action.
   nothing_to_undo: Nothing to undo.
