@@ -269,7 +269,8 @@ class ApplicationController < ActionController::Base
 		if @from_show_table # this is a new object UNDER another object, so pre-fill the relation 
 			@relation = relation_type
 			if @relation != :has_and_belongs_to_many and @relation != :has_many_through
-				@object.send("#{@object.reflections[@from_show_table.classify.underscore.to_sym].foreign_key}=", @show_id) 
+				@foreign_key = @object.reflections[@from_show_table.classify.underscore.to_sym].foreign_key
+				@object.send("#{@foreign_key}=", @show_id) 
 			else
 				# the user wants to add an existing model, that means we have to present him an index-view of all available objects. 
 				if @add_existing_model
