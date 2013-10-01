@@ -329,7 +329,7 @@ module Inki
 			object = self.new
 			relations.each do |r|
 				if object.reflections[r].macro == :belongs_to
-					fields << r
+					fields << object.reflections[r].foreign_key.to_sym
 				end
 			end
 			fields

@@ -39,7 +39,7 @@
 			<%= f.hidden_field(attribute) %>
 		<% end -%>
 		<% object.class.belongs_to_hidden_fields.each do |attribute| %>
-			<%= f.hidden_field(@foreign_key.to_sym) %>
+			<%= f.hidden_field(attribute) %>
 		<% end -%>
 		<% if defined? additional_partials and not defined? from_vcs -%>
 			<% additional_partials.each do |partial| %>
