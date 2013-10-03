@@ -445,7 +445,7 @@ module ApplicationHelper
 			foreign_object = object.send(relation)
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
-				title = "#{title_prefix}: #{foreign_object.title}"
+				title = "#{title_prefix}: #{foreign_object.model_title}"
 				title = icon("icon-expand icon-large icon-rotate-180") + title
 				content_tag(:div, link_to(title, foreign_object, :class => "list-group-item info spinnner"), :class => "list-group-inki list-group")
 			else

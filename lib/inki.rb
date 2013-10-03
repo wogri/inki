@@ -91,9 +91,9 @@ module Inki
 		end
 	end
 
-	def title
-		if self.class.title_field
-			self.send(self.class.title_field)
+	def model_title
+		if self.class._title_field
+			self.send(self.class._title_field)
 		elsif defined? self.class.index_fields
 			self.send(self.class.index_fields.first)
 		else
@@ -510,11 +510,11 @@ module Inki
 			end
 		end
 
-		def title(attribute)
+		def model_title(attribute)
 			@_title_field = attribute
 		end
 
-		def title_field
+		def _title_field
 			if defined? @_title_field
 				@_title_field
 			end
