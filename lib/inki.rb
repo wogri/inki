@@ -580,6 +580,20 @@ module Inki
 			@is_versioned 
 		end
 
+		# returns the latest object in the history of the object (e. g. the latest element when the element was deleted), nil if there is no such object. 
+		def latest_inki_object_in_history(id)
+      object = ObjectVersion.where(
+        :format => 1,
+        :model_id => id, 
+        :model_name => self.to_s
+      ).order("created_at DESC").first
+      if not object
+        return nil 
+      else
+        object.to_inki_object
+			end
+		end
+
 		# this enables a model to be dispatchable. different callbacks will be registered right here
 		def can_be_dispatched
 			after_destroy do |model|
