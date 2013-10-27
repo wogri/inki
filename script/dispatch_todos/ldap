@@ -68,7 +68,8 @@ todo.jobs.each do |job|
 			end
 		end
 	elsif job._operation == "destroy"
-		ldap.search(:base => dn) do |entry|
+		entries = ldap.search(:base => dn) 
+		entries.reverse.each do |entry|
 			todo.emit_log(job, "deleting object: #{entry.dn}")
 			if not ldap.delete :dn => entry.dn
 				todo.emit_log(job, ldap.get_operation_result.message)
