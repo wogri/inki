@@ -76,6 +76,8 @@ todo.jobs.each do |job|
 				update_failed = true
 			end	
 		end
+	elsif job._operation == "no_op"
+		# this operation means: nothing to do for ldap. 
 	else
 		todo.emit_log(job, "can't handle #{job._operation} on job-id #{job.id}")
 	end
