@@ -42,12 +42,13 @@ todo.jobs.each do |job|
 	update_failed = false
 	if job._operation == "create"
 		remove_empty_attributes(attributes)
-		todo.emit_log(job, "inserting object into ldap now! - #{dn}")
+		todo.emit_log(job, "inserting object: #{dn}")
 		if not ldap.add(:dn => dn, :attributes => attributes)
 			todo.emit_log(job, ldap.get_operation_result.message)
 			next
 		end
 	elsif job._operation == "update"
+		todo.emit_log(job, "updating object: #{dn}")
 		attributes.each do |key, value|
 			todo.emit_log(job, "#{key} | #{value}")
 			if key == :objectClass
@@ -67,6 +68,7 @@ todo.jobs.each do |job|
 			end
 		end
 	elsif job._operation == "destroy"
+		todo.emit_log(job, "deleting object: #{dn}")
 		if not ldap.delete :dn => dn
 			todo.emit_log(job, ldap.get_operation_result.message)
 			update_failed = true
