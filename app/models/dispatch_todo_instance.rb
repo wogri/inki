@@ -66,4 +66,18 @@ class DispatchTodoInstance < ActiveRecord::Base
 		emit_log(instance, "__OK")
 	end
 
+	# helper method for instances of this class to execute a system command, and handle errors accordingly
+	def execute_system_command(job, command)
+		emit_log(job, "about to execute command #{command}")
+		command.push {:err=>[:child, :out]}
+		IO.popen(*command) do |process|
+			emit_log(job, process.read)
+		end
+		if $? != 0
+			return false
+		else
+			return true
+		end
+	end
+
 end
