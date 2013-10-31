@@ -73,9 +73,10 @@ class DispatchTodoInstance < ActiveRecord::Base
 		command.push({:err=>[:child, :out]})
 		IO.popen(command, 'w+') do |process|
 			process.write options[:content]
-			#process.each_line do |line|
-			#	emit_log(job, line)
-			#end
+			process.close_write
+			process.each_line do |line|
+				emit_log(job, line)
+			end
 		end
 		if $? != 0
 			emit_log(job, "Return status was #{$?}")
