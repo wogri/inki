@@ -66,9 +66,28 @@ class DispatchTodoInstance < ActiveRecord::Base
 		emit_log(instance, "__OK")
 	end
 
+	# helper method for instances of this class to execute a copy command via ssh, and handle errors accordingly
+	def execute_ssh_copyjob(job, options)
+		emit_log(job, "about to copy a file to #{options[:user]}@#{options[:server]}:#{options[:filename]}") 
+		command = ["ssh", "#{options[:user]}@#{options[:server]}", "cat > '#{options[:filename]}'"]
+		command.push({:err=>[:child, :out]})
+		IO.popen(command, 'w+') do |process|
+			process.write options[:content]
+			process.each_line do |line|
+				emit_log(job, line)
+			end
+		end
+		if $? != 0
+			emit_log(job, "Return status was #{$?}")
+			return false
+		else
+			return true
+		end
+	end
+
 	# helper method for instances of this class to execute a system command, and handle errors accordingly
 	def execute_system_command(job, command)
-		emit_log(job, "about to execute command #{command.join(" ")}")
+		emit_log(job, "about to execute command '#{command.join(" ")}'")
 		command.push({:err=>[:child, :out]})
 		IO.popen(command) do |process|
 			process.each_line do |line|
