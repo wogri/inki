@@ -473,7 +473,15 @@ EOF
     @user_id = session[:user_id]
     @user_name = session[:user_name]
 		@user_group = session[:group]
-    if not @user_id 
+		if request.format != Mime::HTML and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
+			authenticate_or_request_with_http_basic("inki username and password please") do |username, password|
+				if username == "inki" and password == Rails.configuration.inki.rest_password
+					return true
+				else
+      		redirect_to logins_path
+				end
+			end
+    elsif not @user_id 
 			request_uri = request.env['REQUEST_URI']
 			session[:request_uri] = request_uri if not request_uri =~ /logins/
 			if request.xhr?
@@ -485,7 +493,7 @@ EOF
       @menu = generate_menu
       @rights = get_rights
       if not @rights # something happened with group-rights - destroy the session so another user can login
-        session.delete(:user_id)
+        reset_session
         logger.debug("### deleted session info for user login ")
         redirect_to logins_path
         return
