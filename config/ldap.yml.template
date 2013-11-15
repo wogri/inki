@@ -3,14 +3,15 @@ development:
   host: 192.168.0.1 # host name or ip address of the ldap server
   port: 389 # ldap port 389 is usually the port for ldap
   tls: false # currently not implemented, use stunnel for now please
-  base_dn: o=wogriAtUsers,dc=wogri,dc=at # base DN of your ldap server, used for searches
+  base_dn: o=myusers,dc=inki,dc=io # base DN of your ldap server, used for searches
   user_filter: # all the filters that you define below are combined by '&'. uid=<username> is automatically added
-    wogriService: woxdb
+    myService: inki
   auth:
     method: :simple # currently only simple is supported
-    bind_dn: cn=daemon,dc=wogri,dc=at # the dn or username that has access to read your ldap-directory (in order to search for the user accounts)
+    bind_dn: cn=inki,dc=inki,dc=io # the dn or username that has access to read your ldap-directory (in order to search for the user accounts)
     bind_pw: XXX # the password for this user
   attribute_mapping: # these attributes are automatically mapped to local user accounts. 
     name: gecos # the field that contains the name of the user
     mailaddress: contactMailAddress
     username: uid # the important field that identifies the username of the user
+  static_group: admins # the group membership is currently not derived from LDAP. 
