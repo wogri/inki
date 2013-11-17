@@ -169,15 +169,18 @@ class ApplicationController < ActionController::Base
 		#object.dispatch!(:destroy)
 		params.delete(:id) # parameter removal is essential for the pagination plugin
 		params.delete(:action) # parameter removal is essential for the pagination plugin
-		session[:undo].action = :destroy
-		session[:undo].model_id = object.id
-		session[:undo].model_name = object.class.to_s
-		flash[:notice] = flashmsg
+		if not defined? @via_http_basic
+			session[:undo].action = :destroy
+			session[:undo].model_id = object.id
+			session[:undo].model_name = object.class.to_s
+			flash[:notice] = flashmsg
+		end
 		index(:render => false) # call index so ajax-views can re-render the index-view
 		@div_id = create_div_id(object)
 		respond_to do |format|
 			format.js { render :file => 'layouts/destroy' }
 			format.html { redirect_to send("#{model_class.name.tableize}_path") }
+			format.json { head :no_content }
 		end	
 	end
 
@@ -205,12 +208,14 @@ class ApplicationController < ActionController::Base
 			end	
 		elsif @object.update_attributes(model_parameters)
 			@object.update_owner(@user_id, @user_name)
-			session[:undo].action = :update
-			session[:undo].model_id = @object.id
-			session[:undo].model_name = @object.class.to_s
-			flash[:notice] = "#{@object.title if defined? @object.title} #{t(:updated)}."
-			get_colors
-			@undo = params[:undo]
+			if not defined? @via_http_basic
+				session[:undo].action = :update
+				session[:undo].model_id = @object.id
+				session[:undo].model_name = @object.class.to_s
+				flash[:notice] = "#{@object.title if defined? @object.title} #{t(:updated)}."
+				get_colors
+				@undo = params[:undo]
+			end
 			if @vcs = params[:vcs] and not @undo
 				@current_element_selected = true
 				@version_id = 0
@@ -224,6 +229,7 @@ class ApplicationController < ActionController::Base
 			respond_to do |format|
 				format.js { render :file => 'layouts/update' }
 				format.html { redirect_to @object }
+				format.json { head :no_content }
 			end	
 			#end	
 		else
@@ -234,6 +240,7 @@ class ApplicationController < ActionController::Base
 				flash.now[:error] = t(:could_not_save_element)
 				respond_to do |format|
 					format.js { render :file => 'layouts/show' }
+					format.json { render json: @object.errors, status: :unprocessable_entity }
 				end
 			else
 				render :file => "layouts/edit"
@@ -247,9 +254,11 @@ class ApplicationController < ActionController::Base
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:create)
 			@relation = relation_type
-			session[:undo].action = :create
-			session[:undo].model_id = @object.id
-			session[:undo].model_name = @object.class.to_s
+			if not defined? @via_http_basic
+				session[:undo].action = :create
+				session[:undo].model_id = @object.id
+				session[:undo].model_name = @object.class.to_s
+			end
 			@div_id = create_div_id(@object)
 			@undo = params[:undo]
 			if @relation == :has_and_belongs_to_many or @relation == :has_many_through
@@ -258,9 +267,15 @@ class ApplicationController < ActionController::Base
 			index(:render => false) # call index so ajax-views can re-render the index-view
 			get_colors
       flash[:notice] = "#{@object.title if defined? @object.title} #{t(:created)}."
-			render :file => 'layouts/create'
+			respond_to do |format|
+				format.js { render :file => 'layouts/create' }
+				format.json { render json: @object, status: :created, location: @object }
+			end
     else
-      render :file => 'layouts/new'
+			respond_to do |format|
+      	format.js { render :file => 'layouts/new' }
+				format.json { render json: @object.errors, status: :unprocessable_entity }
+			end
     end
 	end
 
@@ -476,12 +491,14 @@ EOF
 		if request.format != Mime::HTML and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
 			authenticate_or_request_with_http_basic("inki username and password please") do |username, password|
 				if username == "inki" and password == Rails.configuration.inki.rest_password
-					return true
-				else
-      		redirect_to logins_path
+					@user_id = "inki_via_http_basic"
+					@user_name = "inki_via_http_basic"
+					@user_group = "http_basic"
+					@via_http_basic = true
 				end
 			end
-    elsif not @user_id 
+		end
+    if not @user_id 
 			request_uri = request.env['REQUEST_URI']
 			session[:request_uri] = request_uri if not request_uri =~ /logins/
 			if request.xhr?
@@ -506,11 +523,23 @@ EOF
       end
       if @right != :write and modifier_rights.member? action_name and controller_name != "logins"
         logger.warn("no write-right on #{controller_name}")
-        redirect_to :controller => "startpages", :action => "unauthorized"
+				if @via_http_basic 
+					respond_to do |format|
+						format.json { render json: nil, status: :forbidden}
+					end
+				else
+        	redirect_to :controller => "startpages", :action => "unauthorized"
+				end
       end
       if @right != :write and @right != :read
         logger.warn("no right at all on #{controller_name}")
-        redirect_to :controller => "startpages", :action => "unauthorized"
+				if @via_http_basic 
+					respond_to do |format|
+						format.json { render json: nil, status: :forbidden}
+					end
+				else
+        	redirect_to :controller => "startpages", :action => "unauthorized"
+				end
       end
     end
   end

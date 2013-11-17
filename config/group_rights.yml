@@ -3,6 +3,9 @@ users:
   user_homepages: :read
   startpages: :read
   users: :read
+http_basic:
+  users: :write
+  user_accounts: :read
 accounting:
   participants: :write
   startpages: :read
