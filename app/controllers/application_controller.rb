@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
 			respond_to do |format|
 				format.js { render :file => 'layouts/index' }
 				format.html { render :file => 'layouts/index' }
-				format.json { render :json => @objects.collect do |o| o.to_json end }
+				format.json { render :json => @objects }
 				format.xml { render :xml => @objects }
 				format.csv { send_data @objects.to_csv }
 				format.png { render_graph_data(@special_option, special_option_description[:graph_options]) if defined? special_option_description }
