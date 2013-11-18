@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 	read_only :username
 	validates :password, :username, :name, :mailaddress, :usergroup_id, :presence => true
   validates :username, :uniqueness => true
+	hide_json_attributes :password, :mailaddress
 	is_versioned
   paginates_per 10
 
@@ -47,10 +48,10 @@ class User < ActiveRecord::Base
 		self.dispatch_log += text
 	end
 	
-	def as_json(options={})
-     options[:except] ||= [:password]
-     super(options)
-  end
+	#def as_json(options={})
+     #options[:except] ||= [:password]
+     #super(options)
+  #end
 
 	private
 

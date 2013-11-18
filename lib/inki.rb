@@ -81,6 +81,13 @@ module Inki
 		content
 	end
 
+
+	def as_json(options = {})
+		attrs = self.class.hidden_json_attributes
+		options[:except] ||= attrs if attrs
+		super(options)
+	end
+
 	# returns the type of relationship of this property - can either be: has_many, belongs_to, has_and_belongs_to_many, has_one or has_many_through
 	def rails_relation(attribute)
 		reflection = self.reflections[attribute.to_sym]
@@ -573,6 +580,22 @@ module Inki
 			end
 
 			after_commit :create_version
+		end
+
+		def hidden_json_attributes
+			if defined? @hide_json_attributes and @hide_json_attributes.size > 0
+				@hide_json_attributes
+			else
+				nil
+			end
+		end
+
+		# overwrites the as_json method to remove specific json attributes (like passwords or other sensitive information)
+		def hide_json_attributes(*attributes)
+			@hide_json_attributes = []
+			attributes.collect do |a|
+				@hide_json_attributes.push(a.to_sym)
+			end
 		end
 
 		# returns true if the class is versioned
