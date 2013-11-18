@@ -46,6 +46,11 @@ class User < ActiveRecord::Base
 		end
 		self.dispatch_log += text
 	end
+	
+	def as_json(options={})
+     options[:except] ||= [:password]
+     super(options)
+  end
 
 	private
 

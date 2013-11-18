@@ -3,6 +3,8 @@ users:
   user_homepages: :read
   startpages: :read
   users: :read
+portal:
+  users: :write
 http_basic:
   users: :write
   user_accounts: :read

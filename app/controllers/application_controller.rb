@@ -125,9 +125,22 @@ class ApplicationController < ActionController::Base
 		if @search_string = params[:search]
 			@objects = @objects.with_query("^#{@search_string}") if @search_string != ''
 		end
-		logger.info("PAGINATION: #{params[:no_pagination].inspect} / #{params[:no_pagination].class}")
+		# When a JSON-Request comes in, that wants to search for something specific (User.where(...)) this search will be implemented here
+		if @rest_request 
+			@no_pagination = true
+			search_hash = {}
+			model_class.attribute_names.each do |attr|
+				attr = attr.to_sym
+				if params[attr]
+					search_hash[attr] = params[attr]
+				end
+			end
+			if search_hash.length > 0
+				@objects = @objects.where(search_hash)
+			end
+		end
 		@no_pagination = params[:no_pagination] == "true"
-		if ["json", "xml", "csv"].member? request.format
+		if ["json", "xml", "csv"].member? request.format 
 			@no_pagination = true
 		end
 		@page = params[:page]
@@ -147,7 +160,7 @@ class ApplicationController < ActionController::Base
 			respond_to do |format|
 				format.js { render :file => 'layouts/index' }
 				format.html { render :file => 'layouts/index' }
-				format.json { render :json => @objects }
+				format.json { render :json => @objects.collect do |o| o.to_json end }
 				format.xml { render :xml => @objects }
 				format.csv { send_data @objects.to_csv }
 				format.png { render_graph_data(@special_option, special_option_description[:graph_options]) if defined? special_option_description }
@@ -169,7 +182,7 @@ class ApplicationController < ActionController::Base
 		#object.dispatch!(:destroy)
 		params.delete(:id) # parameter removal is essential for the pagination plugin
 		params.delete(:action) # parameter removal is essential for the pagination plugin
-		if not defined? @via_http_basic
+		if not defined? @rest_request
 			session[:undo].action = :destroy
 			session[:undo].model_id = object.id
 			session[:undo].model_name = object.class.to_s
@@ -208,7 +221,7 @@ class ApplicationController < ActionController::Base
 			end	
 		elsif @object.update_attributes(model_parameters)
 			@object.update_owner(@user_id, @user_name)
-			if not defined? @via_http_basic
+			if not defined? @rest_request
 				session[:undo].action = :update
 				session[:undo].model_id = @object.id
 				session[:undo].model_name = @object.class.to_s
@@ -254,7 +267,7 @@ class ApplicationController < ActionController::Base
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:create)
 			@relation = relation_type
-			if not defined? @via_http_basic
+			if not defined? @rest_request
 				session[:undo].action = :create
 				session[:undo].model_id = @object.id
 				session[:undo].model_name = @object.class.to_s
@@ -488,13 +501,22 @@ EOF
     @user_id = session[:user_id]
     @user_name = session[:user_name]
 		@user_group = session[:group]
-		if request.format != Mime::HTML and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
+		if request.format == Mime::JSON and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
 			authenticate_or_request_with_http_basic("inki username and password please") do |username, password|
 				if username == "inki" and password == Rails.configuration.inki.rest_password
-					@user_id = "inki_via_http_basic"
-					@user_name = "inki_via_http_basic"
+					@user_id = "inki_rest_request"
+					@user_name = "inki_rest_request"
 					@user_group = "http_basic"
-					@via_http_basic = true
+					@rest_request = true
+				elsif Rails.configuration.inki.rest_users and rest_user = Rails.configuration.inki.rest_users[username] and password == rest_user["password"]
+					@user_id = username
+					@user_name = rest_user["description"]
+					@user_group = rest_user["group"]
+					@rest_request = true
+				else
+					logger.warn "did not allow user '#{username}' to login via json. "
+					render json: nil, status: :forbidden
+					return
 				end
 			end
 		end
@@ -512,7 +534,13 @@ EOF
       if not @rights # something happened with group-rights - destroy the session so another user can login
         reset_session
         logger.debug("### deleted session info for user login ")
-        redirect_to logins_path
+				if @rest_request 
+					respond_to do |format|
+						format.json { render json: nil, status: :forbidden}
+					end
+				else
+        	redirect_to logins_path
+				end
         return
       end
       @menu.merge_with_rights!(@rights)
@@ -523,7 +551,7 @@ EOF
       end
       if @right != :write and modifier_rights.member? action_name and controller_name != "logins"
         logger.warn("no write-right on #{controller_name}")
-				if @via_http_basic 
+				if @rest_request 
 					respond_to do |format|
 						format.json { render json: nil, status: :forbidden}
 					end
@@ -533,7 +561,7 @@ EOF
       end
       if @right != :write and @right != :read
         logger.warn("no right at all on #{controller_name}")
-				if @via_http_basic 
+				if @rest_request 
 					respond_to do |format|
 						format.json { render json: nil, status: :forbidden}
 					end
