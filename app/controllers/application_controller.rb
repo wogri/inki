@@ -253,10 +253,13 @@ class ApplicationController < ActionController::Base
 				flash.now[:error] = t(:could_not_save_element)
 				respond_to do |format|
 					format.js { render :file => 'layouts/show' }
-					format.json { render json: @object.errors, status: :unprocessable_entity }
 				end
 			else
-				render :file => "layouts/edit"
+				respond_to do |format|
+					format.js { render :file => "layouts/edit" }
+					format.html { render :file => "layouts/edit" }
+					format.json { render json: @object.errors, status: :unprocessable_entity }
+				end
 			end
 		end
 	end
