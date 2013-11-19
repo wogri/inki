@@ -31,4 +31,3 @@ gem 'net-ldap'
 gem 'coderay' # syntax highlighting => http://coderay.rubychan.de/doc/; print CodeRay.scan_file('ruby.h').html.div
 gem 'snmp'
 gem 'rails-i18n', '~> 4.0.0.pre' # For 4.0.x
-
