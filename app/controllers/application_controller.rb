@@ -525,6 +525,9 @@ EOF
 		end
     if not @user_id 
 			request_uri = request.env['REQUEST_URI']
+			if not ["index", "show"].member?(action_name)
+				request_uri = self.send(controller_name + "_path")
+			end
 			session[:request_uri] = request_uri if not request_uri =~ /logins/
 			if request.xhr?
 				render js: "window.location.pathname = #{logins_path.to_json}"
