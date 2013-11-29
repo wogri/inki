@@ -26,6 +26,8 @@ class DispatchJob < ActiveRecord::Base
 		self.reload
 		self.current_todos -= 1
 		if self.current_todos < 1
+			# there exists the special case, where current_todos could become minus one (that is, when all todos are done and 0 todos are due, then this will be decreased to below zero. that's why we set it to zero here, for a 'better optic' 
+			self.current_todos = 0
 			self.locked = false
 		end
 		begin
