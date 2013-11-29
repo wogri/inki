@@ -7,7 +7,7 @@ class DispatchJob < ActiveRecord::Base
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies
 	scope :zombie_locks, lambda { where(:locked_at => (Time.now - 1.year)..(Time.now - 2.days), :locked => true, :done => false) }
 	scope :locked, lambda { where(:locked => true, :done => false) }
-	attribute_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at
+	attribute_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at, :current_todos
 	index_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_operation, :retries
 	has_many :dispatch_todos, :dependent => :destroy
 	sort_by :created_at, "DESC"
@@ -22,9 +22,20 @@ class DispatchJob < ActiveRecord::Base
 	end
 
 	# unlock and save the object.
-	def unlock!
-		self.locked = false
-		self.save
+	def unlock!(sleeptime = 1)
+		self.reload
+		self.current_todos -= 1
+		if self.current_todos < 1
+			self.locked = false
+		end
+		begin
+			self.save
+		# retry this operation if somebody updated the data in the mean time!
+		rescue ActiveRecord::StaleObjectError
+			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to unlock the job in #{sleeptime*2} seconds.")
+			sleep sleeptime
+			self.unlock!(sleeptime * 2)
+		end
 	end
 
 	# sets done to true and saves the object

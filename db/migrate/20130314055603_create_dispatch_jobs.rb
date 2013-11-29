@@ -10,6 +10,8 @@ class CreateDispatchJobs < ActiveRecord::Migration
       t.boolean :done
       t.text :model_description
 			t.datetime :retry_at
+			t.integer :lock_version
+			t.integer :current_todos
 
       t.timestamps
     end

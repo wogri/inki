@@ -109,6 +109,8 @@ while true do
 	dispatch_jobs.each do |job|
 		job.lock!
 		todos = job.find_todos($config)
+		job.current_todos = todos.size
+		job.save
 		# if there are no todos, set the dispatch-job-status to 'done' 
 		if todos.size == 0
 			debug("no more todos for job-id #{job.id}. setting it to done.")

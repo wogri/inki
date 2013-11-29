@@ -53,7 +53,9 @@ class DispatchQueue # < ActiveRecord::Base
 					debug("todo time of todo #{todo.todo} is up, I have to kill the thread now.", 1)
 					Process.kill("TERM", todo.thread.pid)
 					todo.add_fail_log("Timeout, killed. This todo took too long to complete.")
-					todo.cleanup!
+					todo.get_jobs.each do |job|
+						job.unlock!
+					end
 					todo.failed = true
 					todo.failed_jobs = todo.get_jobs
 					done_todos.push(index)

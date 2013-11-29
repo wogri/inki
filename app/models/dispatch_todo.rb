@@ -48,9 +48,9 @@ class DispatchTodo < ActiveRecord::Base
 
 	# cleans up stuff regarding the todo and jobs
 	def cleanup!
-		self.get_jobs.each do |job|
-			job.unlock!
-		end
+		#self.get_jobs.each do |job|
+			#job.unlock!
+		#end
 	end
 
 	# runs the todo, starts a thread, iop.opens stuff, waits until the popen program is done, and sets logs and return status
