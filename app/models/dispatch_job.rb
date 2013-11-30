@@ -22,10 +22,10 @@ class DispatchJob < ActiveRecord::Base
 	end
 
 	# unlock and save the object.
-	def unlock!(sleeptime = 1)
+	def unlock!(options = {sleeptime: 1})
 		self.reload
 		self.current_todos -= 1
-		if self.current_todos < 1
+		if self.current_todos < 1 or options[:force]
 			# there exists the special case, where current_todos could become minus one (that is, when all todos are done and 0 todos are due, then this will be decreased to below zero. that's why we set it to zero here, for a 'better optic' 
 			self.current_todos = 0
 			self.locked = false
@@ -34,9 +34,9 @@ class DispatchJob < ActiveRecord::Base
 			self.save
 		# retry this operation if somebody updated the data in the mean time!
 		rescue ActiveRecord::StaleObjectError
-			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to unlock the job in #{sleeptime*2} seconds.")
-			sleep sleeptime
-			self.unlock!(sleeptime * 2)
+			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to unlock the job in #{options[:sleeptime]*2} seconds.")
+			sleep options[:sleeptime]
+			self.unlock!(sleeptime: options[:sleeptime] * 2)
 		end
 	end
 
