@@ -512,7 +512,7 @@ EOF
 					@user_group = "http_basic"
 					@rest_request = true
 				elsif Rails.configuration.inki.rest_users and rest_user = Rails.configuration.inki.rest_users[username] and password == rest_user["password"]
-					@user_id = username
+					@user_id = rest_user["mail_addres"]
 					@user_name = rest_user["description"]
 					@user_group = rest_user["group"]
 					@rest_request = true
