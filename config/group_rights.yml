@@ -5,6 +5,7 @@ users:
   users: :read
 portal:
   users: :write
+  user_accounts: :read
 http_basic:
   users: :write
   user_accounts: :read

@@ -519,9 +519,9 @@ EOF
 				else
 					logger.warn "did not allow user '#{username}' to login via json. "
 					render json: nil, status: :forbidden
-					return
 				end
 			end
+			return if not @user_id
 		end
     if not @user_id 
 			request_uri = request.env['REQUEST_URI']
