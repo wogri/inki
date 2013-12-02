@@ -25,7 +25,8 @@ class LoginsController < ApplicationController
 			end
     else
       flash[:error] = t(:wrong_username_or_password)
-      redirect_to logins_path
+			logger.info("set error")
+      redirect_to(:action => "index")
     end
   end
 

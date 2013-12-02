@@ -1,14 +1,15 @@
 <div class="container">
 		<%= form_tag(nil, :class => "form-signin") do %>
-			<h2 class="form-signin-heading">
-				<%= t(:please_login) %>
-			</h2>
 			<% if flash[:error] %>
-				<div class="alert alert-error">
-				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<%= flash[:error] %>
 				</div>
 			<% end -%>
+
+			<h2 class="form-signin-heading">
+				<%= t(:please_login) %>
+			</h2>
 			<%= text_field_tag(:username, nil, :class => "input-block-level form-control", :placeholder => t(:username)) %>
 			<%= password_field_tag(:password, nil, :class => "input-block-level form-control", :placeholder => t(:password)) %>
 			<%= button_tag(icon("glyphicon glyphicon-log-in") + t(:login), :class => "btn btn-large btn-warning spinner", :type => "submit", :disable_with => t(:login)) %>
