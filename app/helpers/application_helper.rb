@@ -121,7 +121,10 @@ module ApplicationHelper
 			edit_path = self.send("edit_#{object_name}_path", object, link_hash)
 			delete_image = icon("icon-trash")
 			delete_text = (delete_image + t(:delete)).html_safe
-			delete_path = self.send("#{object_name}_path", object, link_hash)
+			delete_hash = link_hash.clone
+			delete_hash.merge!({:page => @page}) if @page and @page.to_i > 0
+			delete_hash.merge!({:search => @search_string}) if @search_string and @search_string != ""
+			delete_path = self.send("#{object_name}_path", object, delete_hash)
 			if options[:non_dropdown_view]
 				html << link_to(edit_text, edit_path, :class => "btn btn-default btn-sm spinner")
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"})
