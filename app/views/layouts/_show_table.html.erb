@@ -9,7 +9,7 @@
 					<%= t(:value) %>
 				</th>
 				<th width="12pt;">
-					<%= close_button(@object, :non_dropdown_view => (defined? non_dropdown_view), :new => defined?(create)) %>
+					<%= close_button(@object, :non_dropdown_view => (defined? non_dropdown_view), :new => defined?(create)) if not defined?(no_close_button) %>
 				</th>
 			</tr>
 		</thead>

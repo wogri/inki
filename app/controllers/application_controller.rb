@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   def show
 		@close = params[:close]
 		@vcs = params[:vcs]
+		@popup = params[:popup]
 		params.delete(:close)
 		if @close and params[:index]  # if the close has been issued from the index-view we need to render things differently than in 'new'-view
 			@index = true

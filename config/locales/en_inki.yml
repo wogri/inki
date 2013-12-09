@@ -11,6 +11,7 @@ en:
   cancel: "Cancel"
   edit: "Edit"
   delete: "Delete"
+  delayed_delete: "Delayed Delete"
   deleted: "deleted"
   back: "Back to"
   options: "Options"

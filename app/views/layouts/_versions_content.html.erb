@@ -36,6 +36,6 @@
 			<%= flash[:notice] %>
 		</div>
 	<% end -%>
-	<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) %>
+	<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true, :no_close_button => true}) %>
 	<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :object => @object}) if not @current_element_selected %>
 </div> <!-- col-md-8 -->

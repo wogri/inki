@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 	validates :password, :username, :name, :mailaddress, :usergroup_id, :presence => true
   validates :username, :uniqueness => true
 	hide_json_attributes :password, :mailaddress
+	is_expirable
 	is_versioned
   paginates_per 10
 

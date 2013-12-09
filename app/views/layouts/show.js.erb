@@ -4,6 +4,8 @@
 	<% else -%>
 		<%= modal(t(:versions), render(:partial => "layouts/versions")) %>
 	<% end -%>
+<% elsif @popup == "expire" %>
+	<%= modal(t(:delayed_delete), render(:partial => "layouts/expire")) %>
 <% else -%>
 	<% if @special_option -%>
 		<%= ajax_html("#" + @div_id, render(:partial => "layouts/special_view"), false) %>

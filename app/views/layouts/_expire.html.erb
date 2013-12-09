@@ -1,0 +1,14 @@
+<div class="row" id="versions_modal">
+	<div class="col-md-12">
+		<%= render(:partial => "layouts/show_table", :locals => {:from_vcs => true, :no_close_button => true}) %>
+	</div>
+	<div class="col-md-12">
+		<h3><%= t(:delayed_delete_at) %></h3>
+		<%= form_for @object, :remote => request.xhr? do |f| %>
+			<%= hidden_field_tag(:expire, true) %>
+			<%= f.date_select("created_at", :selected => Time.now, :start_year => Time.now.year) %>
+			<br />
+			<%= submit_tag(t(:delete), :class => "btn btn-danger spinner btn-lg", :style => "margin-top: 5pt;", data: {disable_with: t(:delete)}) %>
+		<% end -%>
+	</div>
+</div>

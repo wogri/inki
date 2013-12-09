@@ -132,6 +132,11 @@ module ApplicationHelper
 				html << link_to(edit_text, edit_path, :remote => true, :class => "spinner")
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"}, :remote => true)
 			end
+			if object.class.is_expirable?
+				expirable_text = icon("icon-trash") + t(:delayed_delete)
+				expirable_path = self.send("#{object_name}_path", object, :popup => "expire", :ajax_id => @ajax_id) # expire means: return a modal with a popup of expirable time
+				html << link_to(expirable_text, expirable_path, :remote => true)
+			end
 			if object.class.is_versioned?
 				version_text = icon("icon-mail-reply-all") + t(:versions)
 				version_path = self.send("#{object_name}_path", object, :vcs => true, :ajax_id => @ajax_id) # vcs means: return a modal with a popup of model versions

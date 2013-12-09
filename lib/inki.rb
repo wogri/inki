@@ -582,6 +582,14 @@ module Inki
 			after_commit :create_version
 		end
 
+		def is_expirable
+			@is_expirable = true
+		end
+
+		def is_expirable?
+			@is_expirable 
+		end
+
 		def hidden_json_attributes
 			if defined? @hide_json_attributes and @hide_json_attributes.size > 0
 				@hide_json_attributes
