@@ -131,6 +131,9 @@ module Inki
 		}
 		if options.class == Hash and options[:retry_at]
 			dispatch_hash[:retry_at] = options[:retry_at]	
+		end
+		# add 'yourself' to the dispatch-process, just to be sure
+		if not self._dispatch_model_description 
 			dispatch_hash[:model_description] = self.to_yaml
 		end
 		dispatch = DispatchJob.new(dispatch_hash)
