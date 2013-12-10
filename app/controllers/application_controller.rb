@@ -220,6 +220,17 @@ class ApplicationController < ActionController::Base
 				format.js { render :file => 'layouts/update_habtm' }
 				format.html { render :nothing => true } # actually this will never happen.
 			end	
+		elsif @expire = params[:expire]
+			expire = params[controller_name.singularize.to_sym]
+			date = Date.new expire["created_at(1i)"].to_i, expire["created_at(2i)"].to_i, expire["created_at(3i)"].to_i
+			time = date.to_time + 1.day - 1.second
+			logger.warn("Will expire #{model_class}/#{@object.id} on #{time}")
+			if Time.now > time
+				flash.now[:error] = t(:you_can_not_expire_an_object_in_the_past)
+			else
+				# dispatch this object with the delayed_create method, meaning that the dispatch-job will run at the specified time. 
+				@object.dispatch(:operation => "delayed_delete", :delayed_create => time)
+			end
 		elsif @object.update_attributes(model_parameters)
 			@object.update_owner(@user_id, @user_name)
 			if not defined? @rest_request

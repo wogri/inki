@@ -109,8 +109,12 @@ module Inki
 	end
 
 	# create a dispatch-job according to the called C(R)UD Function
-	def dispatch(operation = nil) # we can overwrite the operation if we want to
-		self._operation = operation if operation
+	def dispatch(options = nil) # we can overwrite the operation if we want to
+		if options.class == String
+			self._operation = options
+		elsif options.class == Hash
+			self._operation = options[:operation] if options[:operation]
+		end
 		if not self.class.dispatchable? or not self._operation
 			logger.info("#{self.class}/#{self._operation} not dispatchable, will not dispatch anything.")
 			return
@@ -125,6 +129,9 @@ module Inki
 			:done => false,
 			:locked => false
 		}
+		if options.class == Hash and options[:delayed_create]
+			dispatch_hash[:created_at] = options[:delayed_create]	
+		end
 		dispatch = DispatchJob.new(dispatch_hash)
 		search_filter = dispatch_hash.clone
 		search_filter.delete(:retry_at)
