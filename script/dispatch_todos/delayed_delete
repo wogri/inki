@@ -1,0 +1,22 @@
+#!/usr/bin/ruby 
+
+require "#{File.dirname(__FILE__)}/../../config/environment.rb"
+
+# this does all the command line parsing, and returns a todo-instance 
+# that contains an array called jobs. This array holds all the currently 
+# dispatched model-instances (even the deleted ones). These instances 
+# are active record elements, so you can treat them like you would treat
+# them in ruby on rails. 
+todo = DispatchTodoInstance.new
+
+todo.jobs.each do |job|
+	if job and job._operation == "delayed_delete"
+		todo.emit_log(job, "deleting #{job.class}/#{job.id}")
+		if object = job.class.find(job.id)
+			object.destroy
+		end
+	end
+
+	# this tells the dispatcher that the job has been executed successfully
+	todo.success!(job)
+end
