@@ -7,8 +7,7 @@ class DispatchJob < ActiveRecord::Base
 		where(
 			:retry_at => (Time.now - 1.year)..(Time.now), 
 			:done => false, 
-			:locked => false,
-			:created_at => (Time.now - 1.year)..(Time.now)
+			:locked => false
 		).order(:id)
 	}
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies

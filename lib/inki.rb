@@ -129,8 +129,9 @@ module Inki
 			:done => false,
 			:locked => false
 		}
-		if options.class == Hash and options[:delayed_create]
-			dispatch_hash[:created_at] = options[:delayed_create]	
+		if options.class == Hash and options[:retry_at]
+			dispatch_hash[:retry_at] = options[:retry_at]	
+			dispatch_hash[:model_description] = self.to_yaml
 		end
 		dispatch = DispatchJob.new(dispatch_hash)
 		search_filter = dispatch_hash.clone
@@ -644,6 +645,7 @@ module Inki
 
 			after_create do |model|
 				model._operation = :create
+				model._dispatch_model_description = model.to_yaml
 			end
 
 			before_destroy do |model|

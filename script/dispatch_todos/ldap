@@ -33,7 +33,8 @@ todo.jobs.each do |job|
 	#job = find_user_account(job)
 	next if not job # this is not ideal yet, because this job would not succeed. 
 	ldap_job = job.to_ldap(todo.options[:options])
-	if not ldap_job and job._operatoin == "destroy"
+	# this object doesn't exist anymore, some other job will take care of removing that ldap object.
+	if (not ldap_job or not ldap_job[:dn]) and job._operation == "destroy"
 		todo.success!(job)
 	end
 	dn = ldap_job[:dn]

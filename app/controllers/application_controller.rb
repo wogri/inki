@@ -224,13 +224,13 @@ class ApplicationController < ActionController::Base
 			expire = params[controller_name.singularize.to_sym]
 			date = Date.new expire["created_at(1i)"].to_i, expire["created_at(2i)"].to_i, expire["created_at(3i)"].to_i
 			time = date.to_time + 1.day - 1.second
-			logger.warn("Will expire #{model_class}/#{@object.id} on #{time}")
+			logger.warn("Will expire #{model_class}/#{@object.id} on #{l(time, format: :short)}")
 			if Time.now > time
 				flash.now[:error] = t(:you_can_not_expire_an_object_in_the_past)
 			else
-				flash.now[:info] = t(:your_object_will_expire_on, :time => time.to_s)
+				flash.now[:info] = t(:your_object_will_expire_on, :time => l(time, format: :short))
 				# dispatch this object with the delayed_create method, meaning that the dispatch-job will run at the specified time. 
-				@object.dispatch(:operation => "delayed_delete", :delayed_create => time)
+				@object.dispatch(:operation => "delayed_delete", :retry_at => time)
 			end
 			respond_to do |format|
 				format.js { render :file => 'layouts/update' }

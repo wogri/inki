@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 	hide_json_attributes :password, :mailaddress
 	is_expirable
 	is_versioned
+	can_be_dispatched
   paginates_per 10
 
   # the convention is to present the password as 'xxxxxxxxxx', and only if it was changed it will be overwritten.

@@ -36,18 +36,18 @@ class DispatchTodoInstance < ActiveRecord::Base
 		models = options.split(/,/)
 		models.each do |model|
 			table, id, operation, dispatch_id = model.split(/:/)
-			if operation != "destroy" 
-				instance = table.classify.constantize.find(id)
-			elsif operation == "destroy" 
-				dispatch_job = DispatchJob.find(dispatch_id)
-				begin
-					instance = YAML::load(dispatch_job.model_description)
-				rescue StandardError => e
-					logger.error(e.to_s)
-				end
-			else
-				logger.warn("could not add dispatch-job with ID #{dispatch_id} to job queue. Please inspect.")
+			# if operation != "destroy" 
+			# 	instance = table.classify.constantize.find(id)
+			# elsif operation == "destroy" 
+			dispatch_job = DispatchJob.find(dispatch_id)
+			begin
+				instance = YAML::load(dispatch_job.model_description)
+			rescue StandardError => e
+				logger.error(e.to_s)
 			end
+			# else
+			# 	logger.warn("could not add dispatch-job with ID #{dispatch_id} to job queue. Please inspect.")
+			# end
 			instance._operation = operation 
 			instance._dispatch_id = dispatch_id
 			instances << instance
