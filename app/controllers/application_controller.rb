@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
 			@objects = _class.reorder(order)
 		end
 		if @search_string = params[:search]
-			@objects = @objects.with_query("^#{@search_string}") if @search_string != ''
+			@objects = @objects.with_query("^\"#{@search_string}\"") if @search_string != ''
 		end
 		# When a JSON-Request comes in, that wants to search for something specific (User.where(...)) this search will be implemented here
 		if @rest_request 
@@ -228,9 +228,15 @@ class ApplicationController < ActionController::Base
 			if Time.now > time
 				flash.now[:error] = t(:you_can_not_expire_an_object_in_the_past)
 			else
+				flash.now[:info] = t(:your_object_will_expire_on, :time => time.to_s)
 				# dispatch this object with the delayed_create method, meaning that the dispatch-job will run at the specified time. 
 				@object.dispatch(:operation => "delayed_delete", :delayed_create => time)
 			end
+			respond_to do |format|
+				format.js { render :file => 'layouts/update' }
+				format.html { redirect_to @object }
+				format.json { head :no_content }
+			end	
 		elsif @object.update_attributes(model_parameters)
 			@object.update_owner(@user_id, @user_name)
 			if not defined? @rest_request

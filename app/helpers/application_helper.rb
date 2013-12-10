@@ -644,7 +644,15 @@ module ApplicationHelper
 	
 	# displays a bootstrap alert-box
 	def alert(type, text)
-		content_tag(:div, text, :class => "alert alert-#{type}")
+		dismiss_button = '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.html_safe
+		content_tag(:div, dismiss_button + text, :class => "alert alert-#{type} alert-dismissable")
+	end
+
+	def show_alerts
+		myalert = ''
+		myalert += alert("success", flash[:info]) if flash[:error]
+		myalert += alert("danger", flash[:error]) if flash[:error]
+		ajax_html('#alert-box', myalert)
 	end
 
 end
