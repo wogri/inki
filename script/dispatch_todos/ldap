@@ -33,6 +33,9 @@ todo.jobs.each do |job|
 	#job = find_user_account(job)
 	next if not job # this is not ideal yet, because this job would not succeed. 
 	ldap_job = job.to_ldap(todo.options[:options])
+	if not ldap_job and job._operatoin == "destroy"
+		todo.success!(job)
+	end
 	dn = ldap_job[:dn]
 	attributes = ldap_job[:attributes]
 	# the to_ldap method in the model can overwrite the ldap operation (important in the case of m:n relationships)
