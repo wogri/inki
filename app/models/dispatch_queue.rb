@@ -24,6 +24,7 @@ class DispatchQueue # < ActiveRecord::Base
 			mail << failed_job.log
 			mail = mail.join("\n") + "\n\n"
 			if failed_job.dispatch_job and owner_id = failed_job.dispatch_job._owner_id
+			# if failed_job and owner_id = failed_job._owner_id
 				if not users[owner_id]
 					users[owner_id] = mail
 				else
@@ -52,12 +53,13 @@ class DispatchQueue # < ActiveRecord::Base
 				if todo.tick! < 0 
 					debug("todo time of todo #{todo.todo} is up, I have to kill the thread now.", 1)
 					Process.kill("TERM", todo.thread.pid)
-					todo.add_fail_log("Timeout, killed. This todo took too long to complete.")
+					log = "Timeout, killed. This todo took too long to complete."
 					todo.get_jobs.each do |job|
+						todo = job.todos.create(:todo => todo.todo, :done => false, :host => todo.host, :log => log)
+						todo.failed = true
+						todo.add_failed_job(todo)
 						job.unlock!
 					end
-					todo.failed = true
-					todo.failed_jobs = todo.get_jobs
 					done_todos.push(index)
 				elsif not todo.thread.alive?
 					todo.thread.join
