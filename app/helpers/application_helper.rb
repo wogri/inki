@@ -293,7 +293,9 @@ module ApplicationHelper
       value
 		# this is a no more precisely defined dropdown-field that is consisting of a simple 1:n relationship
 		elsif object.class.belongs_to?(attribute)
-			relation_object = value
+			foreign_key = object.send(object.reflections[attribute.to_sym].foreign_key)
+			relation_object = attribute.to_s.classify.constantize.unscoped.find(foreign_key)
+			# here we go
 			link_to(relation_object.reference_attribute, relation_object, :class => "spinner") if relation_object
 		else
 			description = object.class.columns_hash[attribute.to_s].type
