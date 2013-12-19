@@ -459,6 +459,7 @@ module Inki
 		end
 
 		def hidden_on_create?(attribute)
+			return nil if not defined? @_inki_hide_on_create
 			@_inki_hide_on_create.member?(attribute.to_sym)
 		end
 
