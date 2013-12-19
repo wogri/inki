@@ -450,6 +450,18 @@ module Inki
 			end
 		end
 
+		# this is the extension of a model in order to hide attributes during the creation of a database entry
+		def hide_on_create(*values)
+			@_inki_hide_on_create = []
+			values.collect do |v|
+				@_inki_hide_on_create.push(v.to_sym)
+			end
+		end
+
+		def hidden_on_create?(attribute)
+			@_inki_hide_on_create.member?(attribute.to_sym)
+		end
+
 		#def order_test
 			#if defined? @_sorted_attributes
 				#@_sorted_attributes

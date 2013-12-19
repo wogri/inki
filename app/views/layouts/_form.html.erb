@@ -27,7 +27,10 @@
 			</thead>
 			<tbody>
 				<% (object.class.sorted_attributes - [:created_at, :updated_at]).each do |attribute| %>
-					<%= render :partial => "layouts/form_element", :locals => {:attribute => attribute, :f => f, :object => object, :new_object => new_object} %>
+					<%# only display this field when the object is edited, or not to be hidden during creation of the object %>
+					<% if (new_object and not object.class.hidden_on_create?(attribute)) or not new_object %>
+						<%= render :partial => "layouts/form_element", :locals => {:attribute => attribute, :f => f, :object => object, :new_object => new_object} %>
+					<% end -%>
 				<% end -%>
 				<%= render(:partial => "layouts/form_element", :locals => {:attribute => :_color, :f => f, :object => object, :new_object => new_object}) if object.class.colored? and not new_object %>
 			</tbody>
