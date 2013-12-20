@@ -30,9 +30,14 @@ form input {
 	width: auto;
 }
 
-.table {
+.table-auto-width {
 	width: auto;
+}
+
+.table {
+	/*width: auto;*/
 	margin-bottom: 2pt;
+  border: 1px solid #dddddd;
 }
 
 .table th {
@@ -125,7 +130,7 @@ td.show_table_column:hover {
 	background: #FFFFFF;
 	width: auto;
 	height: auto;
-	display: inline-block;
+	display: block;
 	border: #7FBE7F solid 3px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -187,7 +192,7 @@ form {
   border-top: 1px solid #dddddd;
   border-bottom-color: #dddddd;
 }
-
+/*
 .table {
   border: 1px solid #dddddd;
   border-top-right-radius: 3px;
@@ -195,6 +200,7 @@ form {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
+*/
 
 /* remove borders of search box */
 th.search_rest_th {

@@ -11,7 +11,7 @@
 		<% if defined? from_vcs %>
 			<div class="hidden">
 		<% end -%>
-		<table class="table table-condensed table-hover table-bordered table-striped">
+		<table class="table table-condensed table-hover table-bordered table-striped <%= "table-auto-width" if not new_object %>">
 			<thead>
 				<tr>
 					<th>

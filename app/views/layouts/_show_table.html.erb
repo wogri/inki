@@ -1,5 +1,5 @@
 <div <%= 'class="bubble"'.html_safe if defined?(create) -%> id="<%= "new_" if defined?(create) -%>slider_<%= @div_id %>" <%= 'style="display:none;"'.html_safe if request.xhr? and not defined? from_vcs -%>>
-	<table class="table table-condensed table-hover table-bordered table-striped">
+	<table class="table table-condensed table-hover table-bordered table-striped table-auto-width">
 		<thead>
 			<tr>
 				<th>
