@@ -23,9 +23,15 @@
 </div>
 
 <div class="row"><!-- placeholder for new button -->
-	<div class="col-md-8" id="new_<%= @ajax_id -%>" style="float: left; clear: left; display: none;">
-		<!-- AJAX-Placeholder -->
-	</div>
-	<div class="col-md-4">
-	</div>
+	<% if request.xhr? %>
+		<div class="col-md-12" id="new_<%= @ajax_id -%>" style="display: none;">
+			<!-- XHR AJAX-Placeholder -->
+		</div>
+	<% else -%>
+		<div class="col-md-8" id="new_<%= @ajax_id -%>" style="display: none;">
+			<!-- HTML AJAX-Placeholder -->
+		</div>
+		<div class="col-md-4">
+		</div>
+	<% end -%>
 </div>
