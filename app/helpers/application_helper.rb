@@ -306,6 +306,8 @@ module ApplicationHelper
 				sanitize(value.to_s)
 			when :float
 				sanitize(value.to_s)
+			when :cidr
+				sanitize(value.to_s)
 			when :integer
 				sanitize(value.to_s)
 			when :boolean
@@ -395,6 +397,8 @@ module ApplicationHelper
 				form_object.number_field attribute, html_default_options.merge({:step => "any"})
 			when :inet
 				form_object.text_field attribute, html_default_options
+			when :cidr
+				form_object.number_field attribute, html_default_options
 			when :integer
 				form_object.number_field attribute, html_default_options
 			when :boolean
