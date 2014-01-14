@@ -307,7 +307,15 @@ module ApplicationHelper
 			when :float
 				sanitize(value.to_s)
 			when :cidr
-				sanitize(value.to_s)
+				unless object.nil?
+					# we use this rails internal function called _before_type_cast to actually get the subnet mask in the output
+          method_before_type_cast = attribute + "_before_type_cast"
+          if object.respond_to?(method_before_type_cast)
+            sanitize(object.send(method_before_type_cast).to_s)
+					else
+						sanitize(value.to_s)
+          end
+				end
 			when :integer
 				sanitize(number_with_delimiter(value).to_s)
 			when :boolean
@@ -398,7 +406,7 @@ module ApplicationHelper
 			when :inet
 				form_object.text_field attribute, html_default_options
 			when :cidr
-				form_object.number_field attribute, html_default_options
+				form_object.text_field attribute, html_default_options
 			when :integer
 				form_object.number_field attribute, html_default_options
 			when :boolean
