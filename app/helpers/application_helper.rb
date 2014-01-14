@@ -309,7 +309,7 @@ module ApplicationHelper
 			when :cidr
 				unless object.nil?
 					# we use this rails internal function called _before_type_cast to actually get the subnet mask in the output
-          method_before_type_cast = attribute + "_before_type_cast"
+          method_before_type_cast = attribute.to_s + "_before_type_cast"
           if object.respond_to?(method_before_type_cast)
             sanitize(object.send(method_before_type_cast).to_s)
 					else
