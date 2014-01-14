@@ -309,7 +309,7 @@ module ApplicationHelper
 			when :cidr
 				sanitize(value.to_s)
 			when :integer
-				sanitize(value.to_s)
+				sanitize(number_with_delimiter(value).to_s)
 			when :boolean
 				if value
 					icon("icon-ok")

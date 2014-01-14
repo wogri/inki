@@ -372,7 +372,13 @@ module Inki
 			values.collect do |v|
 				@_sorted_attributes.push(v)
 			end
-			acts_as_indexed :fields => self.sorted_attributes + [ :__belongs_to__ ]
+			if not @_does_not_act_as_indexed
+				acts_as_indexed :fields => self.sorted_attributes + [ :__belongs_to__ ]
+			end
+		end
+	
+		def does_not_act_as_indexed
+			@_does_not_act_as_indexed = true
 		end
 
 		def special_buttons(hash)
