@@ -73,12 +73,14 @@ todo.jobs.each do |job|
 		end
 	elsif job._operation == "destroy"
 		entries = ldap.search(:base => dn) 
-		entries.reverse.each do |entry|
-			todo.emit_log(job, "deleting object: #{entry.dn}")
-			if not ldap.delete :dn => entry.dn
-				todo.emit_log(job, ldap.get_operation_result.message)
-				update_failed = true
-			end	
+		if entries and entries.size > 0 
+			entries.reverse.each do |entry|
+				todo.emit_log(job, "deleting object: #{entry.dn}")
+				if not ldap.delete :dn => entry.dn
+					todo.emit_log(job, ldap.get_operation_result.message)
+					update_failed = true
+				end	
+			end
 		end
 	elsif job._operation == "no_op"
 		# this operation means: nothing to do for ldap. 
