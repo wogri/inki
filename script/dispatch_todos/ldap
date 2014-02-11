@@ -54,7 +54,7 @@ todo.jobs.each do |job|
 	elsif job._operation == "update"
 		todo.emit_log(job, "updating object: #{dn}")
 		attributes.each do |key, value|
-			todo.emit_log(job, "#{key} | #{value}")
+			# todo.emit_log(job, "#{key} | #{value}")
 			if key == :objectClass
 				next
 			end
@@ -64,7 +64,7 @@ todo.jobs.each do |job|
 					todo.emit_log(job, ldap.get_operation_result.message)
 				end
 			else
-				todo.emit_log(job, "updating #{key}/#{value.inspect}")
+				todo.emit_log(job, "updating #{key}")
 				if not ldap.replace_attribute(dn, key, value)
 					update_failed = true
 					todo.emit_log(job, ldap.get_operation_result.message)
