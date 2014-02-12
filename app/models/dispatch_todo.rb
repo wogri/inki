@@ -3,6 +3,7 @@ class DispatchTodo < ActiveRecord::Base
 	attr_accessor :options, :time_to_live, :thread, :stdout, :stdin, :log_output, :return_status, :failed, :failed_jobs
 
 	belongs_to :dispatch_job
+	attribute_order :created_at, :host, :todo, :log, :done
 	sort_by :id, "DESC"
 
 	# returns true if the two objects have the same host, options and todo-name
