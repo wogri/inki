@@ -67,7 +67,7 @@ todo.jobs.each do |job|
 				todo.emit_log(job, "updating #{key}")
 				if not ldap.replace_attribute(dn, key, value)
 					update_failed = true
-					todo.emit_log(job, ldap.get_operation_result.message)
+					todo.emit_log(job, "Error: Failed to update LDAP entry: #{ldap.get_operation_result.message}")
 				end
 			end
 		end
