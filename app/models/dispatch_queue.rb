@@ -69,9 +69,21 @@ class DispatchQueue # < ActiveRecord::Base
 				if todo.failed
 					self.mail_failed_todo(todo)
 					todo.failed_jobs.each do |failed_job|
-						failed_job.dispatch_job.increase_retries!
-						failed_job.dispatch_job.update_retry_time!
-						failed_job.dispatch_job.save
+						# TODO: insert code that handles optimistic locking
+						dispatch_job = failed_job.dispatch_job
+						done = false
+						while not done 
+							begin
+								dispatch_job.reload
+								dispatch_job.increase_retries!
+								dispatch_job.update_retry_time!
+								dispatch_job.save
+								done = true
+							rescue StandardError => e
+								debug("Saving dispatch job information failed due to optimistic locking issues: #{e.join("\n")}. will retry in around 10 seconds")
+								sleep rand(10)
+							end
+						end
 					end
 				end
 			end
