@@ -93,6 +93,7 @@ todo.jobs.each do |job|
 	ldap_job = job.to_ldap(todo.options[:options])
 	# this object doesn't exist anymore, some other job will take care of that ldap object.
 	if (not ldap_job or not ldap_job[:dn]) 
+		todo.emit_log(job, "did not find a DN for that job, will simply mark it as successful. there's nothing I can do here.")
 		todo.success!(job)
 	end
 	dn = ldap_job[:dn]
