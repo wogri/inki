@@ -21,6 +21,64 @@ def remove_empty_attributes(attributes)
 	end
 end
 
+def create(ldap, todo, job, dn, attributes, update_failed)
+	remove_empty_attributes(attributes)
+	todo.emit_log(job, "inserting object: #{dn}")
+	if not ldap.add(:dn => dn, :attributes => attributes)
+		todo.emit_log(job, ldap.get_operation_result.message)
+		todo.emit_log(job, "This corresponds to LDAP Error code #{ldap.get_operation_result.code}")
+		if ldap.get_operation_result.code == 68 # that means: we have a "already exists" error, in that case we try to be "nice" and call update on that record. 
+			todo.emit_log(job, "As this record seems to already exist in the database, we will try to simply update it.")
+			return update(ldap, todo, job, dn, attributes, update_failed)
+		end
+		update_failed = true
+		return false
+	end
+	return true
+end
+
+def update(ldap, todo, job, dn, attributes, update_failed)
+	todo.emit_log(job, "updating object: #{dn}")
+	attributes.each do |key, value|
+		# todo.emit_log(job, "#{key} | #{value}")
+		if key == :objectClass
+			next
+		end
+		if is_empty_value?(value)
+			todo.emit_log(job, "deleting #{key}")
+			if not ldap.delete_attribute(dn, key)
+				todo.emit_log(job, ldap.get_operation_result.message)
+			end
+		else
+			todo.emit_log(job, "updating #{key}")
+			if not ldap.replace_attribute(dn, key, value)
+				update_failed = true
+				todo.emit_log(job, "Error: Failed to update LDAP entry: #{ldap.get_operation_result.message}")
+				return false
+			end
+		end
+	end
+	return true
+end
+
+def destroy(ldap, todo, job, dn, attributes, update_failed)
+	entries = ldap.search(:base => dn) 
+	if entries and entries.size > 0 
+		entries.reverse.each do |entry|
+			todo.emit_log(job, "deleting object: #{entry.dn}")
+			if not ldap.delete :dn => entry.dn
+				todo.emit_log(job, ldap.get_operation_result.message)
+				if ldap.get_operation_result.code == 32 # object doesn't exist in ldap, let's be graceful and ignore that for now
+					return true
+				end
+				update_failed = true
+				return false
+			end	
+		end
+	end
+	return true
+end
+
 todo = DispatchTodoInstance.new
 
 ldap = connect_to_ldap(todo.options[:options][:ldap])
@@ -45,43 +103,11 @@ todo.jobs.each do |job|
 	end
 	update_failed = false
 	if job._operation == "create"
-		remove_empty_attributes(attributes)
-		todo.emit_log(job, "inserting object: #{dn}")
-		if not ldap.add(:dn => dn, :attributes => attributes)
-			todo.emit_log(job, ldap.get_operation_result.message)
-			next
-		end
+		next if not create(ldap, todo, job, dn, attributes, update_failed)
 	elsif job._operation == "update"
-		todo.emit_log(job, "updating object: #{dn}")
-		attributes.each do |key, value|
-			# todo.emit_log(job, "#{key} | #{value}")
-			if key == :objectClass
-				next
-			end
-			if is_empty_value?(value)
-				todo.emit_log(job, "deleting #{key}")
-				if not ldap.delete_attribute(dn, key)
-					todo.emit_log(job, ldap.get_operation_result.message)
-				end
-			else
-				todo.emit_log(job, "updating #{key}")
-				if not ldap.replace_attribute(dn, key, value)
-					update_failed = true
-					todo.emit_log(job, "Error: Failed to update LDAP entry: #{ldap.get_operation_result.message}")
-				end
-			end
-		end
+		next if not update(ldap, todo, job, dn, attributes, update_failed)
 	elsif job._operation == "destroy"
-		entries = ldap.search(:base => dn) 
-		if entries and entries.size > 0 
-			entries.reverse.each do |entry|
-				todo.emit_log(job, "deleting object: #{entry.dn}")
-				if not ldap.delete :dn => entry.dn
-					todo.emit_log(job, ldap.get_operation_result.message)
-					update_failed = true
-				end	
-			end
-		end
+		next if not destroy(ldap, todo, job, dn, attributes, update_failed)
 	elsif job._operation == "no_op"
 		# this operation means: nothing to do for ldap. 
 	else
