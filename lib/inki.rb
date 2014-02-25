@@ -96,14 +96,14 @@ module Inki
 		{:cipher => aes.update(data) + aes.final, :iv => iv}
 	end
 
-	def encrypt(attribute, key)
-		aes = cipher(key, nil, self.send(attribute), method: :encrypt)
+	def encrypt(attribute, key, shared_cipher = '')
+		aes = cipher(key, nil, self.send(attribute), method: :encrypt, shared_cipher: shared_cipher)
 		Base64.encode64(aes[:cipher]) + ';' + Base64.encode64(aes[:iv])
 	end
 
-	def decrypt(attribute, key)
+	def decrypt(attribute, key, shared_cipher = '')
 		cipher, iv = self.send(attribute).split(/;/)
-		aes = cipher(key, Base64.decode64(iv), Base64.decode64(cipher), method: :decrypt)
+		aes = cipher(key, Base64.decode64(iv), Base64.decode64(cipher), method: :decrypt, shared_cipher: shared_cipher)
 		aes[:cipher]
 	end
 
