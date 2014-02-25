@@ -81,6 +81,31 @@ module Inki
 		content
 	end
 
+	def cipher(key, iv = nil, data, options) 
+		require 'openssl'
+		require 'digest'
+		aes = OpenSSL::Cipher.new('AES-256-CBC')
+		if options[:method] == :encrypt
+			aes.encrypt
+			iv = aes.random_iv
+		elsif options[:method] == :decrypt
+			aes.decrypt
+			aes.iv = iv
+		end
+		aes.key = Digest::SHA256.digest(key + options[:shared_cipher].to_s) 
+		{:cipher => aes.update(data) + aes.final, :iv => iv}
+	end
+
+	def encrypt(attribute, key)
+		aes = cipher(key, nil, self.send(attribute), method: :encrypt)
+		Base64.encode64(aes[:cipher]) + ';' + Base64.encode64(aes[:iv])
+	end
+
+	def decrypt(attribute, key)
+		cipher, iv = self.send(attribute).split(/;/)
+		aes = cipher(key, Base64.decode64(iv), Base64.decode64(cipher), method: :decrypt)
+		aes[:cipher]
+	end
 
 	def as_json(options = {})
 		attrs = self.class.hidden_json_attributes

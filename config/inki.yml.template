@@ -3,6 +3,7 @@ development:
   title: Inki Development Version
   scrollyness: true # if set to true, the webinterface will be more scrolling, not good for mobile phones
   brand: Inki
+  cipher: jadsaXCFfjsjvjcbbdjscjvgjd # Shared Cipher Secret
   auth_source: yaml # ldap | database | yaml
   languages:
     en: English
@@ -13,6 +14,7 @@ production:
   title: Inki Database
   scrollyness: false
   brand: Inki
+  cipher: jadsaXCFfjsjvjcbbdjscjvgjd # Shared Cipher Secret
   auth_source: yaml # ldap | database | yaml
   languages:
     en: English
