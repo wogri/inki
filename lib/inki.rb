@@ -426,13 +426,17 @@ module Inki
 			validates :_inki_password, presence: true, :length => { :minimum => 5, :maximum => 40 }, :confirmation => true
 			validates :_inki_password_confirmation, :presence => true
 			values.collect do |v|
-				@_encrypted_attributes.push(v)
+				@_encrypted_attributes.push(v.to_sym)
 			end
 		end
 
-		def is_encrypted?
-			if defined? @_encrypted_attributes
-				@_encrypted_attributes
+		def is_encrypted?(attribute = nil)
+			if defined? @_encrypted_attributes 
+				if not attribute
+					@_encrypted_attributes 
+				elsif attribute
+					@_encrypted_attributes.member?(attribute.to_sym)
+				end
 			end
 		end
 

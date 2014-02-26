@@ -16,28 +16,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% if @object.class.is_encrypted? %>
-				<tr>
-					<td colspan="3">
-						<% if @decryption_success %>
-							<%= alert %>
-						<% else %>
-							<% if @decryption_error %>
-								<%= alert %>
-							<% end -%>
-							<%= form_for(@object, :remote => true, :html => {:class => "form-inline", :role => "form"}) do |f| %>
-								<div class="form-group">
-									<%= f.password_field(:_inki_password, :class => "form-control", :placeholder => t(:decryption_password)) %>
-								</div>
-								<%= hidden_field_tag(:unlock_with_password, true) %>
-								<%= hidden_field_tag(:overwrite_div_id, header_id) %>
-								<%= hidden_field_tag(:ajax_id, @ajax_id) %>
-								<%= submit_tag(t(:decrypt), :class => "btn btn-default") %>
-							<% end -%>
-						<% end -%>
-					</td>
-				</tr>
-			<% end -%>
+			<%= render :partial => "layouts/encryption_form", :locals => {header_id: header_id, edit: false, new_object: false} %>
 			<% (@object.class.sorted_attributes + [:_owner_name]).each do |attribute| %>
 				<tr> 
 					<td style="white-space: nowrap;">

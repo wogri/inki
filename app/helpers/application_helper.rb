@@ -350,9 +350,10 @@ module ApplicationHelper
 	end
 
 	# displays attributes in the edit-view
-	def edit_attribute_value(object, attribute, form_object, new)
+	def edit_attribute_value(object, attribute, form_object, new, options = {})
 		description = object.class.attribute_description[attribute]
 		readonly = object.class.read_only?(attribute, new)
+		readonly = object.class.is_encrypted?(attribute) if not readonly
     value = object.send(attribute.to_s)
 		logger.info("#{attribute.inspect} / #{description.inspect} / #{value}")
 		if attribute == :_color and object.class.colored?

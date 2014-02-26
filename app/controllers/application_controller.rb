@@ -172,6 +172,7 @@ class ApplicationController < ActionController::Base
   def edit
     @object = model_class.find(params[:id])
 		@div_id = create_div_id(@object)
+		@show_encryption_passwords = false
     render :file => "layouts/edit"
   end
 
@@ -326,6 +327,7 @@ class ApplicationController < ActionController::Base
 				format.json { render json: @object, status: :created, location: @object }
 			end
     else
+			@show_encryption_passwords = true
 			respond_to do |format|
       	format.js { render :file => 'layouts/new' }
 				format.json { render json: @object.errors, status: :unprocessable_entity }
@@ -351,6 +353,7 @@ class ApplicationController < ActionController::Base
 				@no_new_object_possible = true
 			end
 		end
+		@show_encryption_passwords = true
     render :file => "layouts/new"
 	end
 
