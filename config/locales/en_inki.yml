@@ -18,6 +18,11 @@ en:
   deleted: "deleted"
   back: "Back to"
   options: "Options"
+  inki_password: "Encryption password"
+  decryption_password: "Decryption password"
+  decryption_failed: "Decryption failed, are you sure the password is correct?"
+  decryption_successful: "Decryption succesful"
+  decrypt: "Decrypt"
   _owner_name: Owner
   owner_name: Owner
   csv_export: "Export to CSV"

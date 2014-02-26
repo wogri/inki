@@ -2,7 +2,7 @@
 </div>
 <div id="undo">
 	<% @object = @undo_object %>
-	<% table = render(:partial => "layouts/show_table", :locals => {:from_vcs => true}) if @undo_object %>
+	<% table = render(:partial => "layouts/show_table", :locals => {:from_vcs => true, :no_hide => true}) if @undo_object %>
 	<% if not session[:undo] or not session[:undo].action %>
 		<%= alert(:info, t(:nothing_to_undo)) %>
 	<% elsif not @undo_object and flash[:error] %>

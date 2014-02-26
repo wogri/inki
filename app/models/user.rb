@@ -11,10 +11,11 @@ class User < ActiveRecord::Base
 	validates :password, :username, :name, :mailaddress, :usergroup_id, :presence => true
   validates :username, :uniqueness => true
 	hide_json_attributes :password, :mailaddress
-	hide_on_create :username
-	is_expirable
-	is_versioned
-	can_be_dispatched
+	# hide_on_create :username
+	# is_expirable
+	# is_versioned
+	# can_be_dispatched
+	encrypt :mailaddress
   paginates_per 10
 
   # the convention is to present the password as 'xxxxxxxxxx', and only if it was changed it will be overwritten.

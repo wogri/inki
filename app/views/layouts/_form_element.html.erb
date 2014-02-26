@@ -3,6 +3,10 @@
 	<td>
 		<% if attribute == :_color %>
 			<%= t(:color) %>
+		<% elsif attribute == :_inki_password %>
+			<%= t(:inki_password) %>
+		<% elsif attribute == :_inki_password %>
+			<%= t(:inki_password_confirmation) %>
 		<% else %>
 			<% if help = object.class.help_text(attribute) %>
 				<abbr title="<%= help %>">

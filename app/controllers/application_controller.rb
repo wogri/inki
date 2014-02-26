@@ -200,6 +200,24 @@ class ApplicationController < ActionController::Base
 
 	def update
 		@object = model_class.find(params[:id])
+		# the object wants to be decrypted
+		if params[:unlock_with_password]
+			# this is not a real update, it's a decryption. It updates the show view again. 
+			@overwrite_div_id = params[:overwrite_div_id]
+			begin
+				@object.decrypt(params[:user][:_inki_password], Rails.configuration.inki.cipher)
+				@decryption_success = true
+				flash.now[:info] = t(:decryption_successful)
+			rescue StandardError => e 
+				logger.error(e.to_s)
+				@decryption_error = true
+				flash.now[:error] = t(:decryption_failed)
+			end
+			respond_to do |format|
+				format.js { render :file => 'layouts/show' }
+			end
+			return
+		end
 		@div_id = create_div_id(@object)
 		if @add_existing_model # a relationship between a has_and_belongs_to_many relation has been updated
 			if params[:associated] # the checkbox has been set
@@ -238,6 +256,7 @@ class ApplicationController < ActionController::Base
 				format.json { head :no_content }
 			end	
 		elsif @object.update_attributes(model_parameters)
+			encrypt(@object)
 			@object.update_owner(@user_id, @user_name)
 			if not defined? @rest_request
 				session[:undo].action = :update
@@ -285,6 +304,7 @@ class ApplicationController < ActionController::Base
 	def create
 		@object = model_class.new(model_parameters)
     if @object.save 
+			encrypt(@object)
 			@object.update_owner(@user_id, @user_name)
 			#@object.dispatch!(:create)
 			@relation = relation_type
@@ -335,6 +355,14 @@ class ApplicationController < ActionController::Base
 	end
 
   private
+
+	def encrypt(object)
+		if object._inki_password
+			logger.info("encrypting object, _inki_password found.")
+			object.encrypt!(object._inki_password, Rails.configuration.inki.cipher)
+		end
+	end
+
 
 	# generate the necessary objects for the undo-operation
 	def create_undo_elements(model_class, user_id)

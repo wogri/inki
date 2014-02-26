@@ -6,6 +6,8 @@
 	<% end -%>
 <% elsif @popup == "expire" %>
 	<%= modal(t(:delayed_delete), render(:partial => "layouts/expire")) %>
+<% elsif @overwrite_div_id %>
+	<%= ajax_html("##{@overwrite_div_id}", render(:partial => "layouts/show_table", :locals => {:no_hide => true}), false) %>
 <% else -%>
 	<% if @special_option -%>
 		<%= ajax_html("#" + @div_id, render(:partial => "layouts/special_view"), false) %>

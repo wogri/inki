@@ -363,6 +363,8 @@ module ApplicationHelper
 				:name, # the attribute of the foreign key that we want to see. we could also use a model-function here.
 				:include_blank => true
 			)
+		elsif attribute == :_inki_password  or attribute == :_inki_password_confirmation
+			form_object.password_field(attribute, {:value => '', :class => "form-control"})
 		elsif description == :password
 			form_object.password_field(attribute, {:value => value, :class => "form-control"})
 		elsif description == :method

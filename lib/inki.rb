@@ -96,12 +96,30 @@ module Inki
 		{:cipher => aes.update(data) + aes.final, :iv => iv}
 	end
 
-	def encrypt(attribute, key, shared_cipher = '')
+	# this method just boldly invokes encryption, it will find out which attributes need to be encrypted and then call encrypt_attribute
+	def encrypt!(password, inki_cipher)
+		if attributes = self.class.is_encrypted?
+			attributes.each do |attribute|
+				self.send("#{attribute}=", encrypt_attribute(attribute, password, inki_cipher))
+			end
+			self.save
+		end
+	end
+
+	def decrypt(password, inki_cipher)
+		if attributes = self.class.is_encrypted?
+			attributes.each do |attribute|
+				self.send("#{attribute}=", decrypt_attribute(attribute, password, inki_cipher))
+			end
+		end
+	end
+
+	def encrypt_attribute(attribute, key, shared_cipher = '')
 		aes = cipher(key, nil, self.send(attribute), method: :encrypt, shared_cipher: shared_cipher)
 		Base64.encode64(aes[:cipher]) + ';' + Base64.encode64(aes[:iv])
 	end
 
-	def decrypt(attribute, key, shared_cipher = '')
+	def decrypt_attribute(attribute, key, shared_cipher = '')
 		cipher, iv = self.send(attribute).split(/;/)
 		aes = cipher(key, Base64.decode64(iv), Base64.decode64(cipher), method: :decrypt, shared_cipher: shared_cipher)
 		aes[:cipher]
@@ -236,6 +254,16 @@ module Inki
 			end
 		end
 		return_string.join " "
+	end
+
+	# dummy, you can not actually get an inki-password.
+	def _inki_password
+		@_inki_password
+	end
+
+	# dummy, you can not actually set an inki-password.
+	def _inki_password=(value)
+		@_inki_password = value
 	end
 
 	# returns the current color code, if any 
@@ -392,6 +420,22 @@ module Inki
 			end
 		end
 
+		def encrypt(*values)
+			@_encrypted_attributes = []
+			# require the inki password field to be filled in. 
+			validates :_inki_password, presence: true, :length => { :minimum => 5, :maximum => 40 }, :confirmation => true
+			validates :_inki_password_confirmation, :presence => true
+			values.collect do |v|
+				@_encrypted_attributes.push(v)
+			end
+		end
+
+		def is_encrypted?
+			if defined? @_encrypted_attributes
+				@_encrypted_attributes
+			end
+		end
+
 		def attribute_order(*values)
 			@_sorted_attributes = []
 			values.collect do |v|
@@ -529,6 +573,10 @@ module Inki
 		def strong_parameters
 			attrs = self.attribute_names - ["created_at", "updated_at", "id"]
 			attrs.push(:_color) if colored? # add the color attribute to the permitted attributes if the object is colorable
+			if is_encrypted? # add the color attribute to the permitted attributes if the object is colorable
+				attrs.push(:_inki_password) 
+				attrs.push(:_inki_password_confirmation) 
+			end
 			attrs.collect do |a|
 				a.to_sym
 			end
