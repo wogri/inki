@@ -1,0 +1,24 @@
+<% if @object.class.is_encrypted? and not new_object %>
+	<tr>
+		<td colspan="3">
+			<% if @decryption_success %>
+				<%= alert %>
+			<% else %>
+				<% if @decryption_error %>
+					<%= alert %>
+				<% end -%>
+				<%= form_for(@object, :remote => true, :html => {:class => "form-inline", :role => "form"}) do |f| %>
+					<div class="form-group">
+						<%= f.password_field(:_inki_password, :class => "form-control", :placeholder => t(:decryption_password)) %>
+					</div>
+					<%= hidden_field_tag(:unlock_with_password, true) %>
+					<%= hidden_field_tag(:overwrite_div_id, header_id) %>
+					<%= hidden_field_tag(:edit_mode, edit) %>
+					<%= hidden_field_tag(:ajax_id, @ajax_id) %>
+					<%= submit_tag(t(:decrypt), :class => "btn btn-default") %>
+				<% end -%>
+			<% end -%>
+		</td>
+	</tr>
+<% end -%>
+

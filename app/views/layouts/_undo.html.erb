@@ -19,11 +19,11 @@
 	<% elsif session[:undo].action == :update -%>
 		<%= alert(:warning, content_tag(:b, t(:click_undo_will_restore_element) + ":")) %>
 		<%= table %>
-		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :undo => true, :object => @object}) %>
+		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :no_hide => true, :undo => true, :object => @object}) %>
 	<% elsif session[:undo].action == :destroy -%>
 		<%= alert(:warning, content_tag(:b, t(:click_undo_will_create_element) + ":")) %>
 		<%= table %>
-		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :undo => true, :object => @object}) %>
+		<%= render(:partial => "layouts/form", :locals => {:from_vcs => true, :no_hide => true, :undo => true, :object => @object}) %>
 	<% else %>
 		Undo Error. Don't know what <%= session[:undo].action %> is. 
 	<% end -%>

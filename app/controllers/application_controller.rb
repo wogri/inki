@@ -205,6 +205,8 @@ class ApplicationController < ActionController::Base
 		if params[:unlock_with_password]
 			# this is not a real update, it's a decryption. It updates the show view again. 
 			@overwrite_div_id = params[:overwrite_div_id]
+			@edit_mode = params[:edit_mode]
+			@edit_mode = false if @edit_mode == "false"
 			begin
 				@object.decrypt(params[:user][:_inki_password], Rails.configuration.inki.cipher)
 				@decryption_success = true
