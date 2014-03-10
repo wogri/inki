@@ -424,7 +424,7 @@ module ApplicationHelper
 			when :datetime
       	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true))
 			when :date
-      	content_tag(:span, form_object.date_select(attribute))
+      	content_tag(:span, form_object.date_select(attribute, :include_blank => true))
 			else
 				"sorry, unknown attribute: #{description}"
 			end
