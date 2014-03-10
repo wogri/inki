@@ -208,7 +208,7 @@ class ApplicationController < ActionController::Base
 			@edit_mode = params[:edit_mode]
 			@edit_mode = false if @edit_mode == "false"
 			begin
-				@object.decrypt(params[:user][:_inki_password], Rails.configuration.inki.cipher)
+				@object.decrypt(params[model_class.name.underscore.to_sym][:_inki_password], Rails.configuration.inki.cipher)
 				@decryption_success = true
 				flash.now[:info] = t(:decryption_successful)
 			rescue StandardError => e 
