@@ -211,6 +211,7 @@ class ApplicationController < ActionController::Base
 				@object.decrypt(params[model_class.name.underscore.to_sym][:_inki_password], Rails.configuration.inki.cipher)
 				@decryption_success = true
 				flash.now[:info] = t(:decryption_successful)
+				@show_encryption_passwords = true
 			rescue StandardError => e 
 				logger.error(e.to_s)
 				@decryption_error = true
