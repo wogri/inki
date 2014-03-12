@@ -261,7 +261,7 @@ module Inki
 		@_inki_password
 	end
 
-	# dummy, you can not actually set an inki-password.
+	# dummy, you can not actually store an inki-password.
 	def _inki_password=(value)
 		@_inki_password = value
 	end
@@ -422,9 +422,9 @@ module Inki
 
 		def encrypt(*values)
 			@_encrypted_attributes = []
-			# require the inki password field to be filled in. 
-			validates :_inki_password, presence: true, :length => { :minimum => 5, :maximum => 40 }, :confirmation => true
-			validates :_inki_password_confirmation, :presence => true
+			# require the inki password field to be filled in (only if _inki_password receives at least the empty string, meaning that if it is not shown, it won't be validated. 
+			validates :_inki_password, presence: true, :length => { :minimum => 5, :maximum => 40 }, :confirmation => true, :if => lambda { self._inki_password }
+			validates :_inki_password_confirmation, :presence => true, :if => lambda { self._inki_password }
 			values.collect do |v|
 				@_encrypted_attributes.push(v.to_sym)
 			end

@@ -2,6 +2,7 @@
 <% new_object = true if defined? new %>
 <% header_id = "#{"new_" if new_object}slider_#{@ajax_id}_#{@object.class}_#{@object.id}" -%>
 <div <%= 'class="bubble"'.html_safe if new_object -%> id="<%= header_id -%>" <%= 'style="display:none;"'.html_safe if request.xhr? and not defined? no_hide -%>>
+	<%= render :partial => "layouts/encryption_form", :locals => {header_id: header_id, new_object: new_object, edit: true} %>
 	<%= form_for object, :remote => request.xhr? do |f| %>
 		<%= hidden_field_tag(:ajax_id, @ajax_id) %>
 		<%= hidden_field_tag(:show_id, @show_id) if @show_id %>
@@ -27,7 +28,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "layouts/encryption_form", :locals => {header_id: header_id, new_object: new_object, edit: true} %>
 				<% (object.class.sorted_attributes - [:created_at, :updated_at]).each do |attribute| %>
 					<%# only display this field when the object is edited, or not to be hidden during creation of the object %>
 					<% if (new_object and not object.class.hidden_on_create?(attribute)) or not new_object %>
@@ -38,6 +38,7 @@
 				<% if object.class.is_encrypted? and @show_encryption_passwords %>
 					<%= render(:partial => "layouts/form_element", :locals => {:attribute => :_inki_password, :f => f, :object => object, :new_object => new_object}) %>
 					<%= render(:partial => "layouts/form_element", :locals => {:attribute => :_inki_password_confirmation, :f => f, :object => object, :new_object => new_object}) %>
+					<%= hidden_field_tag(:encryption_passwords_visible, true) %>
 				<% end -%>
 			</tbody>
 		</table>

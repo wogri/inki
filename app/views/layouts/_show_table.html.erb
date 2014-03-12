@@ -1,6 +1,7 @@
 <% header_id = "slider_#{@div_id}" %>
 <% header_id = "new_#{header_id}" if defined?(create) %>
 <div <%= 'class="bubble"'.html_safe if defined?(create) -%> id="<%= header_id %>" <%= 'style="display:none;"'.html_safe if request.xhr? and not defined? no_hide -%>>
+	<%= render :partial => "layouts/encryption_form", :locals => {header_id: header_id, edit: false, new_object: false} %>
 	<table class="table table-condensed table-hover table-bordered table-striped table-auto-width">
 		<thead>
 			<tr>
@@ -16,7 +17,6 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%= render :partial => "layouts/encryption_form", :locals => {header_id: header_id, edit: false, new_object: false} %>
 			<% (@object.class.sorted_attributes + [:_owner_name]).each do |attribute| %>
 				<tr> 
 					<td style="white-space: nowrap;">

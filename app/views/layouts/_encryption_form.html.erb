@@ -1,6 +1,6 @@
 <% if @object.class.is_encrypted? and not new_object %>
-	<tr>
-		<td colspan="3">
+	<!--<tr>
+		<td colspan="3">-->
 			<% if @decryption_success %>
 				<%= alert %>
 			<% else %>
@@ -18,7 +18,7 @@
 					<%= submit_tag(t(:decrypt), :class => "btn btn-default") %>
 				<% end -%>
 			<% end -%>
-		</td>
-	</tr>
+		<!--</td>
+	</tr> -->
 <% end -%>
 
