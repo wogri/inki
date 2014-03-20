@@ -80,7 +80,7 @@ class DispatchQueue # < ActiveRecord::Base
 								dispatch_job.save
 								done = true
 							rescue StandardError => e
-								debug("Saving dispatch job information failed due to optimistic locking issues: #{e.join("\n")}. will retry in around 10 seconds")
+								debug("Saving dispatch job information failed due to optimistic locking issues: #{e}. will retry in around 10 seconds")
 								sleep rand(10)
 							end
 						end
