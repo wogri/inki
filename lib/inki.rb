@@ -42,6 +42,9 @@ module Inki
 	# creates or updates ownership for a model.
 	# if owner doesn't exist, it will be created.
 	def update_owner(owner_id, owner_name)
+		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
+			return
+		end
 		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
 		if owner and owner.model_owner_id == owner_id 
 			return
@@ -57,17 +60,26 @@ module Inki
 	# when an object is destroyed, also it's owner should be destroyed. 
 	# nothing is destroyed if no owner exists
 	def destroy_owner!
+		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
+			return
+		end
 		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
 		owner.delete if owner
 	end
 
 	# returns name of owner by searching the database for it
 	def _owner_name
+		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
+			return ''
+		end
 		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
 		owner.model_owner_name if owner
 	end
 
 	def _owner_id
+		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
+			return nil
+		end
 		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
 		owner.model_owner_id if owner
 	end

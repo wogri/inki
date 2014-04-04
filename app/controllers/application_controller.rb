@@ -519,12 +519,14 @@ EOF
 
 	# will return all color information for the current controller, built into a quick hash
 	def get_colors
-    colors = Color.where(:model_name => model_class.to_s)
 		@colors = {}
+		if not ActiveRecord::Base.connection.table_exists? 'colors'
+			return
+		end
+    colors = Color.where(:model_name => model_class.to_s)
 		colors.each do |color|
 			@colors[color.model_id] = color.rgb.rgb if color.rgb
 		end
-		logger.info("COLORS: #{@colors.to_yaml}")
 	end
 
   # returns a unique number for the calling client. this is used for generating unique div-ids. is called from a before_filter
