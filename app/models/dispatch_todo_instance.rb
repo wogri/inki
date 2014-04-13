@@ -1,4 +1,4 @@
-class DispatchTodoInstance < ActiveRecord::Base
+class DispatchTodoInstance # < ActiveRecord::Base
 
 	 attr_accessor :instances, :options
 	 
