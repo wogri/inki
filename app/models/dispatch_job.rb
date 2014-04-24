@@ -10,6 +10,13 @@ class DispatchJob < ActiveRecord::Base
 			:locked => false
 		).order(:id)
 	}
+	# returns all dispatches that are not finished yet
+	scope :unfinished, lambda { 
+		where(
+			:done => false
+		)
+	}
+
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies
 	scope :zombie_locks, lambda { where(:locked_at => (Time.now - 1.year)..(Time.now - 2.days), :locked => true, :done => false) }
 	scope :locked, lambda { where(:locked => true, :done => false) }

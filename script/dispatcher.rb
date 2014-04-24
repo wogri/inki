@@ -87,6 +87,17 @@ while true do
 	end
 # run a loop that checks the dispatches-table. Only check on the first N items 
 	dispatch_jobs = DispatchJob.undone_dispatches.limit($config[:global][:concurrent_items])
+	unfinished_dispatch_jobs = {}
+	# save all locked dispatch-jobs in a hash so that locked dispatch-jobs won't be started simultaneously on the same model
+	# this is achieved by finding out the youngest undone dispatch-job for a certain model. This one will be compared with the actual todo lateron. 
+	DispatchJob.unfinished.each do |job|
+		identifier = "#{job.model_name}|#{job.model_id}"
+		if not unfinished_dispatch_jobs[identifier] or unfinished_dispatch_jobs[identifier] > job.created_at
+			unfinished_dispatch_jobs[identifier] = job.created_at
+		end
+	end
+
+
 
 # unlock dispatches that are locked for longer than 48 hours - they have failed somehow very badly
 	if counter % 100 == 0 
@@ -107,6 +118,11 @@ while true do
 	end
 	queue = DispatchQueue.new
 	dispatch_jobs.each do |job|
+		# do not run this job if there exists a younger, undone job. 
+		if unfinished_timestamp = unfinished_dispatch_jobs["#{job.model_name}|#{job.model_id}"] and job.created_at > unfinished_timestamp
+			debug("won't start #{job.model_name}|#{job.model_id}|#{job.model_operation} as a younger job for that model exists. ")
+			next
+		end
 		job.lock!
 		todos = job.find_todos($config)
 		job.current_todos = todos.size
