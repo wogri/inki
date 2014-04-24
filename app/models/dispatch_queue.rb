@@ -23,8 +23,7 @@ class DispatchQueue # < ActiveRecord::Base
 			mail << "#{$config[:global][:base_url]}/dispatch_todos/#{failed_job.id}"
 			mail << failed_job.log
 			mail = mail.join("\n") + "\n\n"
-			if failed_job.dispatch_job and owner_id = failed_job.dispatch_job._owner_id
-			# if failed_job and owner_id = failed_job._owner_id
+			if job = failed_job.dispatch_job and owner_id = job.owner_mail_address
 				if not users[owner_id]
 					users[owner_id] = mail
 				else

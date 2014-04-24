@@ -182,7 +182,8 @@ module Inki
 			:model_description => self._dispatch_model_description,
 			:retry_at => Time.now,
 			:done => false,
-			:locked => false
+			:locked => false, 
+			:owner_mail_address => self._owner_id
 		}
 		if options.class == Hash and options[:retry_at]
 			dispatch_hash[:retry_at] = options[:retry_at]	

@@ -13,7 +13,7 @@ class DispatchJob < ActiveRecord::Base
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies
 	scope :zombie_locks, lambda { where(:locked_at => (Time.now - 1.year)..(Time.now - 2.days), :locked => true, :done => false) }
 	scope :locked, lambda { where(:locked => true, :done => false) }
-	attribute_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at, :current_todos
+	attribute_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at, :owner_mail_address, :current_todos
 	index_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_operation, :retries
 	has_many :dispatch_todos, :dependent => :destroy
 	sort_by :created_at, "DESC"
