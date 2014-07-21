@@ -33,8 +33,14 @@ class DispatchQueue # < ActiveRecord::Base
 				error("can not send out e-mail. ")
 			end
 		end
-		users.each do |mail, log|
-			DispatchMailer.error_mail(mail, log).deliver
+		begin
+			users.each do |mail, log|
+				DispatchMailer.error_mail(mail, log).deliver
+			end
+		rescue
+			if rescue_mail_address = Rails.configuration.inki.dispatch_mail_address
+				DispatchMailer.error_mail(rescue_mail_address, log).deliver
+			end
 		end
 	end
 
