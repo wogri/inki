@@ -18,11 +18,13 @@ class DispatchQueue # < ActiveRecord::Base
 	# sends out an e-mail about failed todos. groups jobs to owners, so each owner gets only one e-mail with all the failed jobs. 
 	def mail_failed_todo(todo)
 		users = {}
+		log = []
 		todo.failed_jobs.each do |failed_job|
 			mail = []
 			mail << "#{$config[:global][:base_url]}/dispatch_todos/#{failed_job.id}"
 			mail << failed_job.log
 			mail = mail.join("\n") + "\n\n"
+			log << mail
 			if job = failed_job.dispatch_job and owner_id = job.owner_mail_address
 				if not users[owner_id]
 					users[owner_id] = mail
@@ -39,7 +41,7 @@ class DispatchQueue # < ActiveRecord::Base
 			end
 		rescue
 			if rescue_mail_address = Rails.configuration.inki.dispatch_mail_address
-				DispatchMailer.error_mail(rescue_mail_address, log).deliver
+				DispatchMailer.error_mail(rescue_mail_address, log.join("\n")).deliver
 			end
 		end
 	end
