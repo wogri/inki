@@ -10,13 +10,17 @@ require "#{File.dirname(__FILE__)}/../../config/environment.rb"
 todo = DispatchTodoInstance.new
 
 todo.jobs.each do |job|
-	if job and job._operation == "delayed_delete"
-		todo.emit_log(job, "deleting #{job.class}/#{job.id}")
-		if object = job.class.find(job.id)
-			object.destroy
-		end
-	end
+  if job and job._operation == "delayed_delete"
+    todo.emit_log(job, "deleting #{job.class}/#{job.id}")
+    begin
+      if object = job.class.find(job.id)
+        object.destroy
+      end 
+    rescue StandardError => e
+      todo.emit_log(job, "could not delete #{job.class}/#{job.id}: #{e}")
+    end 
+  end 
 
-	# this tells the dispatcher that the job has been executed successfully
-	todo.success!(job)
+  # this tells the dispatcher that the job has been executed successfully
+  todo.success!(job)
 end
