@@ -1,6 +1,6 @@
 class DispatchTodoInstance # < ActiveRecord::Base
 
-	 attr_accessor :instances, :options
+	 attr_accessor :instances, :options, :dispatch_job
 	 
 	def initialize
 	 	self.instances = []
@@ -39,9 +39,9 @@ class DispatchTodoInstance # < ActiveRecord::Base
 			# if operation != "destroy" 
 			# 	instance = table.classify.constantize.find(id)
 			# elsif operation == "destroy" 
-			dispatch_job = DispatchJob.find(dispatch_id)
+			self.dispatch_job = DispatchJob.find(dispatch_id)
 			begin
-				instance = YAML::load(dispatch_job.model_description)
+				instance = YAML::load(self.dispatch_job.model_description)
 			rescue StandardError => e
 				logger.error(e.to_s)
 			end
