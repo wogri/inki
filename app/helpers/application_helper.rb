@@ -422,7 +422,11 @@ module ApplicationHelper
 			when :time
       	content_tag(:span, form_object.time_select(attribute, :include_blank => true))
 			when :datetime
-      	content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true))
+				if self.class.datetime_with_default?(attribute)
+      		content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :default => Time.now))
+				else
+      		content_tag(:span, form_object.datetime_select(attribute, :minute_step => 15, :include_blank => true))
+				end
 			when :date
       	content_tag(:span, form_object.date_select(attribute, :include_blank => true))
 			else

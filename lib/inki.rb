@@ -711,6 +711,20 @@ module Inki
 			@_inki_will_be_dispatched_at = attribute.to_sym
 		end
 
+		def datetime_with_default(attribute)
+			if @_inki_default_date_time
+				@_inki_default_date_time.member?(attribute.to_sym)
+			end
+		end
+
+		def default_date_time(*attributes)
+			# fills datetime fields with default values in the helper
+			@_inki_default_date_time = []
+			attributes.collect do |a|
+				@_inki_default_date_time.push(a.to_sym)
+			end
+		end
+		
 		def is_expirable
 			@is_expirable = true
 		end
