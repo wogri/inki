@@ -707,6 +707,7 @@ module Inki
 		end
 
 		def will_be_dispatched_at(attribute)
+			# we dispatch this job at this timestamp (if this is not a timestamp an error will be thrown eventually)
 			@_inki_will_be_dispatched_at = attribute.to_sym
 		end
 
