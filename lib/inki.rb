@@ -184,7 +184,7 @@ module Inki
 			:model_id => self.id,
 			:model_operation => self._operation.to_s,
 			:model_description => self._dispatch_model_description,
-			:retry_at => @_inki_will_be_dispatched_at || Time.now,
+			:retry_at => retry_at,
 			:done => false,
 			:locked => false, 
 			:owner_mail_address => self._owner_id
