@@ -175,12 +175,16 @@ module Inki
 			return
 		end
 		logger.info("######### DISPATCHING: #{self.class}/#{self._operation}")
+		retry_at = Time.now
+		if @_inki_will_be_dispatched_at
+			retry_at = self.send(@_inki_will_be_dispatched_at)
+		end
 		dispatch_hash = {
 			:model_name => self.class.table_name,
 			:model_id => self.id,
 			:model_operation => self._operation.to_s,
 			:model_description => self._dispatch_model_description,
-			:retry_at => Time.now,
+			:retry_at => @_inki_will_be_dispatched_at || Time.now,
 			:done => false,
 			:locked => false, 
 			:owner_mail_address => self._owner_id
@@ -700,6 +704,10 @@ module Inki
 			end
 
 			after_commit :create_version
+		end
+
+		def will_be_dispatched_at(attribute)
+			@_inki_will_be_dispatched_at = attribute.to_sym
 		end
 
 		def is_expirable
