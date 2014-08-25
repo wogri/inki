@@ -176,9 +176,11 @@ module Inki
 		end
 		logger.info("######### DISPATCHING: #{self.class}/#{self._operation}")
 		retry_at = Time.now
-		if @_inki_will_be_dispatched_at
-			retry_at = self.send(@_inki_will_be_dispatched_at)
+		if a = self.class._inki_dispatch_at
+			retry_at = self.send(a)
+			logger.error("in da loop")
 		end
+		logger.error("#{self.class}/#{self._operation} will be dispatched at #{retry_at}.")
 		dispatch_hash = {
 			:model_name => self.class.table_name,
 			:model_id => self.id,
@@ -709,6 +711,10 @@ module Inki
 		def will_be_dispatched_at(attribute)
 			# we dispatch this job at this timestamp (if this is not a timestamp an error will be thrown eventually)
 			@_inki_will_be_dispatched_at = attribute.to_sym
+		end
+
+		def _inki_dispatch_at
+			@_inki_will_be_dispatched_at
 		end
 
 		def datetime_with_default?(attribute)
