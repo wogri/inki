@@ -7,18 +7,29 @@
 		:add_existing_model => @add_existing_model,
 		:previous_ajax_id => @previous_ajax_id,
 	}) if @from_show_table -%>
-	<%= form_tag(link_hash, :method => 'get', :remote => true) do %>
-		<div class="input-group">
-			<span class="input-group-btn">
-				<label for="search_button_<%= @ajax_id %>" class="btn btn-default spinner">
-					<%= icon("icon-search icon-large") %>
-				</label>
-				<%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
-			</span>
-			<%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
-			<span class="spinner input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
-					<%= link_to icon("icon-remove-circle icon-large"), link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default spinner" %>
-			</span>
-		</div> <!-- input-group-->
-	<% end -%>
+  <% if @filter -%>
+    <%= render partial: "layouts/filter_form", locals: {link_hash: link_hash.merge(filter: @filter)} %>
+  <% else -%>
+    <div class="row">
+      <div class="col-md-11"> 
+        <%= form_tag(link_hash, :method => 'get', :remote => true) do %>
+          <div class="input-group">
+            <span class="input-group-btn">
+              <label for="search_button_<%= @ajax_id %>" class="btn btn-default spinner">
+                <%= icon("icon-search icon-large") %>
+              </label>
+              <%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
+            </span>
+            <%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
+            <span class="spinner input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
+                <%= link_to icon("icon-remove-circle icon-large"), link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default spinner" %>
+            </span>
+          </div> <!-- input-group-->
+        <% end -%>
+      </div>
+      <div class="col-md-1"> 
+        <%= link_to(icon("icon-filter icon-large"), link_hash.merge(filter: {}), :remote => true, :class => "btn btn-default spinner") %>
+      </div>
+    </div>
+  <% end -%>
 <% end -%>

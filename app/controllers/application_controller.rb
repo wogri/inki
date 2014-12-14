@@ -123,7 +123,10 @@ class ApplicationController < ActionController::Base
 		else
 			@objects = _class.reorder(order)
 		end
-		if @search_string = params[:search]
+    if params[:filter]
+      @filter = {}
+      # TODO: Implement filter here!
+    elsif @search_string = params[:search]
 			@objects = @objects.with_query("^\"#{@search_string}\"") if @search_string != ''
 		end
 		# When a JSON-Request comes in, that wants to search for something specific (User.where(...)) this search will be implemented here

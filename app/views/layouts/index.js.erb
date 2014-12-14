@@ -15,7 +15,7 @@
 			<%= ajax_show("#slider_#{@div_id}") %>
 		<% end -%>
 		<%# if data is searched or another page is called via ajax, don't use fancy effects. %>
-		<% if params[:page] or params[:search] or @reorder %>
+		<% if params[:page] or params[:search] or params[:filter] or @reorder %>
 			<%= ajax_show("#index_#{@ajax_id}") %>
 		<% else %>
 			<%= ajax_slidedown("#index_#{@ajax_id}") %>
