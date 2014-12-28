@@ -644,6 +644,29 @@ module ApplicationHelper
 		$('#{div_id}').html(counter+1);".html_safe
 	end
 
+  # creates a xhr link for adding or removing a filter
+  def filter_link(model_class, attribute, params, ajax_id)
+    filter = params[:filter].clone
+    if not filter or filter == ""
+      filter = []
+    end
+    filter.push(attribute)
+    description = @model_class.human_attribute_name(attribute)
+    link = link_to(description, params.merge(:filter => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
+    return content_tag(:li, link, role: "presentation")
+  end
+
+  def show_filter(model_class, params, selected_attributes, ajax_id)
+    filter = params[:filter].clone
+    if not filter or filter == ""
+      filter = []
+    end
+    filter.each do |attribute|
+      selected_attributes.push(attribute.to_sym)
+    end
+    return nil
+  end
+
 	# translates a given object depending on it's state (create model_name or update model_name) 
 	def submit_default_value(object)
 		object = object.respond_to?(:to_model) ? object.to_model : object

@@ -1,12 +1,16 @@
+<div class="defined_filters">
+  <%= debug(params[:filter]) %>
+  <% selected_attributes = [] %>
+  <%= show_filter(@model_class, params, selected_attributes, @ajax_id) %>
+</div>
 <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    Dropdown
+  <button class="btn btn-default dropdown-toggle" type="button" id="filter<%= @ajax_id -%>" data-toggle="dropdown" aria-expanded="true">
+    <%= t(:filter_by) %>
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="filter_dropdown<%= @ajax_id -%>">
+		<% (@model_class.sorted_attributes - selected_attributes).each do |attribute| %>
+      <%= filter_link(@model_class, attribute, params, @ajax_id) %>
+    <% end -%>
   </ul>
 </div>
