@@ -709,7 +709,7 @@ module ApplicationHelper
     if state != "new"
       button_text = options[state.to_sym]
     else 
-      button_text = options.values.first
+      button_text = I18n.t(:select)
     end
     button = content_tag(:button, (button_text + " " + content_tag(:span, "", :class => "caret")).html_safe, :class => "btn btn-default dropdown-toggle", :type => "button", "data-toggle" => "dropdown", "aria-expanded" => true)
     elements = options.collect do |tag, description|
