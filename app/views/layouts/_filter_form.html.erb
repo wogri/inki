@@ -1,16 +1,31 @@
-<div class="defined_filters">
-  <%= debug(params[:filter]) %>
-  <% selected_attributes = [] %>
-  <%= show_filter(@model_class, params, selected_attributes, @ajax_id) %>
-</div>
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="filter<%= @ajax_id -%>" data-toggle="dropdown" aria-expanded="true">
-    <%= t(:filter_by) %>
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="filter_dropdown<%= @ajax_id -%>">
-		<% (@model_class.sorted_attributes - selected_attributes).each do |attribute| %>
-      <%= filter_link(@model_class, attribute, params, @ajax_id) %>
-    <% end -%>
-  </ul>
-</div>
+<%#= debug(params) %>
+<% selected_attributes = [] %>
+<% link_hash = {:action => :index, :ajax_id => @ajax_id} -%>
+<% link_hash.merge!({
+  :show_id => @show_object.id, 
+  :from_show_table => @from_show_table, 
+  :show_relation => @show_relation,
+  :add_existing_model => @add_existing_model,
+  :previous_ajax_id => @previous_ajax_id,
+}) if @from_show_table -%>
+<%= form_tag(params.merge(link_hash), :method => 'get', :class => "filter_form", :remote => true) do %>
+  <div class="btn-group" role="group"> 
+    <div class="btn-group" role="group">
+      <button class="btn btn-default dropdown-toggle" type="button" id="filter<%= @ajax_id -%>" data-toggle="dropdown" aria-expanded="true">
+        <%= icon("icon-plus-sign") %>
+        <%= t(:add_filter) %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="filter_dropdown<%= @ajax_id -%>">
+        <% (@model_class.sorted_attributes - selected_attributes).each do |attribute| %>
+          <%= filter_link(@model_class, attribute, params, @ajax_id) %>
+        <% end -%>
+      </ul>
+    </div>
+    <%= submit_tag(t(:filter), :class => "btn btn-default") %>
+    <% link_hash = params.merge(link_hash) %>
+    <% link_hash.delete("filter") %>
+    <%= link_to(icon("icon-remove-circle") + t(:cancel), link_hash, :remote => true, :class => "btn btn-danger") %>
+  </div> <!-- btn-group -->
+  <%= show_filter(@model_class, params, selected_attributes) %>
+<% end -%>

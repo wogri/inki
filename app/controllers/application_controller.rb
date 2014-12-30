@@ -123,9 +123,28 @@ class ApplicationController < ActionController::Base
 		else
 			@objects = _class.reorder(order)
 		end
-    if params[:filter]
-      @filter = {}
-      # TODO: Implement filter here!
+    if filter = params[:filter]
+      @filter = true
+      if filter.class != String
+        filter.keys.each do |key|
+          element = filter[key]
+          if _class.sorted_attributes.member?(element[:attribute].to_sym)
+            attribute = element[:attribute]
+            # "filter"=>{"1"=>{"attribute"=>"username", "input"=>"aasdf", "state"=>"is"}},
+            if element[:input] and element[:input] != ""
+              case element["state"]
+              when "is"
+                logger.info("is added.")
+                @objects = @objects.where("#{attribute} LIKE ?", element[:input])
+              when "contains"
+                @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}%")
+              else
+                logger.error("uncaught state!")
+              end
+            end
+          end
+        end
+      end
     elsif @search_string = params[:search]
 			@objects = @objects.with_query("^\"#{@search_string}\"") if @search_string != ''
 		end

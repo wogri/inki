@@ -16,4 +16,5 @@
 //= require jquery.ui.all
 //= require bootstrap
 //= require spinner_link
+//= require inki_filter
 // require_tree .

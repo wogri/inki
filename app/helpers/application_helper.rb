@@ -648,30 +648,84 @@ module ApplicationHelper
   def filter_link(model_class, attribute, params, ajax_id)
     filter = params[:filter].clone
     if not filter or filter == ""
-      filter = []
+      filter = {}
     end
-    filter.push(attribute)
-    description = @model_class.human_attribute_name(attribute)
-    link = link_to(description, params.merge(:filter => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
+    filter[filter.keys.sort.last.to_i + 1] = {:attribute => attribute, state: "new"}
+    description = model_class.human_attribute_name(attribute)
+    link = link_to(description, params.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
     return content_tag(:li, link, role: "presentation")
   end
 
-  def show_filter(model_class, params, selected_attributes, ajax_id)
+  # shows the filter criteria.
+  def show_filter(model_class, params, selected_attributes)
     filter = params[:filter].clone
     if not filter or filter == ""
-      filter = []
+      filter = {}
     end
-    filter.each do |attribute|
-      selected_attributes.push(attribute.to_sym)
+    html = ""
+    filter.keys.sort.each do |key|
+      element = filter[key]
+      new_filter = filter.clone
+      new_filter.delete(key)
+      attribute = element["attribute"]
+      minus_sign = link_to(icon("icon-minus-sign"), params.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
+      # minus_sign = content_tag(:span, minus_sign, :class => "input-group-btn")
+      attribute_name = content_tag(:button, model_class.human_attribute_name(attribute), "class" => "btn btn-default", :type => "button")
+      # attribute_name = content_tag(:span, attribute_name.html_safe, :class => "input-group-btn")
+      row_content = (minus_sign + attribute_name).html_safe
+      input_tag = ""
+      dropdown, input_tag = filter_dropdown(model_class, attribute, filter, key)
+      row_content << dropdown.html_safe
+      row_content = content_tag(:div, row_content.html_safe, :class => "input-group-btn")
+      row_content << input_tag.html_safe
+      row_content = content_tag(:div, row_content.html_safe, :class => "input-group input-group-sm")
+      row = content_tag(:div, row_content, :class => "col-md-12")
+      html << content_tag(:div, row, :class => "row")
+      # only do this if the show_filter has selected an EQUALS.
+      # selected_attributes.push(attribute.to_sym)
     end
-    return nil
+    return html.html_safe
+  end
+
+  # creates a dropdown for a filter according to the attribute - e. g. "is or contains" for strings, "greater, equal, less than" for integers, etc...
+  def filter_dropdown(model_class, attribute, filter, key)
+    attribute_type = model_class.columns_hash[attribute.to_s].type
+    html = ""
+    input_tag = ""
+    # http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html
+    case(attribute_type)
+    when :string
+      html << filter_dropdown_button(filter, attribute, key, {is: I18n.t(:is_equal), contains: I18n.t(:contains)})
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => I18n.t(:search_text)).html_safe
+    else
+      flash[:error] = "unknown attribute #{attribute}:#{attribute_type}. Don't know how to handle this"
+    end
+    return [html.html_safe, input_tag]
+  end
+
+  def filter_dropdown_button(filter, attribute, key, options)
+    filter = filter.deep_dup
+    state = filter[key.to_s][:state]
+    if state != "new"
+      button_text = options[state.to_sym]
+    else 
+      button_text = options.values.first
+    end
+    button = content_tag(:button, (button_text + " " + content_tag(:span, "", :class => "caret")).html_safe, :class => "btn btn-default dropdown-toggle", :type => "button", "data-toggle" => "dropdown", "aria-expanded" => true)
+    elements = options.collect do |tag, description|
+      filter[key.to_s][:state] = tag
+      link = link_to(description, params.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
+      content_tag(:li, link, role: "presentation").html_safe
+    end
+    dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu", "aria-labelledby" => "filter_#{key}#{attribute}")
+    return dropdown.html_safe
+    # return content_tag(:div, dropdown.html_safe, :class => "input-group-btn")
   end
 
 	# translates a given object depending on it's state (create model_name or update model_name) 
 	def submit_default_value(object)
 		object = object.respond_to?(:to_model) ? object.to_model : object
 		key    = object ? (object.persisted? ? :update : :create) : :submit
-
 		model = if object.class.respond_to?(:model_name)
 			object.class.model_name.human
 		else

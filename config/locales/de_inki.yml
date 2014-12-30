@@ -75,7 +75,12 @@ de:
   not_versioned_error: Dieses Objekt ist nicht versioniert (Parameter is_versioned in der Konfiguration), daher kann die Aktion nicht rückgängig gemacht werden. 
   other_user_changed_element: Der Benutzer {%user_name} hat dieses Objekt in der Zwischenzeit geändet. Sie können Ihr Aktion daher nicht rückgängig machen. 
   nothing_to_undo: Es gibt keine Aktion die rückgängig gemacht werden kann.
-  filter_by: Filter Auswahl
+  add_filter: Filter hinzufügen
+  select: Auswählen
+  is_equal: ist gleich
+  contains: enthält
+  search_text: Text eingeben...
+  filter: Filtern
   views:
     pagination:
       first: "Anfang"

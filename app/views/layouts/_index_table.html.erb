@@ -1,8 +1,8 @@
 <div id="list_<%= @ajax_id -%>">
-	<% if @objects and @objects.size > 0 or @search_string %>
+	<% if @objects and @objects.size > 0 or @search_string or @filter %>
 		<table class="table table-condensed table-hover table-auto-width">
 			<thead>
-				<% if @relation != :has_one and @objects.size > 1 or @search_string %>
+				<% if @relation != :has_one and @objects.size > 1 or @search_string or @filter %>
 					<tr>
 						<% if @fields.count > 3 
 							search_width = 3
