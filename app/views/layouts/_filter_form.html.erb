@@ -17,13 +17,14 @@
         <%= t(:add_filter) %>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="filter_dropdown<%= @ajax_id -%>">
+      <ul class="dropdown-menu" role="menu">
         <% (@model_class.sorted_attributes - selected_attributes).each do |attribute| %>
           <%= filter_link(@model_class, attribute, params, @ajax_id) %>
         <% end -%>
       </ul>
     </div>
-    <%= submit_tag(t(:filter), :class => "btn btn-default") %>
+    <%#= submit_tag(t(:filter), :class => "btn btn-default") %>
+    <%= button_tag(icon("icon-filter") + t(:filter), type: "submit", :class => "btn btn-default") %>
     <%= link_to(icon("icon-external-link") + t(:link_for_filter), params.merge(link_hash), :class => "btn btn-default") %>
     <% link_hash = params.merge(link_hash) %>
     <% link_hash.delete("filter") %>

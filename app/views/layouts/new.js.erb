@@ -2,7 +2,10 @@
 	<%= ajax_html("#new_#{@ajax_id}", t(:no_new_object_possible)) %>
 <% else -%>
 	<% if @add_existing_model %>
-		<%= modal(t(:edit_associations), render(:partial => "layouts/index_table"), 600, 600) %>
+    <% modal_content = '<div id="list_' + @ajax_id.to_s + '">' %>
+    <% modal_content << render(:partial => "layouts/index_table") %>
+    <% modal_content << '</div>' %>
+		<%= modal(t(:edit_associations), modal_content.html_safe, 600, 600) %>
 	<% else %>
 		<%= ajax_html("#new_#{@ajax_id}", render(:partial => "layouts/form", :locals => {:new => true, :object => @object, :additional_partials => @object.class.edit_partials, :hidden_fields => @object.class.hidden_fields}), false) %>
 		<%#= ajax_html("#close_#{@ajax_id}", render(:partial => "layouts/close")) %>

@@ -135,21 +135,23 @@ class ApplicationController < ActionController::Base
             state = element["state"]
             if state == "is" and input
               logger.info("is added.")
-              @objects = @objects.where("#{attribute} LIKE ?", element[:input])
+              @objects = @objects.where("#{attribute} ILIKE ?", element[:input])
             elsif state == "contains" and input
-              @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}%")
+              @objects = @objects.where("#{attribute} ILIKE ?", "%#{element[:input]}%")
             elsif state == "does_not_contain" and input
-              @objects = @objects.where("#{attribute} NOT LIKE ?", "%#{element[:input]}%")
+              @objects = @objects.where("#{attribute} NOT ILIKE ?", "%#{element[:input]}%")
             elsif state == "starts_with" and input
-              @objects = @objects.where("#{attribute} LIKE ?", "#{element[:input]}%")
+              @objects = @objects.where("#{attribute} ILIKE ?", "#{element[:input]}%")
             elsif state == "ends_with" and input
-              @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}")
+              @objects = @objects.where("#{attribute} ILIKE ?", "%#{element[:input]}")
             elsif state == "regex" and input
               @objects = @objects.where("#{attribute} ~ ?", "#{element[:input]}")
             elsif state == "datetime_greater" and input
               @objects = @objects.where("#{attribute} > ?", DateTime.parse("#{element[:input]}"))
             elsif state == "datetime_less" and input
               @objects = @objects.where("#{attribute} < ?", DateTime.parse("#{element[:input]}"))
+            elsif state == "datetime_equal" and input
+              @objects = @objects.where("#{attribute} = ?", DateTime.parse("#{element[:input]}"))
             elsif state == "boolean_true"
               @objects = @objects.where("#{attribute} IS TRUE")
             elsif state == "boolean_false"
@@ -164,6 +166,10 @@ class ApplicationController < ActionController::Base
               foreign_id = matchdata[1]
 			        foreign_key = model_class.new.reflections[attribute.to_sym].foreign_key
               @objects = @objects.where("#{foreign_key} = ?",foreign_id)
+            elsif state == "cidr_contains" and input
+              @objects = @objects.where("#{attribute} >>= ?", "#{element[:input]}")
+            elsif state == "cidr_is_contained_within" and input
+              @objects = @objects.where("#{attribute} <<= ?", "#{element[:input]}")
             else
               logger.error("uncaught state!")
             end

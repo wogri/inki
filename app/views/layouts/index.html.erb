@@ -13,7 +13,9 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<%= render :partial => "layouts/index_table" %>
+    <div id="list_<%= @ajax_id -%>">
+		  <%= render :partial => "layouts/index_table" %>
+		</div>
 		<div>
 		</div>
 	</div>

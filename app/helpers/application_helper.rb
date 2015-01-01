@@ -325,7 +325,7 @@ module ApplicationHelper
 					icon("icon-remove")
 				end
 			when :time
-      	value.strftime("%H:%M")
+      	value.strftime("%H:%M") if value
 			when :datetime
 				date = value
 				begin
@@ -670,7 +670,7 @@ module ApplicationHelper
       attribute = element["attribute"]
       state = element["state"]
       # remove elements from the dropdown list that have been specified to the most detail.
-      if ((state == "is") and element["input"] and element["input"] != "") or (state =~ /\Areference_/)
+      if (["datetime_equal", "number_eq", "is"].member?(state) and element["input"] and element["input"] != "") or (state =~ /\Areference_/) or ["boolean_true", "boolean_false"].member?(state)
         selected_attributes.push(attribute.to_sym)
       end
       minus_sign = link_to(icon("icon-minus-sign"), params.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
@@ -711,28 +711,65 @@ module ApplicationHelper
     html = ""
     input_tag = ""
     # http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html
-    case(attribute_type)
-    when :text
-      html << filter_dropdown_button(filter, attribute, key, [{is: I18n.t(:is_equal)}, {contains: I18n.t(:contains)}, {does_not_contain: I18n.t(:does_not_contain)}, {starts_with: I18n.t(:starts_with)}, {ends_with: I18n.t(:ends_with)}])
+    filter_buttons = []
+    if attribute_type == :text or attribute_type == :string
+      filter_buttons = [
+        {is: I18n.t(:is_equal)}, 
+        {contains: I18n.t(:contains)}, 
+        {does_not_contain: I18n.t(:does_not_contain)}, 
+        {starts_with: I18n.t(:starts_with)}, 
+        {ends_with: I18n.t(:ends_with)}, 
+        {regex: I18n.t(:regex)}
+      ]
       input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => I18n.t(:search_text)).html_safe
-    when :string
-      html << filter_dropdown_button(filter, attribute, key, [{is: I18n.t(:is_equal)}, {contains: I18n.t(:contains)}, {does_not_contain: I18n.t(:does_not_contain)}, {starts_with: I18n.t(:starts_with)}, {ends_with: I18n.t(:ends_with)}])
-      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => I18n.t(:search_text)).html_safe
-		when :datetime
-      html << filter_dropdown_button(filter, attribute, key, [{datetime_greater: I18n.t(:datetime_greater_or_equal)}, {datetime_less: I18n.t(:datetime_less_or_equal)}])
-      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => DateTime.now.to_s(:db)).html_safe
-    when :boolean
-      html << filter_dropdown_button(filter, attribute, key, [{boolean_true: icon("icon-ok")}, {boolean_false: icon("icon-remove")}])
-		when :integer
-      html << filter_dropdown_button(filter, attribute, key, [{number_ge: "≥"}, {number_le: "≤"}, {number_eq: "="}])
+		elsif attribute_type == :datetime or attribute_type == :date
+      filter_buttons = [
+        {datetime_greater: I18n.t(:datetime_greater_or_equal)}, 
+        {datetime_less: I18n.t(:datetime_less_or_equal)},
+        {datetime_equal: I18n.t(:datetime_equal)}
+      ]
+      placeholder = "#{DateTime.now.to_s(:db)} #{I18n.t(:or)} #{Date.today.to_s(:db)}"
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => placeholder).html_safe
+		elsif attribute_type == :time
+      filter_buttons = [
+        {datetime_greater: I18n.t(:datetime_greater_or_equal)}, 
+        {datetime_less: I18n.t(:datetime_less_or_equal)},
+        {datetime_equal: I18n.t(:datetime_equal)}
+      ]
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => "15:43:01").html_safe
+
+    elsif attribute_type == :boolean
+      filter_buttons = [
+        {boolean_true: icon("icon-ok")}, 
+        {boolean_false: icon("icon-remove")}
+      ]
+		elsif attribute_type == :integer
+      filter_buttons = [
+        {number_ge: "≥"},
+        {number_le: "≤"},
+        {number_eq: "="}
+      ]
       input_tag = number_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => 523).html_safe
-		when :float
-      html << filter_dropdown_button(filter, attribute, key, [{number_ge: "≥"}, {number_le: "≤"}, {number_eq: "="}])
+		elsif attribute_type == :float
+      filter_buttons = [
+        {number_ge: "≥"},
+        {number_le: "≤"},
+        {number_eq: "="}
+      ]
       input_tag = number_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => 523.34, :step => "0.0001").html_safe
-    # TODO: cidr, inet, time, date
+    elsif attribute_type == :cidr or attribute_type == :inet
+      filter_buttons = [
+        {number_ge: "≥"}, 
+        {number_le: "≤"}, 
+        {number_eq: "="}, 
+        {cidr_contains: I18n.t(:contains)}, 
+        {cidr_is_contained_within: I18n.t(:is_contained_within)}
+      ]
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => "192.168.0.0/24 or 192.168.0.1").html_safe
     else
       flash[:error] = "unknown attribute #{attribute}:#{attribute_type}. Don't know how to handle this"
     end
+    html << filter_dropdown_button(filter, attribute, key, filter_buttons)
     return [html.html_safe, input_tag]
   end
 
@@ -758,7 +795,7 @@ module ApplicationHelper
       link = link_to(description, params.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
       content_tag(:li, link, role: "presentation").html_safe
     end
-    dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu", "aria-labelledby" => "filter_#{key}#{attribute}")
+    dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu") # , "aria-labelledby" => "filter_#{key}#{attribute}")
     return dropdown.html_safe
     # return content_tag(:div, dropdown.html_safe, :class => "input-group-btn")
   end

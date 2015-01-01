@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	attr_accessor :dispatch_log
   belongs_to :usergroup
 	index_order :username, :name, :mailaddress, :usergroup
-	attribute_order :username, :password, :name, :mailaddress, :usergroup, :created_at, :myfloat_table, :comment
+	attribute_order :username, :password, :name, :mailaddress, :usergroup, :created_at, :myfloat_table, :comment, :my_date, :my_time
 	attribute_properties :password => :password 
 	has_icon "icon-user"
 	read_only :username
