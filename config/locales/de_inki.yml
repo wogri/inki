@@ -79,8 +79,14 @@ de:
   select: Auswählen
   is_equal: ist gleich
   contains: enthält
+  does_not_contain: enthält nicht
+  starts_with: beginnt mit
+  ends_with: endet mit
   search_text: Text eingeben...
   filter: Filtern
+  datetime_less_or_equal: Vor
+  datetime_greater_or_equal: Nach
+  link_for_filter: Link
   views:
     pagination:
       first: "Anfang"

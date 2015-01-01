@@ -1,5 +1,6 @@
 <%#= debug(params) %>
 <% selected_attributes = [] %>
+<% filter_form = show_filter(@model_class, params, selected_attributes) %>
 <% link_hash = {:action => :index, :ajax_id => @ajax_id} -%>
 <% link_hash.merge!({
   :show_id => @show_object.id, 
@@ -23,9 +24,10 @@
       </ul>
     </div>
     <%= submit_tag(t(:filter), :class => "btn btn-default") %>
+    <%= link_to(icon("icon-external-link") + t(:link_for_filter), params.merge(link_hash), :class => "btn btn-default") %>
     <% link_hash = params.merge(link_hash) %>
     <% link_hash.delete("filter") %>
     <%= link_to(icon("icon-remove-circle") + t(:cancel), link_hash, :remote => true, :class => "btn btn-danger") %>
   </div> <!-- btn-group -->
-  <%= show_filter(@model_class, params, selected_attributes) %>
+  <%= filter_form %>
 <% end -%>

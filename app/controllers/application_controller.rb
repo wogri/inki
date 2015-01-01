@@ -128,20 +128,47 @@ class ApplicationController < ActionController::Base
       if filter.class != String
         filter.keys.each do |key|
           element = filter[key]
-          if _class.sorted_attributes.member?(element[:attribute].to_sym)
-            attribute = element[:attribute]
+          attribute = element[:attribute].to_sym
+          if _class.sorted_attributes.member?(attribute)
             # "filter"=>{"1"=>{"attribute"=>"username", "input"=>"aasdf", "state"=>"is"}},
-            if element[:input] and element[:input] != ""
-              case element["state"]
-              when "is"
-                logger.info("is added.")
-                @objects = @objects.where("#{attribute} LIKE ?", element[:input])
-              when "contains"
-                @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}%")
-              else
-                logger.error("uncaught state!")
-              end
+            input = element[:input] and element[:input] != ""
+            state = element["state"]
+            if state == "is" and input
+              logger.info("is added.")
+              @objects = @objects.where("#{attribute} LIKE ?", element[:input])
+            elsif state == "contains" and input
+              @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}%")
+            elsif state == "does_not_contain" and input
+              @objects = @objects.where("#{attribute} NOT LIKE ?", "%#{element[:input]}%")
+            elsif state == "starts_with" and input
+              @objects = @objects.where("#{attribute} LIKE ?", "#{element[:input]}%")
+            elsif state == "ends_with" and input
+              @objects = @objects.where("#{attribute} LIKE ?", "%#{element[:input]}")
+            elsif state == "regex" and input
+              @objects = @objects.where("#{attribute} ~ ?", "#{element[:input]}")
+            elsif state == "datetime_greater" and input
+              @objects = @objects.where("#{attribute} > ?", DateTime.parse("#{element[:input]}"))
+            elsif state == "datetime_less" and input
+              @objects = @objects.where("#{attribute} < ?", DateTime.parse("#{element[:input]}"))
+            elsif state == "boolean_true"
+              @objects = @objects.where("#{attribute} IS TRUE")
+            elsif state == "boolean_false"
+              @objects = @objects.where("#{attribute} IS NOT TRUE")
+            elsif state == "number_ge" and input
+              @objects = @objects.where("#{attribute} >= ?", "#{element[:input]}")
+            elsif state == "number_le" and input
+              @objects = @objects.where("#{attribute} <= ?", "#{element[:input]}")
+            elsif state == "number_eq" and input
+              @objects = @objects.where("#{attribute} = ?", "#{element[:input]}")
+            elsif matchdata = state.match(/\Areference_(\d+)\z/)
+              foreign_id = matchdata[1]
+			        foreign_key = model_class.new.reflections[attribute.to_sym].foreign_key
+              @objects = @objects.where("#{foreign_key} = ?",foreign_id)
+            else
+              logger.error("uncaught state!")
             end
+          else
+            logger.error("somebody injected a wrong attribute: #{attribute}")
           end
         end
       end

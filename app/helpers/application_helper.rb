@@ -386,7 +386,7 @@ module ApplicationHelper
       end
       form_object.select(attribute, options_for_select(options, :selected => value))
 		# this is just a belongs-to relationship that will be shown as a dropdown.
-		elsif object.reflections[attribute.to_sym] and object.reflections[attribute.to_sym].macro == :belongs_to
+		elsif object.class.belongs_to?(attribute)
 			foreign_key = object.reflections[attribute.to_sym].foreign_key
 			base_class = attribute.to_s.camelize.constantize
 			form_object.collection_select(
@@ -668,6 +668,11 @@ module ApplicationHelper
       new_filter = filter.clone
       new_filter.delete(key)
       attribute = element["attribute"]
+      state = element["state"]
+      # remove elements from the dropdown list that have been specified to the most detail.
+      if ((state == "is") and element["input"] and element["input"] != "") or (state =~ /\Areference_/)
+        selected_attributes.push(attribute.to_sym)
+      end
       minus_sign = link_to(icon("icon-minus-sign"), params.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
       # minus_sign = content_tag(:span, minus_sign, :class => "input-group-btn")
       attribute_name = content_tag(:button, model_class.human_attribute_name(attribute), "class" => "btn btn-default", :type => "button")
@@ -689,14 +694,42 @@ module ApplicationHelper
 
   # creates a dropdown for a filter according to the attribute - e. g. "is or contains" for strings, "greater, equal, less than" for integers, etc...
   def filter_dropdown(model_class, attribute, filter, key)
+    if model_class.belongs_to?(attribute)
+			foreign_key = model_class.new.reflections[attribute.to_sym].foreign_key
+			base_class = attribute.to_s.camelize.constantize
+			elements = base_class.order(base_class.default_order.join(" "))
+      # base_class.primary_key is the primary key
+      filter_elements = []
+      elements.each do |element|
+        id = element.send(base_class.primary_key)
+        filter_elements.push({"reference_#{id}".to_sym => element.reference_attribute})
+      end
+      html = filter_dropdown_button(filter, attribute, key, filter_elements)
+      return [html.html_safe, ""]
+    end
     attribute_type = model_class.columns_hash[attribute.to_s].type
     html = ""
     input_tag = ""
     # http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html
     case(attribute_type)
-    when :string
-      html << filter_dropdown_button(filter, attribute, key, {is: I18n.t(:is_equal), contains: I18n.t(:contains)})
+    when :text
+      html << filter_dropdown_button(filter, attribute, key, [{is: I18n.t(:is_equal)}, {contains: I18n.t(:contains)}, {does_not_contain: I18n.t(:does_not_contain)}, {starts_with: I18n.t(:starts_with)}, {ends_with: I18n.t(:ends_with)}])
       input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => I18n.t(:search_text)).html_safe
+    when :string
+      html << filter_dropdown_button(filter, attribute, key, [{is: I18n.t(:is_equal)}, {contains: I18n.t(:contains)}, {does_not_contain: I18n.t(:does_not_contain)}, {starts_with: I18n.t(:starts_with)}, {ends_with: I18n.t(:ends_with)}])
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => I18n.t(:search_text)).html_safe
+		when :datetime
+      html << filter_dropdown_button(filter, attribute, key, [{datetime_greater: I18n.t(:datetime_greater_or_equal)}, {datetime_less: I18n.t(:datetime_less_or_equal)}])
+      input_tag = text_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => DateTime.now.to_s(:db)).html_safe
+    when :boolean
+      html << filter_dropdown_button(filter, attribute, key, [{boolean_true: icon("icon-ok")}, {boolean_false: icon("icon-remove")}])
+		when :integer
+      html << filter_dropdown_button(filter, attribute, key, [{number_ge: "≥"}, {number_le: "≤"}, {number_eq: "="}])
+      input_tag = number_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => 523).html_safe
+		when :float
+      html << filter_dropdown_button(filter, attribute, key, [{number_ge: "≥"}, {number_le: "≤"}, {number_eq: "="}])
+      input_tag = number_field_tag("filter[#{key}][input]", filter[key]["input"], :class => "form-control filter_input", :placeholder => 523.34, :step => "0.0001").html_safe
+    # TODO: cidr, inet, time, date
     else
       flash[:error] = "unknown attribute #{attribute}:#{attribute_type}. Don't know how to handle this"
     end
@@ -706,13 +739,21 @@ module ApplicationHelper
   def filter_dropdown_button(filter, attribute, key, options)
     filter = filter.deep_dup
     state = filter[key.to_s][:state]
+    button_text = ''
     if state != "new"
-      button_text = options[state.to_sym]
+      options.each do |option|
+        tag = option.keys.first
+        if tag == state.to_sym
+          button_text = option.values.first
+        end
+      end
     else 
       button_text = I18n.t(:select)
     end
     button = content_tag(:button, (button_text + " " + content_tag(:span, "", :class => "caret")).html_safe, :class => "btn btn-default dropdown-toggle", :type => "button", "data-toggle" => "dropdown", "aria-expanded" => true)
-    elements = options.collect do |tag, description|
+    elements = options.collect do |option|
+      description = option.values.first
+      tag = option.keys.first
       filter[key.to_s][:state] = tag
       link = link_to(description, params.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
       content_tag(:li, link, role: "presentation").html_safe

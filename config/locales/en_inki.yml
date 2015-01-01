@@ -84,8 +84,14 @@ en:
   select: Select
   is_equal: is equal to
   contains: contains
+  does_not_contain: does not contain
+  starts_with: starts with
+  ends_with: ends with
   search_text: Enter search text...
   filter: Filter
+  datetime_less_or_equal: Before
+  datetime_greater_or_equal: After
+  link_for_filter: Link
   views:
     pagination:
       previous: "&#171;"
