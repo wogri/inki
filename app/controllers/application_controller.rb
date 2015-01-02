@@ -131,7 +131,9 @@ class ApplicationController < ActionController::Base
           attribute = element[:attribute].to_sym
           if _class.sorted_attributes.member?(attribute)
             # "filter"=>{"1"=>{"attribute"=>"username", "input"=>"aasdf", "state"=>"is"}},
-            input = element[:input] and element[:input] != ""
+            input = nil
+            input = true if element[:input] and not element[:input].empty?
+            logger.info("INPUT is: #{input.inspect}")
             state = element["state"]
             if state == "is" and input
               logger.info("is added.")
