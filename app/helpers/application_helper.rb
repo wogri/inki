@@ -839,4 +839,8 @@ module ApplicationHelper
 		ajax_html('#alert-box', alert)
 	end
 
+  def with_list_div(content, ajax_id)
+    content_tag(:div, content, id: "list_#{ajax_id}") 
+  end
+
 end

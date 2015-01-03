@@ -1,5 +1,9 @@
 <%= render(:partial => "layouts/index_close") %>
 <div id="index_<%= @ajax_id -%>" style="display:none; " class="left_aligned index-dropdown">
 	<%= render(:partial => "layouts/index_options") %>
-	<%= render(:partial => "layouts/index_table") %>
+  <% if defined? add_list_div -%>
+	  <%= with_list_div(render(:partial => "layouts/index_table"), @ajax_id) %>
+  <% else -%>
+	  <%= render(:partial => "layouts/index_table") %>
+  <% end -%>
 </div>
