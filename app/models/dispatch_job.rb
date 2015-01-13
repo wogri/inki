@@ -39,7 +39,7 @@ class DispatchJob < ActiveRecord::Base
 		begin
 		  self.save
 		rescue ActiveRecord::StaleObjectError
-			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to re-lock the job in #{options[:sleeptime] * 2} seconds.")
+			error("seems like the job with the id #{self.id} has been modified by somebody else, will retry to re-lock the job in #{options[:sleeptime] * 2} seconds.")
 			sleep options[:sleeptime]
 			self.lock!(sleeptime: options[:sleeptime] * 2)
 		end
@@ -62,7 +62,7 @@ class DispatchJob < ActiveRecord::Base
 			self.save
 		# retry this operation if somebody updated the data in the mean time!
 		rescue ActiveRecord::StaleObjectError
-			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to unlock the job in #{options[:sleeptime]*2} seconds.")
+			error("seems like the job with the id #{self.id} has been modified by somebody else, will retry to unlock the job in #{options[:sleeptime]*2} seconds.")
 			sleep options[:sleeptime]
 			self.unlock!(sleeptime: options[:sleeptime] * 2)
 		end
