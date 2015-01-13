@@ -28,6 +28,7 @@ class DispatchJob < ActiveRecord::Base
 	read_only :locked_at, :model_description, :model_id, :inki_model_name, :model_operation
 
 	# lock the dispatch_job and set the locked_at date, saves the object
+  # does optimistic locking
 	def lock!(options = {sleeptime: 1})
 		self.reload
 		self.locked = true
