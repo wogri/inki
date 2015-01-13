@@ -28,10 +28,21 @@ class DispatchJob < ActiveRecord::Base
 	read_only :locked_at, :model_description, :model_id, :inki_model_name, :model_operation
 
 	# lock the dispatch_job and set the locked_at date, saves the object
-	def lock!
+	def lock!(options = {sleeptime: 1})
+		self.reload
 		self.locked = true
+    if options[:sleeptime] > 8
+      raise "Optimistic locking failed"
+    end
 		self.locked_at = Time.now
-		self.save
+		begin
+		  self.save
+		rescue ActiveRecord::StaleObjectError
+			error("seems like the job with the id #{job.id} has been modified by somebody else, will retry to re-lock the job in #{options[:sleeptime] *i 2} seconds.")
+			sleep options[:sleeptime]
+			self.lock!(sleeptime: options[:sleeptime] * 2)
+		end
+
 	end
 
 	# unlock and save the object.
@@ -43,6 +54,9 @@ class DispatchJob < ActiveRecord::Base
 			self.current_todos = 0
 			self.locked = false
 		end
+    if options[:sleeptime] > 8
+      raise "Optimistic locking failed"
+    end
 		begin
 			self.save
 		# retry this operation if somebody updated the data in the mean time!
