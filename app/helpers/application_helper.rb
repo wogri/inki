@@ -313,9 +313,9 @@ module ApplicationHelper
 				sanitize(number_with_delimiter(value).to_s)
 			when :boolean
 				if value
-					icon("ok")
+					icon("check")
 				else
-					icon("remove")
+					icon("close")
 				end
 			when :time
       	value.strftime("%H:%M") if value
@@ -732,8 +732,8 @@ module ApplicationHelper
 
     elsif attribute_type == :boolean
       filter_buttons = [
-        {boolean_true: icon("ok")}, 
-        {boolean_false: icon("remove")}
+        {boolean_true: icon("check")}, 
+        {boolean_false: icon("close")}
       ]
 		elsif attribute_type == :integer
       filter_buttons = [
