@@ -125,11 +125,13 @@ class ApplicationController < ActionController::Base
 		end
     if filter = params[:filter]
       @filter = true
-      if filter.class != String
+      if filter.class == String
+        params[:filter] = {}
+      else
         filter.keys.each do |key|
           element = filter[key]
           attribute = element[:attribute].to_sym
-          if _class.sorted_attributes.member?(attribute)
+          if _class.sorted_attributes.member?(attribute) or _class.belongs_to_hidden_fields(no_id: true).member?(attribute)
             # "filter"=>{"1"=>{"attribute"=>"username", "input"=>"aasdf", "state"=>"is"}},
             input = nil
             input = true if element[:input] and not element[:input].empty?
@@ -166,7 +168,7 @@ class ApplicationController < ActionController::Base
               @objects = @objects.where("#{attribute} = ?", "#{element[:input]}")
             elsif matchdata = state.match(/\Areference_(\d+)\z/)
               foreign_id = matchdata[1]
-			        foreign_key = model_class.new.reflections[attribute.to_sym].foreign_key
+			        foreign_key = model_class.reflections[attribute.to_s].foreign_key
               @objects = @objects.where("#{foreign_key} = ?",foreign_id)
             elsif state == "cidr_contains" and input
               @objects = @objects.where("#{attribute} >>= ?", "#{element[:input]}")
@@ -400,7 +402,7 @@ class ApplicationController < ActionController::Base
 		if @from_show_table # this is a new object UNDER another object, so pre-fill the relation 
 			@relation = relation_type
 			if @relation != :has_and_belongs_to_many and @relation != :has_many_through
-				@foreign_key = @object.reflections[@from_show_table.classify.underscore.to_sym].foreign_key
+				@foreign_key = model_class.reflections[@from_show_table.classify.underscore.to_s].foreign_key
 				@object.send("#{@foreign_key}=", @show_id) 
 			else
 				# the user wants to add an existing model, that means we have to present him an index-view of all available objects. 
@@ -446,7 +448,7 @@ class ApplicationController < ActionController::Base
 				end
 			elsif session[:undo].action == :destroy
 				if undo_class.is_versioned?
-					version_object = ObjectVersion.where(:model_name => undo_class.to_s, :model_id => session[:undo].model_id, :model_owner_id => user_id).order("created_at DESC").first
+					version_object = ObjectVersion.where(:inki_model_name => undo_class.to_s, :model_id => session[:undo].model_id, :model_owner_id => user_id).order("created_at DESC").first
 					if version_object
 						@undo_object = version_object.to_inki_object
 						@undo_object.new_record!
@@ -580,7 +582,7 @@ EOF
 		if not ActiveRecord::Base.connection.table_exists? 'colors'
 			return
 		end
-    colors = Color.where(:model_name => model_class.to_s)
+    colors = Color.where(:inki_model_name => model_class.to_s)
 		colors.each do |color|
 			@colors[color.model_id] = color.rgb.rgb if color.rgb
 		end

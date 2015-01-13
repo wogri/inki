@@ -13,8 +13,8 @@
 // COMMENT require jquery (I don't know why this is automatically loaded)
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
-//= require bootstrap
+//= require jquery-ui
+//= require bootstrap-sprockets
 //= require spinner_link
 //= require inki_filter
 // require_tree .

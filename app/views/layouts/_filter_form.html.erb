@@ -9,26 +9,25 @@
   :add_existing_model => @add_existing_model,
   :previous_ajax_id => @previous_ajax_id,
 }) if @from_show_table -%>
-<%= form_tag(params.merge(link_hash), :method => 'get', :class => "filter_form", :remote => true) do %>
+<%= form_tag(params.symbolize_keys.merge(link_hash), :method => 'get', :class => "filter_form", :remote => true) do %>
   <div class="btn-group" role="group"> 
     <div class="btn-group" role="group">
       <button class="btn btn-default dropdown-toggle" type="button" id="filter<%= @ajax_id -%>" data-toggle="dropdown" aria-expanded="true">
-        <%= icon("icon-plus-sign") %>
-        <%= t(:add_filter) %>
+        <%= icon("plus-circle", t(:add_filter)) %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <% (@model_class.sorted_attributes - selected_attributes).each do |attribute| %>
+        <% (@model_class.sorted_attributes + @model_class.belongs_to_hidden_fields(no_id: true) - selected_attributes).uniq.each do |attribute| %>
           <%= filter_link(@model_class, attribute, params, @ajax_id) %>
         <% end -%>
       </ul>
     </div>
     <%#= submit_tag(t(:filter), :class => "btn btn-default") %>
-    <%= button_tag(icon("icon-filter") + t(:filter), type: "submit", :class => "btn btn-default") %>
-    <%= link_to(icon("icon-external-link") + t(:link_for_filter), params.merge(link_hash), :class => "btn btn-default") %>
-    <% link_hash = params.merge(link_hash) %>
-    <% link_hash.delete("filter") %>
-    <%= link_to(icon("icon-remove-circle") + t(:cancel), link_hash, :remote => true, :class => "btn btn-danger") %>
+    <%= button_tag(icon("filter", t(:filter)), type: "submit", :class => "btn btn-default") %>
+    <%= link_to(icon("external-link", t(:link_for_filter)), params.symbolize_keys.merge(link_hash), :class => "btn btn-default") %>
+    <% link_hash = params.symbolize_keys.merge(link_hash) %>
+    <% link_hash.delete(:filter) %>
+    <%= link_to(icon("times-circle", t(:cancel)), link_hash, :remote => true, :class => "btn btn-danger") %>
   </div> <!-- btn-group -->
   <%= filter_form %>
 <% end -%>

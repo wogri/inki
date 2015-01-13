@@ -1,16 +1,6 @@
 # -*- encoding : utf-8 -*-
 module ApplicationHelper
 
-	# returns an font-awesome icon
-	def icon(name, options = {})
-		return nil if not name
-		html_options = {:class => name.to_s}
-		if options[:fixed_width]
-			html_options[:class] += " icon-fixed-width"
-		end
-		content_tag(:i, nil, html_options)  + " "
-	end
-
 	# builds a menu around the menu model and runs generate_menu_html
 	def generate_menu(menu)
 		return nil if not @menu or not @menu.menu_elements
@@ -32,7 +22,7 @@ module ApplicationHelper
 			link_target = self.send(sub_menu.url_for_path)
 			name = sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
 			if sub_menu.klass.inki_icon
-				icon(sub_menu.klass.inki_icon, :fixed_width => true) + name
+				icon(sub_menu.klass.inki_icon, name, :class => "fa-fw")
 			else
 				name
 			end
@@ -111,16 +101,13 @@ module ApplicationHelper
 			end
 		end
 		unless options[:non_dropdown_view] or @non_dropdown_view
-			loupe = icon("icon-reorder")
-			html << link_to(loupe + t(:show), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
-			html << link_to(loupe + t(:show_no_remote), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
+			html << link_to(icon("reorder", t(:show), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
+			html << link_to(icon("reorder", t(:show_no_remote), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
 		end
 		if @right == :write and not @add_existing_model # add_existing_model means a has_and_belongs_to_many realtionship selection view :) 
-			edit_image = icon("icon-pencil")
-			edit_text = (edit_image + t(:edit)).html_safe
+			edit_text = (icon("pencil", t(:edit), :class => "fa-fw")).html_safe
 			edit_path = self.send("edit_#{object_name}_path", object, link_hash)
-			delete_image = icon("icon-trash")
-			delete_text = (delete_image + t(:delete)).html_safe
+			delete_text = icon("trash", t(:delete), :class => "fa-fw")
 			delete_hash = link_hash.clone
 			delete_hash.merge!({:page => @page}) if @page and @page.to_i > 0
 			delete_hash.merge!({:search => @search_string}) if @search_string and @search_string != ""
@@ -133,24 +120,21 @@ module ApplicationHelper
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"}, :remote => true)
 			end
 			if object.class.is_expirable?
-				expirable_text = icon("icon-trash") + t(:delayed_delete)
+				expirable_text = icon("trash", t(:delayed_delete), :class => "fa-fw")
 				expirable_path = self.send("#{object_name}_path", object, :popup => "expire", :ajax_id => @ajax_id) # expire means: return a modal with a popup of expirable time
 				html << link_to(expirable_text, expirable_path, :remote => true)
 			end
 			if object.class.is_versioned?
-				version_text = icon("icon-mail-reply-all") + t(:versions)
+				version_text = icon("mail-reply-all", t(:versions), :class => "fa-fw")
 				version_path = self.send("#{object_name}_path", object, :vcs => true, :ajax_id => @ajax_id) # vcs means: return a modal with a popup of model versions
 				html << link_to(version_text, version_path, :remote => true)
 			end
 		end
 		# the standard-exporters are listed here
 		if not @add_existing_model
-			image = icon("icon-external-link")
-			html << link_to(image + t(:csv_export), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
-			image = icon("icon-code")
-			html << link_to(image + t(:xml_export), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
-			image = icon("icon-external-link-sign")
-			html << link_to(image + t(:json_export), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
+			html << link_to(icon("external-link", t(:csv_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
+			html << link_to(icon("code", t(:xml_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
+			html << link_to(icon("external-link-square", t(:json_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
 			html += build_special_buttons(object, link_hash, options)
 			split_button(html) # split_button generates a split button (a button with more options)
 		else
@@ -169,9 +153,9 @@ module ApplicationHelper
 	def special_controller_button(model_class, option_name, option, link_target = nil)
 		link_hash = {}
 		link_hash[:special_option] = option_name unless link_target
-		link_text = icon(option[:icon]) + t(option[:description])
+		link_text = icon(option[:icon], t(option[:description]), :class => "fa-fw")
 		if not link_target
-			link_target = self.send("#{@controller_name}_path", params.merge(link_hash))
+			link_target = self.send("#{@controller_name}_path", params.symbolize_keys.merge(link_hash))
 		end
 		html_options = {:class => "spinner"}
 		html_options[:remote] = true unless option[:non_xhr_link]
@@ -181,8 +165,8 @@ module ApplicationHelper
 	def special_button(option_name, option, link_hash, object = nil)
 		object_name = object.class.to_s.underscore
 		link_hash[:special_option] = option_name
-		link_text = icon(option[:icon]) + t(option[:description])
-		link = link_to(link_text.html_safe, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "spinner")
+		link_text = icon(option[:icon], t(option[:description]), :class => "fa-fw")
+		link = link_to(link_text, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "spinner")
 	end
 
 	def build_special_buttons(object, original_link_hash, options = {})
@@ -243,11 +227,15 @@ module ApplicationHelper
 	# translates database attributes and produces links for sorting
 	def translate_and_link(object, attribute)
 		name = object.class.human_attribute_name(attribute)
+    html = ''
     if attribute.to_s == @order_by
-      link_to((content_tag(:span, ' ', :class => "arrow_#{@order_direction}") + name).html_safe, self.send("#{controller_name}_path", params.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner") 
-    else
-      link_to(name, self.send("#{controller_name}_path", params.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner")
+      html = icon("caret-down", ' ')
+      if @order_direction == "DESC"
+        html = icon("caret-up")
+      end
+      html += " "
     end
+    (html.html_safe + link_to(name, self.send("#{controller_name}_path", params.symbolize_keys.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner")).html_safe
 	end
 		
 	# returns the standard-options for a standard-object
@@ -293,12 +281,17 @@ module ApplicationHelper
       value
 		# this is a no more precisely defined dropdown-field that is consisting of a simple 1:n relationship
 		elsif object.class.belongs_to?(attribute)
-			foreign_key = object.send(object.reflections[attribute.to_sym].foreign_key)
+			foreign_key = object.send(object.class.reflections[attribute.to_s].foreign_key)
 			relation_object = attribute.to_s.classify.constantize.unscoped.where(id: foreign_key).first if foreign_key
 			# here we go
 			link_to(relation_object.reference_attribute, relation_object, :class => "spinner") if foreign_key and relation_object
 		else
-			description = object.class.columns_hash[attribute.to_s].type
+			columns_hash = object.class.columns_hash
+      if columns_hash and columns_hash[attribute.to_s]
+        description = columns_hash[attribute.to_s].type 
+      else 
+        description = nil
+      end
 			case(description)
 			when :string
 				sanitize(value)
@@ -320,9 +313,9 @@ module ApplicationHelper
 				sanitize(number_with_delimiter(value).to_s)
 			when :boolean
 				if value
-					icon("icon-ok")
+					icon("ok")
 				else
-					icon("icon-remove")
+					icon("remove")
 				end
 			when :time
       	value.strftime("%H:%M") if value
@@ -375,7 +368,7 @@ module ApplicationHelper
 		# this is a rather deprecated form of dropdown, simply use a belongs_to relationship if you want a dropdown from a database
 		elsif description.class == Hash and dropdown = description[:dropdown]
 			form_object.collection_select( # this stuff builds the dropdown for us
-				object.reflections[attribute.to_sym].foreign_key, # foreign key of the belongs_to relationship
+				object.class.reflections[attribute.to_s].foreign_key, # foreign key of the belongs_to relationship
 				attribute.to_s.camelize.constantize.all, # all elements from the belonged-to class
 				attribute.to_s.camelize.constantize.primary_key, # the primary key of the belonged_to class
 				dropdown[:visible_attribute] # the attribute of the foreign key that we want to see. we could also use a model-function here.
@@ -387,7 +380,7 @@ module ApplicationHelper
       form_object.select(attribute, options_for_select(options, :selected => value))
 		# this is just a belongs-to relationship that will be shown as a dropdown.
 		elsif object.class.belongs_to?(attribute)
-			foreign_key = object.reflections[attribute.to_sym].foreign_key
+			foreign_key = object.class.reflections[attribute.to_s].foreign_key
 			base_class = attribute.to_s.camelize.constantize
 			form_object.collection_select(
 				foreign_key,
@@ -458,8 +451,7 @@ module ApplicationHelper
 	end
 
 	def back_link(object)
-		img = icon("icon-circle-arrow-left icon-large")
-		link = link_to(img + t(controller_name), index_path(object), :class => "spinner btn btn-default btn-sm")
+		link = link_to(icon("circle-arrow-left", t(controller_name)), index_path(object), :class => "spinner btn btn-default btn-sm")
 	end
 
   # finds the relation between objects, and returns corresponding links
@@ -475,7 +467,7 @@ module ApplicationHelper
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
 				title = "#{title_prefix}: #{foreign_object.model_title}"
-				title = icon("icon-expand icon-large icon-rotate-180") + title
+				title = icon("plus-square", title, :class => "fa-lg")
 				content_tag(:div, link_to(title, foreign_object, :class => "list-group-item info spinnner"), :class => "list-group-inki list-group")
 			else
 				nil
@@ -491,16 +483,16 @@ module ApplicationHelper
 				pluralized_relation = relation
 			end
 			open = ""
-			open_status = "icon-expand icon-large"
+			open_status = "plus-square"
 			if close
 				open = "open_"
 				ajax_id = @ajax_id
-				open_status = "icon-collapse icon-large" 
+				open_status = "minus-square" 
 			else
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
-			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + Object.const_get(relation.to_s.singularize.camelize).model_name.human(:count => relation_elements)
-			link_text = (icon(open_status) + link_text).html_safe
+			
+			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + icon(open_status, Object.const_get(relation.to_s.singularize.camelize).model_name.human(:count => relation_elements), :class => "fa-lg")
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
 				:from_show_table => object.class.name.tableize, 
@@ -652,7 +644,7 @@ module ApplicationHelper
     end
     filter[filter.keys.sort.last.to_i + 1] = {:attribute => attribute, state: "new"}
     description = model_class.human_attribute_name(attribute)
-    link = link_to(description, params.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
+    link = link_to(description, params.symbolize_keys.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
     return content_tag(:li, link, role: "presentation")
   end
 
@@ -673,7 +665,7 @@ module ApplicationHelper
       if (["datetime_equal", "number_eq", "is"].member?(state) and element["input"] and element["input"] != "") or (state =~ /\Areference_/) or ["boolean_true", "boolean_false"].member?(state)
         selected_attributes.push(attribute.to_sym)
       end
-      minus_sign = link_to(icon("icon-minus-sign"), params.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
+      minus_sign = link_to(icon("minus-circle"), params.symbolize_keys.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
       # minus_sign = content_tag(:span, minus_sign, :class => "input-group-btn")
       attribute_name = content_tag(:button, model_class.human_attribute_name(attribute), "class" => "btn btn-default", :type => "button")
       # attribute_name = content_tag(:span, attribute_name.html_safe, :class => "input-group-btn")
@@ -695,7 +687,7 @@ module ApplicationHelper
   # creates a dropdown for a filter according to the attribute - e. g. "is or contains" for strings, "greater, equal, less than" for integers, etc...
   def filter_dropdown(model_class, attribute, filter, key)
     if model_class.belongs_to?(attribute)
-			foreign_key = model_class.new.reflections[attribute.to_sym].foreign_key
+			foreign_key = model_class.reflections[attribute.to_s].foreign_key
 			base_class = attribute.to_s.camelize.constantize
 			elements = base_class.order(base_class.default_order.join(" "))
       # base_class.primary_key is the primary key
@@ -740,8 +732,8 @@ module ApplicationHelper
 
     elsif attribute_type == :boolean
       filter_buttons = [
-        {boolean_true: icon("icon-ok")}, 
-        {boolean_false: icon("icon-remove")}
+        {boolean_true: icon("ok")}, 
+        {boolean_false: icon("remove")}
       ]
 		elsif attribute_type == :integer
       filter_buttons = [
@@ -787,12 +779,12 @@ module ApplicationHelper
     else 
       button_text = I18n.t(:select)
     end
-    button = content_tag(:button, (button_text + " " + content_tag(:span, "", :class => "caret")).html_safe, :class => "btn btn-default dropdown-toggle", :type => "button", "data-toggle" => "dropdown", "aria-expanded" => true)
+    button = content_tag(:button, ("#{button_text} " + content_tag(:span, "", :class => "caret")).html_safe, :class => "btn btn-default dropdown-toggle", :type => "button", "data-toggle" => "dropdown", "aria-expanded" => true)
     elements = options.collect do |option|
       description = option.values.first
       tag = option.keys.first
       filter[key.to_s][:state] = tag
-      link = link_to(description, params.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
+      link = link_to(description, params.symbolize_keys.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
       content_tag(:li, link, role: "presentation").html_safe
     end
     dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu") # , "aria-labelledby" => "filter_#{key}#{attribute}")

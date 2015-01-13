@@ -16,6 +16,10 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
+gem 'bootstrap-sass', '~> 3.3.1'
+gem 'autoprefixer-rails'
+
+gem 'font-awesome-sass'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -25,7 +29,7 @@ gem 'therubyracer', '~> 0.11.0'
 
 gem 'kaminari'
 gem 'dynamic_form'
-gem 'attribute-defaults'
+gem 'attribute-defaults', '= 0.6.0'
 gem 'acts_as_indexed'
 gem 'net-ldap'
 gem 'coderay' # syntax highlighting => http://coderay.rubychan.de/doc/; print CodeRay.scan_file('ruby.h').html.div

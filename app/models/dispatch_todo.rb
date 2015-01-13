@@ -28,7 +28,7 @@ class DispatchTodo < ActiveRecord::Base
 
 	def build_command
 		model_description = self.get_jobs.map do |job|
-			"#{job.model_name}:#{job.model_id}:#{job.model_operation}:#{job.id}"
+			"#{job.inki_model_name}:#{job.model_id}:#{job.model_operation}:#{job.id}"
 		end.join ","
 		executable = todo.to_s.gsub(/\.\d+$/, '') # the todo can be an alias, any .<NUMBER> will be removed.
 		command = ["#{Rails.root}/script/dispatch_todos/#{executable}", '--models', model_description, '--host', self.host, '--options', "'#{self.options.to_yaml}'"]

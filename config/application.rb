@@ -64,5 +64,6 @@ module Development
     config.assets.version = '1.0'
 
 		# config.active_record.observers = :audit_observer
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end

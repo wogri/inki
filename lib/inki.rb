@@ -45,7 +45,7 @@ module Inki
 		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
 			return
 		end
-		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
+		owner = ModelOwner.where(:inki_model_name => self.class.table_name, :model_id => self.id).first
 		if owner and owner.model_owner_id == owner_id 
 			return
 		elsif owner # owner exists, but the owner just changed
@@ -53,7 +53,7 @@ module Inki
 			owner.model_owner_id = owner_id
 			owner.save
 		else # owner does not exist, create it
-			ModelOwner.create(:model_name => self.class.table_name, :model_id => self.id, :model_owner_name => owner_name, :model_owner_id => owner_id)
+			ModelOwner.create(:inki_model_name => self.class.table_name, :model_id => self.id, :model_owner_name => owner_name, :model_owner_id => owner_id)
 		end
 	end
 
@@ -63,7 +63,7 @@ module Inki
 		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
 			return
 		end
-		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
+		owner = ModelOwner.where(:inki_model_name => self.class.table_name, :model_id => self.id).first
 		owner.delete if owner
 	end
 
@@ -72,7 +72,7 @@ module Inki
 		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
 			return ''
 		end
-		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
+		owner = ModelOwner.where(:inki_model_name => self.class.table_name, :model_id => self.id).first
 		owner.model_owner_name if owner
 	end
 
@@ -80,7 +80,7 @@ module Inki
 		if not ActiveRecord::Base.connection.table_exists? 'model_owners'
 			return nil
 		end
-		owner = ModelOwner.where(:model_name => self.class.table_name, :model_id => self.id).first
+		owner = ModelOwner.where(:inki_model_name => self.class.table_name, :model_id => self.id).first
 		owner.model_owner_id if owner
 	end
 
@@ -145,12 +145,15 @@ module Inki
 
 	# returns the type of relationship of this property - can either be: has_many, belongs_to, has_and_belongs_to_many, has_one or has_many_through
 	def rails_relation(attribute)
-		reflection = self.reflections[attribute.to_sym]
+		reflection = self.class.reflections[attribute.to_s]
 		if reflection.class == ActiveRecord::Reflection::ThroughReflection
 			return :has_many_through
 		elsif reflection.class == ActiveRecord::Reflection::AssociationReflection
 			return reflection.macro
 		end
+    if reflection
+      return reflection.macro
+    end
 	end
 
 	def model_title
@@ -182,7 +185,7 @@ module Inki
 		end
 		logger.error("#{self.class}/#{self._operation} will be dispatched at #{retry_at}.")
 		dispatch_hash = {
-			:model_name => self.class.table_name,
+			:inki_model_name => self.class.table_name,
 			:model_id => self.id,
 			:model_operation => self._operation.to_s,
 			:model_description => self._dispatch_model_description,
@@ -237,7 +240,7 @@ module Inki
 			:format => 1, 
 			:model_owner_id => self._owner_id,
 			:model_id => self.id,
-			:model_name => self.class.to_s,
+			:inki_model_name => self.class.to_s,
 			:serialized_object => _serialized
 		)
 	end
@@ -247,7 +250,7 @@ module Inki
 		ObjectVersion.where(
 			:format => 1,
 			:model_id => self.id, 
-			:model_name => self.class.to_s, 
+			:inki_model_name => self.class.to_s, 
 		).order("created_at DESC")
 	end
 
@@ -287,7 +290,7 @@ module Inki
 
 	# returns the current color code, if any 
 	def _color
-		color = Color.where(:model_name => self.class.to_s, :model_id => self.id).first
+		color = Color.where(:inki_model_name => self.class.to_s, :model_id => self.id).first
 		if color
 			color.rgb_id
 		end
@@ -296,11 +299,11 @@ module Inki
 	# sets the color code
 	def _color=(value)
 		return if not value
-		color = Color.where(:model_name => self.class.to_s, :model_id => self.id).first
+		color = Color.where(:inki_model_name => self.class.to_s, :model_id => self.id).first
 		if color
 			color.update_attribute(:rgb_id, value)
 		else
-			Color.create(:model_name => self.class.to_s, :model_id => self.id, :rgb_id => value)
+			Color.create(:inki_model_name => self.class.to_s, :model_id => self.id, :rgb_id => value)
 		end
 	end
 
@@ -401,7 +404,8 @@ module Inki
 						association_helper_models.push self.reflections[key].options[:through]
 					end
 				end
-				self.reflections.keys - association_helper_models
+				keys = self.reflections.keys.map do |key| key.to_sym end
+        keys - association_helper_models
 			end
 		end 
 
@@ -413,13 +417,16 @@ module Inki
 			end
 		end 
 
-		def belongs_to_hidden_fields
+		def belongs_to_hidden_fields(options = {})
 			relations = visible_relations - hidden_fields - sorted_attributes
 			fields = []
-			object = self.new
 			relations.each do |r|
-				if object.reflections[r].macro == :belongs_to
-					fields << object.reflections[r].foreign_key.to_sym
+				if self.reflections[r.to_s].macro == :belongs_to
+          if options[:no_id]
+            fields << r.to_sym
+          else
+					  fields << self.reflections[r.to_s].foreign_key.to_sym
+          end
 				end
 			end
 			fields
@@ -500,7 +507,7 @@ module Inki
 				if value == :graph
 					hash[key] = {
 						:description => :show_graph, 
-						:icon => "icon-bar-chart", 
+						:icon => "bar-chart", 
 						:controller_option => true, 
 						:graph => true # this tells the controller to treat this one special
 					}
@@ -514,7 +521,7 @@ module Inki
 			hash = {}
 			hash[attribute] = {
 				:description => :show_graph, 
-				:icon => "icon-bar-chart", 
+				:icon => "bar-chart", 
 				:controller_option => true, 
 				:graph => true, # this tells the controller to treat this one special
 				:graph_options => options
@@ -574,7 +581,7 @@ module Inki
 
 		# returns true if the given attribute is a belongs_to relationship
 		def belongs_to?(attribute)
-			self.reflections[attribute.to_sym] and self.reflections[attribute.to_sym].macro == :belongs_to
+			self.reflections[attribute.to_s] and self.reflections[attribute.to_s].macro == :belongs_to
 		end
 
 		# this attribute is used when a belongs_to relationship wants to display relevant data from the model it belongs to. 
@@ -765,7 +772,7 @@ module Inki
       object = ObjectVersion.where(
         :format => 1,
         :model_id => id, 
-        :model_name => self.to_s
+        :inki_model_name => self.to_s
       ).order("created_at DESC").first
       if not object
         return nil 

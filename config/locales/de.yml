@@ -245,7 +245,7 @@ de:
         answer: Antwort
         right_answer: Korrekt 
       dispatch_job:
-        model_name: Model Name
+        inki_model_name: Model Name
         model_id: Model ID
         done: Erledigt
         locked_at: Gelockt um
@@ -258,7 +258,7 @@ de:
         done: Erledigt
       color:
         model_id: Model ID
-        model_name: Model Name
+        inki_model_name: Model Name
         rgb: RGB
       rgb:
         rgb: RGB Value

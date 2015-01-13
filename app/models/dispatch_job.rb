@@ -20,12 +20,12 @@ class DispatchJob < ActiveRecord::Base
 	# returns all objects that are locked and have not been unlocked for 2 days - these are zombies
 	scope :zombie_locks, lambda { where(:locked_at => (Time.now - 1.year)..(Time.now - 2.days), :locked => true, :done => false) }
 	scope :locked, lambda { where(:locked => true, :done => false) }
-	attribute_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at, :owner_mail_address, :current_todos
-	index_order :created_at, :model_name, :model_id, :locked, :done, :locked_at, :model_operation, :retries
+	attribute_order :created_at, :inki_model_name, :model_id, :locked, :done, :locked_at, :model_description, :model_operation, :retries, :retry_at, :owner_mail_address, :current_todos
+	index_order :created_at, :inki_model_name, :model_id, :locked, :done, :locked_at, :model_operation, :retries
 	has_many :dispatch_todos, :dependent => :destroy
 	sort_by :created_at, "DESC"
 
-	read_only :locked_at, :model_description, :model_id, :model_name, :model_operation
+	read_only :locked_at, :model_description, :model_id, :inki_model_name, :model_operation
 
 	# lock the dispatch_job and set the locked_at date, saves the object
 	def lock!
@@ -111,7 +111,7 @@ class DispatchJob < ActiveRecord::Base
 		begin
 			config[:dispatches].each do |host, todos|		
 				todos.each do |todo, options|
-					if options[:interested_in_objects].member?(self.model_name) and not self.todos.where(:todo => todo, :host => host, :done => true).first
+					if options[:interested_in_objects].member?(self.inki_model_name) and not self.todos.where(:todo => todo, :host => host, :done => true).first
 						new_todo = DispatchTodo.new
 						new_todo.host = host
 						new_todo.todo = todo
