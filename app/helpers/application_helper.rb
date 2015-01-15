@@ -467,7 +467,7 @@ module ApplicationHelper
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
 				title = "#{title_prefix}: #{foreign_object.model_title}"
-				title = icon("plus-square", title, :class => "fa-lg")
+				title = icon("external-link-square", title, :class => "fa-lg")
 				content_tag(:div, link_to(title, foreign_object, :class => "list-group-item info spinnner"), :class => "list-group-inki list-group")
 			else
 				nil
