@@ -451,7 +451,12 @@ module ApplicationHelper
 	end
 
 	def back_link(object)
-		link = link_to(icon("circle-arrow-left", t(controller_name)), index_path(object), :class => "spinner btn btn-default btn-sm")
+		content_tag(
+        :div, 
+        link_to(icon("arrow-circle-left", t(controller_name), :class => "fa-lg"),
+                index_path(object),
+                :class => "spinner list-group-item active"),
+        :class => "list-group list-group-inki")
 	end
 
   # finds the relation between objects, and returns corresponding links
