@@ -37,11 +37,7 @@ class Ldap < ActiveRecord::Base
 				:attributes => ldap_config['attribute_mapping'].values
 			) do |entry|
 				logger.debug(entry.inspect)
-        begin
-				  user.name = entry[ldap_to_userattrib["name"].downcase.to_sym].first.to_s
-        rescue 
-          logger.error("shit. user had a wrong encoding")
-        end
+				user.name = entry[ldap_to_userattrib["name"].downcase.to_sym].first.to_s
 				user.mailaddress = entry[ldap_to_userattrib["mailaddress"].downcase.to_sym].first.to_s
 				user.id = username
 				if static_group = ldap_config['static_group'] 
