@@ -1,6 +1,10 @@
 <h1>
 	<%= icon(@object.class.inki_icon) -%>
-	<%= @object.title if defined? @object.title %>
+	<% if defined? @object.title -%>
+    <%= @object.title  %>
+  <% else -%>
+    <% t(controller_name) %>
+  <% end -%>
 </h1>
 <div class="row">
 	<div class="col-md-12">
