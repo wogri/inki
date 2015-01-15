@@ -1,6 +1,6 @@
 <h1>
 	<%= icon(@object.class.inki_icon) -%>
-	<% if defined? @object.title -%>
+	<% if defined? @object.title and @object.title != "" -%>
     <%= @object.title  %>
   <% else -%>
     <% t(controller_name) %>
