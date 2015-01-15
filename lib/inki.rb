@@ -121,7 +121,7 @@ module Inki
 	def decrypt(password, inki_cipher)
 		if attributes = self.class.is_encrypted?
 			attributes.each do |attribute|
-				self.send("#{attribute}=", decrypt_attribute(attribute, password, inki_cipher))
+				self.send("#{attribute}=", decrypt_attribute(attribute, password, inki_cipher).force_encoding("UTF-8"))
 			end
 		end
 	end
