@@ -451,10 +451,11 @@ module ApplicationHelper
 	end
 
 	def back_link(object)
+    badge = content_tag(:span, object.class.all.size, :class => "badge")
+    title = icon("arrow-circle-left", t(controller_name), :class => "fa-lg")
 		content_tag(
         :div, 
-        link_to(icon("arrow-circle-left", t(controller_name), :class => "fa-lg"),
-                index_path(object),
+        link_to((badge + title).html_safe, index_path(object),
                 :class => "spinner list-group-item active"),
         :class => "list-group list-group-inki")
 	end
