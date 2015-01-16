@@ -20,6 +20,7 @@ module ApplicationHelper
 			t(sub_menu.menu_string)
 		elsif sub_menu.menu_type == :entry
 			link_target = self.send(sub_menu.url_for_path)
+      link_html_class << "spinner"
 			name = sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
 			if sub_menu.klass.inki_icon
 				icon(sub_menu.klass.inki_icon, name, :class => "fa-fw")
