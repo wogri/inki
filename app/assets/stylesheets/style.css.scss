@@ -315,6 +315,26 @@ a.list-group-item.info > .badge {
 }
 
 .navbar-logo {
-  max-width: 80px; 
+  max-height: 75px; 
   margin-top: -25px;
 }
+
+// spinning inki logo
+$spin_time: 2.0s;
+$rotate: 360deg;
+.navbar-brand img{
+  -moz-transition: all $spin_time ease-in-out;
+  -webkit-transition: all $spin_time ease-in-out;
+  -o-transition: all $spin_time ease-in-out;
+  -ms-transition: all $spin_time ease-in-out;
+  transition: all $spin_time ease-in-out;
+}
+
+.navbar-spinner img{
+  -moz-transform: rotate(720deg);
+  -webkit-transform: rotate(720deg);
+  -o-transform: rotate(720deg);
+  -ms-transform: rotate(720deg);
+  transform: rotate(720deg);
+}
+
