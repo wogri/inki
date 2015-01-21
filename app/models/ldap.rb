@@ -37,7 +37,8 @@ class Ldap < ActiveRecord::Base
 				:attributes => ldap_config['attribute_mapping'].values
 			) do |entry|
 				logger.debug(entry.inspect)
-				user.name = entry[ldap_to_userattrib["name"].downcase.to_sym].first.to_s
+        u = UserAccount.where(username: username).first
+				user.name = u.name if u
 				user.mailaddress = entry[ldap_to_userattrib["mailaddress"].downcase.to_sym].first.to_s
 				user.id = username
 				if static_group = ldap_config['static_group'] 
