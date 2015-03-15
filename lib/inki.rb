@@ -314,6 +314,32 @@ module Inki
 			c.chr if c < 128
 		end.join
 	end
+  
+  # calls latex2pdf to create a pdf by a given template.
+  def to_pdf
+		require 'erb'
+		require 'fileutils'
+    @self = self
+    template = ERB.new(LatexTemplate.where(model: self.class.to_s).first.template)
+    directory = "#{Rails.root}/tmp/pdf/#{self.class.to_s}/"
+		if not File.directory? directory
+			FileUtils.mkpath(directory)
+		end
+		file = "#{directory}/#{self.id}.tex"
+		File.open(file, 'w') do |f|
+      # TODO: this is a potential security hole. But as we trust the user anyways, we don't give too much of a sh***
+			f.write(template.result(binding))
+		end
+		IO.popen("pdflatex -output-directory #{directory} #{file}") do |handle|
+			pdflatex_output = handle.read
+		end
+		if $? == 0
+			return File.read("#{directory}/#{self.id}.pdf")
+		else
+			logger.error(pdflatex_output)
+      return nil
+		end
+  end
 
 # Start Class Methods
   module ClassMethods

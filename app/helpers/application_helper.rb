@@ -136,6 +136,9 @@ module ApplicationHelper
 			html << link_to(icon("external-link", t(:csv_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
 			html << link_to(icon("code", t(:xml_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
 			html << link_to(icon("external-link-square", t(:json_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
+      if defined?(LatexTemplate) and LatexTemplate.table_exists? and LatexTemplate.where(model: object.class.to_s).size > 0
+			  html << link_to(icon("file-pdf-o", t(:pdf_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :pdf), :class => "spinner")
+      end
 			html += build_special_buttons(object, link_hash, options)
 			split_button(html) # split_button generates a split button (a button with more options)
 		else

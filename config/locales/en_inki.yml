@@ -26,6 +26,7 @@ en:
   _owner_name: Owner
   owner_name: Owner
   csv_export: "Export to CSV"
+  pdf_export: "Export to PDF"
   json_export: "Export to JSON"
   xml_export: "Export to XML"
   show: Show

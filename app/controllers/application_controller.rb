@@ -55,10 +55,13 @@ class ApplicationController < ActionController::Base
 					render :file => "layouts/show" 
 				end
 			}
-    	format.html { render :file => "layouts/show" }
-    	format.json { render :json => @object }
-			format.xml { render :xml => @object }
-			format.csv { send_data @object.class.to_csv([@object]) }
+    	format.html {render :file => "layouts/show" }
+    	format.json {render :json => @object }
+			format.xml {render :xml => @object }
+			format.csv {send_data @object.class.to_csv([@object]) }
+			format.pdf {send_data @object.to_pdf, 
+                  filename: "#{@object.id}.pdf",
+                  type: 'application/pdf'}
 		end
   end
 
