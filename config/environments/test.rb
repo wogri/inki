@@ -14,7 +14,7 @@ Development::Application.configure do
 
   config.eager_load = false
 
-  config.active_support.test_order = :random
+  config.active_support.test_order = :sorted
 
   # Log error messages when you accidentally call methods on nil
   # config.whiny_nils = true

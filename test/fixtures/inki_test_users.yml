@@ -1,4 +1,4 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # This model initially had no columns defined.  If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
@@ -10,7 +10,6 @@ one:
   comment: a test comment
   mailaddress: one@test.com
   active: true
-  usergroup: admins
 
 two:
   name: Testuser Two
@@ -18,7 +17,6 @@ two:
   comment: a test comment
   mailaddress: two@test.com
   active: true
-  usergroup: users
 
 <% 100.times do |n| %>
 user_<%= n %>:
@@ -27,5 +25,5 @@ user_<%= n %>:
   comment: <%= "a test comment with number #{n}" %>
   mailaddress: <%= "user#{n}@test.com" %>
   active: true
-  usergroup: users
 <% end %>
+

@@ -68,7 +68,7 @@ $config[:global][:verboselevel] = options[:verboselevel] if options[:verboseleve
 
 # do this once after startup
 locked_dispatch_jobs = DispatchJob.locked.each do |job|
-	job.unlock!(force: true)
+	job.unlock!(force: true, sleeptime: 1)
 end
 
 # loop that thing forever

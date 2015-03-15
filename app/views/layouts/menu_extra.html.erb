@@ -2,7 +2,7 @@
 	<% if @right -%>
 		<li>
 			<%= button_to({:controller => "logins", :action => "destroy", :id => nil}, data: { disable_with: t(:logout) }, :class => "btn btn-warning navbar-btn") do %>
-				<%= (content_tag(:span, nil, :class => "glyphicon glyphicon-log-out") + " " + t(:logout)).html_safe %>
+				<%= icon("sign-out", t(:logout)).html_safe %>
 			<% end -%>
 		</li>
 	<% end -%>
