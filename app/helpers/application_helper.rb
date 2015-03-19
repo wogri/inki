@@ -456,7 +456,7 @@ module ApplicationHelper
 
 	def back_link(object)
     badge = content_tag(:span, object.class.all.size, :class => "badge active")
-    title = icon("arrow-circle-left", t(controller_name), :class => "fa-lg")
+    title = icon("arrow-circle-left", t(controller_name, default: controller_name.camelcase), :class => "fa-lg")
         link_to((title + " " + badge).html_safe, index_path(object),
                 :class => "spinner btn btn-primary")
 	end
