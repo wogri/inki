@@ -1,0 +1,49 @@
+version: "3.5"
+
+services:
+    inki:
+      # image: ruby
+        build:                               
+          context: .
+          dockerfile: Dockerfile--rvm-solution
+        environment:
+          - PROJECT_ROOT="/var/www/inki/"
+          - RAILS_ENV=development
+        working_dir: /var/www/inki/ 
+      # TODO: set locale in container
+      # command: tail -f /etc/passwd
+        command: bundle exec rails s -p 3000 -b 0.0.0.0
+        ports:
+          - 3000:3000
+        volumes:
+          - .:/var/www/inki/
+        networks:
+          - inki
+          - traefik
+        labels:
+            - "traefik.frontend.rule=Host:fk_inki.apollo.local"
+            - "traefik.frontend.entryPoints=http,https"
+            - "traefik.docker.network=traefik"
+            - "traefik.port=3000"
+
+
+    inki_db:
+      # image: mariadb:10.3
+        image: postgres:11.2
+      # restart: always
+        env_file:
+          - inki_db.env
+        volumes:
+          - inki_db_volume:/var/lib/mysql
+        networks:
+          - inki
+        labels:
+          - "traefik.enable=false"
+
+networks:
+  inki:
+  traefik:
+    name: traefik
+
+volumes:
+  inki_db_volume:
