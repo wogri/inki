@@ -1,10 +1,10 @@
-#ARG RVM_RUBY_VERSIONS="2.3 2.4"
-ARG RVM_RUBY_VERSIONS="1.9.3"
+ARG RVM_RUBY_VERSIONS="2.4 1.9.3"
 FROM msati/docker-rvm
 USER ${RVM_USER}
 ENV RUBY=1.9
 CMD rvm ${RUBY} do irb
 
+# install packages via apt
 USER root
 RUN apt-get update -yqq \
 && apt-get install -yqq --no-install-recommends \
@@ -17,19 +17,17 @@ RUN apt-get update -yqq \
     # nodejs \
 && apt-get -q clean \
 && rm -rf /var/lib/apt/lists
-#     
-#     
-#     WORKDIR /var/www/inki/
-#     # Setup
-#     COPY ./Gemfile* ./
-#     # RUN gem install bundler:2.0.1  # bundler 2.0.1 is used in Gemfile.
-#     # RUN bundler update --bundler
-#     RUN bundler install
-#     
-#     # install inki
-#     
-#     # RUN gem install middleman     # install middleman
-#     # RUN ls -liah                # just a test; TODO: remove   
 
+# install packages/dependencies via bundler
+USER ${RVM_USER}
+WORKDIR /var/www/inki/
+# # install inki
+COPY ./Gemfile* ./
+# RUN gem install bundler:2.0.1  # bundler 2.0.1 is used in Gemfile.
+# RUN bundler update --bundler
+RUN bundler install
 
-CMD tail -f /etc/passwd
+# install inki
+
+# RUN gem install middleman     # install middleman
+# RUN ls -liah                # just a test; TODO: remove   

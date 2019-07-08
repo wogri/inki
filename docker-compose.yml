@@ -11,8 +11,8 @@ services:
           - RAILS_ENV=development
         working_dir: /var/www/inki/ 
       # TODO: set locale in container
-      # command: tail -f /etc/passwd
-        command: bundle exec rails s -p 3000 -b 0.0.0.0
+        command: tail -f /etc/passwd
+      # command: bundle exec rails s -p 3000 -b 0.0.0.0
         ports:
           - 3000:3000
         volumes:
