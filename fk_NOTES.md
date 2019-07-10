@@ -8,6 +8,10 @@
 ## TODOs
 
 [ ] install in Dockerfile? // debconf: delaying package configuration, since apt-utils is not installed 
+[ ] YAML safe loading is not available. Please upgrade psych to a version that supports safe loading (>= 2.0).
+[ ] unable to convert U+00E9 from UTF-8 to US-ASCII for spec/bundler/bundler_spec.rb, skipping
+[ ] set locale?
+[ ] tzdata (Time Zone Data) is not set correctly (-2h from vienna)
 
 PATH==/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -28,3 +32,13 @@ conftest.c:3:10: fatal error: libpq-fe.h: No such file or directory
           ^~~~~~~~~~~~
 compilation terminated.`
     * sol?: sudo apt-get install libpq-dev
+    * look at inki documentation/requirements
+
+## solution
+`
+ amingilani commented Aug 12, 2017
+
+Ahhh, adding the tzinfo-data gem didn't work for me but installing tzdata via apt did! Thanks @rowland!
+
+I think this could be classified as a bug for this project since it's geared towards Rails but can't support rails out of the box.
+`
