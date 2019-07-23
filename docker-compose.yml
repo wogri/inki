@@ -6,6 +6,8 @@ services:
           context: .
           dockerfile: Dockerfile--rvm-solution
       # restart: always
+      # env_file:
+      #   - inki_db.env
         environment:
           - PROJECT_ROOT="/var/www/inki/"
           - RAILS_ENV=development
