@@ -15,7 +15,8 @@ services:
       # TODO: set locale in container
         user: rvm
       # command: tail -f /etc/passwd  # do nothing but keep container alive (for testing)
-        command: bash -l -c "bundle exec rails server -p 3000 -b 0.0.0.0"
+      # command: bash -l -c "bundle exec rails server -p 3000 -b 0.0.0.0"
+        command: bash -c "./entrypoint.bash"
         ports:
           - 3000:3000
       # l.b. could be used to map src files directly into container
@@ -25,11 +26,12 @@ services:
         networks:
           - inki
           - traefik
-        labels:
-            - "traefik.frontend.rule=Host:fk_inki.apollo.local"
-            - "traefik.frontend.entryPoints=http,https"
-            - "traefik.docker.network=traefik"
-            - "traefik.port=3000"
+      # labels:
+      # # TODO: enable traefik
+      #     - "traefik.frontend.rule=Host:fk_inki.fkome.local"
+      #     - "traefik.frontend.entryPoints=http,https"
+      #     - "traefik.docker.network=traefik"
+      #     - "traefik.port=3000"
 
 
     inki_db:
