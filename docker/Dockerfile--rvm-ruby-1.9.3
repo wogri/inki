@@ -43,9 +43,11 @@ RUN gem install bundler:1.3.0
 RUN bundle install
 
 # Copy Inki source files/dirs into image
-# # just copy whole project directory
+# # just copy whole project directory + set owner to rvm
 COPY --chown=rvm:rvm . .
 
 # move entrypoint script to app-root so it can then be called
 USER root
+# change owner of project_root to rvm
+RUN chown rvm:rvm .
 RUN mv ./docker/entrypoint.bash .

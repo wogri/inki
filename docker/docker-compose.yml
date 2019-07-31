@@ -11,11 +11,12 @@ services:
         environment:
           - PROJECT_ROOT="/var/www/inki/"
           - RAILS_ENV=development
+          - LC_ALL=C.UTF-8  # set locale
         working_dir: /var/www/inki/ 
       # TODO: set locale in container
         user: rvm
         command: bash -c "./entrypoint.bash"
-      # command: tail -f /etc/hosts  # do nothing but keep container alive (for testing/debugging)
+      # command: tail -f /etc/hosts  # NOTE: do nothing but keep container alive (for testing/debugging)
         ports:
           - 3000:3000
       # l.b. could be used to map src files directly into container.
