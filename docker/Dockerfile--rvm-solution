@@ -78,7 +78,9 @@ COPY --chown=rvm:rvm . .
 #   COPY script/ ./
 #   COPY tmp/ ./
 
+# Do some last things needed
 # Remove some unneeded files that disrupt server
 USER root
-# Delete tmp dir content
-RUN rm -rf ./tmp/*
+
+# move entrypoint script to app-root so it can be called
+RUN mv ./docker/entrypoint.bash .

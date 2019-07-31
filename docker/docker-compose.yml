@@ -3,8 +3,8 @@ version: "3.5"
 services:
     inki:
         build:                               
-          context: .
-          dockerfile: Dockerfile--rvm-solution
+          context: ..
+          dockerfile: docker/Dockerfile--rvm-solution
       # restart: always
       # env_file:
       #   - inki_db.env
