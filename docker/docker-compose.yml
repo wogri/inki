@@ -27,7 +27,6 @@ services:
           - inki
       #   - traefik
       # labels:
-      # # TODO: enable traefik
       #     - "traefik.frontend.rule=Host:${URL_ROOT}"
       #     - "traefik.frontend.entryPoints=http,https"
       #     - "traefik.docker.network=traefik"

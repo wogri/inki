@@ -53,3 +53,14 @@ Standard port to connect to docker-inki is 3000 i.e. browse to "localhost:3000" 
 [ ] YAML safe loading is not available. Please upgrade psych to a version that supports safe loading (>= 2.0).
 [ ] unable to convert U+00E9 from UTF-8 to US-ASCII for spec/bundler/bundler_spec.rb, skipping
 [ ] tzdata (Time Zone Data) is not set correctly (-2h from vienna), set locale
+
+
+## Lost + Found
+
+### Dockerfile
+
+1) Option for production? - use curl/wget/git/etc to load a specific version.
+`
+ARG INKI_VERSION="x.x"
+e.g. ARG INKI_URL="https://github.com/wogri/inki/archive/v${INKI_VERSION}.tar.gz"
+TODO: [...] && curl -sSL $PASSBOLT_URL | tar zxf - -C . --strip-components 1 \

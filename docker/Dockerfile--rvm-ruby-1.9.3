@@ -1,20 +1,7 @@
 ARG RVM_RUBY_VERSIONS="1.9.3-dev"
-#ARG RVM_RUBY_VERSIONS="2.4 1.9.3"
 FROM msati/docker-rvm
 USER ${RVM_USER}
 ENV RUBY=1.9.3-dev
-#CMD rvm ${RUBY} do irb  # TODO: this is quite surely not needed
-
-# TODO: later
-# ARG INKI_VERSION="x.x"
-# e.g. ARG INKI_URL="https://github.com/wogri/inki/archive/v${INKI_VERSION}.tar.gz"
-# TODO: [...] && curl -sSL $PASSBOLT_URL | tar zxf - -C . --strip-components 1 \
-
-#ARG PASSBOLT_DEV_PACKAGES="git \
-#    nodejs \
-#    postgresql-client \
-#    net-tools \
-#    git"
 
 # install packages via apt
 USER root
@@ -22,65 +9,43 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -yqq \
 && apt-get install -yqq --no-install-recommends \
-    nodejs \
-    vim-tiny \
-    tmux \
-    libpq-dev \
     apt-utils \
+    libpq-dev \
     tzdata \
-    # net-tools\
-    # nodejs\
+    nodejs \
 && apt-get -q clean \
 && rm -rf /var/lib/apt/lists
-# install Timezone Data (tzdata)
-#RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y tzdata
-#RUN apt-get update && apt-get install -y tzdata
+
+# NOTE:
+# install packages for developing (can be omitted if not needed)
+RUN apt-get update -yqq \
+&& apt-get install -yqq --no-install-recommends \
+    vim-tiny \
+    tmux \
+    net-tools \
+&& apt-get -q clean \
+&& rm -rf /var/lib/apt/lists
+
 # set working directory
 WORKDIR /var/www/inki/
-# copy Gemfile[.lock] (requirements ruby gems)
-# # needed for bundle install
+
+# copy Gemfile[.lock] (required to install ruby gems)
 COPY Gemfile .
 COPY Gemfile.lock .
 
+# install ruby gems as rvm user
 USER ${RVM_USER}
 
-# # install inki
-# # # install packages/dependencies via bundler
-# install bundler version that works
+# install inki requirements
+# # install bundler version that works
 RUN gem install bundler:1.3.0
-#RUN bundler update --bundler  # does not make things better yet
 # install all bundles from Gemfile[.lock]
 RUN bundle install
-#RUN bundler install  # does not work, but `bundle install does`
 
 # Copy Inki source files/dirs into image
+# # just copy whole project directory
 COPY --chown=rvm:rvm . .
-#   #COPY * /var/www/inki/
-#   COPY app/ ./
-#   COPY config/ ./
-#   COPY config.ru ./
-#   COPY db/ ./
-#   #COPY docker-compose.yml .
-#   #COPY Dockerfile .
-#   #COPY Dockerfile--backup .
-#   #COPY Dockerfile--rvm-solution .
-#   #COPY fk_NOTES.md .
-#   #COPY Gemfile .
-#   #COPY Gemfile.lock .
-#   #COPY inki_db.env .
-#   #COPY COPY inki_db.env.template .
-#   COPY lib/ ./
-#   COPY LICENSE .
-#   COPY log/ ./
-#   COPY public/ ./
-#   COPY Rakefile .
-#   COPY README.md .
-#   COPY script/ ./
-#   COPY tmp/ ./
 
-# Do some last things needed
-# Remove some unneeded files that disrupt server
+# move entrypoint script to app-root so it can then be called
 USER root
-
-# move entrypoint script to app-root so it can be called
 RUN mv ./docker/entrypoint.bash .
