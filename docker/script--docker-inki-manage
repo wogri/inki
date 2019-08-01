@@ -1,0 +1,60 @@
+#!/bin/bash
+
+param=$1
+
+function build_inki_docker_image() {
+    # run docker compose + build image (needed if Dockerfile is manipulated)
+    # 
+    rm ./tmp/*
+    docker-compose build
+}
+
+
+# Print options to console.
+function print_options() {
+    echo "--> run, r: Run Docker Inki Image.";
+    echo "--> build, b: Build Docker Inki from current repository state.";
+}
+
+# MAIN #
+
+if [ $# -eq 0 ]
+then
+    # if no parameter is given, print options + read selection.
+    echo "Operations: "
+    print_options
+    echo -n "Select option: "
+    read op
+elif [ $# -eq 1 ]
+then
+    # console parameter given
+    op=$1
+fi
+
+# Select Operation.
+case $op in
+
+  run | r | up)
+      echo "Start Docker Inki container."
+    docker-compose up -d
+    ;;
+
+  stop | down | s | d)
+      echo "Start Docker Inki container."
+    docker-compose down
+    ;;
+
+  build | b)
+    echo  "Build Docker Inki Image form current state of the repository."
+    rm -rf ./tmp/*
+    docker-compose build
+    ;;
+
+  help | h)
+      print_options
+    ;;
+
+  *)
+    echo "No action. Quit."
+    ;;
+esac
