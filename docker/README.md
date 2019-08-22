@@ -49,10 +49,10 @@ Standard port to connect to docker-inki is 3000 i.e. browse to "localhost:3000" 
 
 
 ### TODOs:
-[ ] use variable to set listening port for docker-inki-container (would pbly be in .env)?
-[ ] YAML safe loading is not available. Please upgrade psych to a version that supports safe loading (>= 2.0).
-[ ] unable to convert U+00E9 from UTF-8 to US-ASCII for spec/bundler/bundler_spec.rb, skipping
-[ ] tzdata (Time Zone Data) is not set correctly (-2h from vienna), set locale
+- [ ] use variable to set listening port for docker-inki-container (would pbly be in .env)?
+- [ ] YAML safe loading is not available. Please upgrade psych to a version that supports safe loading (>= 2.0).
+- [ ] unable to convert U+00E9 from UTF-8 to US-ASCII for spec/bundler/bundler_spec.rb, skipping
+- [ ] tzdata (Time Zone Data) is not set correctly (-2h from vienna), set locale
 
 
 ## Lost + Found
