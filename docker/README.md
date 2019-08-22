@@ -60,29 +60,31 @@ Standard port to connect to docker-inki is 3000 i.e. browse to "localhost:3000" 
 
 ## Notes
 - Bundler 1.3.0 does not work anymore (22.08.2019) -> gem install bundler -v '~>1'
-[Link](https://makandracards.com/makandra/62887-how-to-install-bundler-for-ruby-2-3)
-`
-rvm@eb9f628e539f:/var/www/inki$ gem install bundler
-Fetching: bundler-2.0.2.gem (100%)
-ERROR:  Error installing bundler:
-        bundler requires Ruby version >= 2.3.0.
-        rvm@eb9f628e539f:/var/www/inki$ gem install bundler -v '~>1'
-        Fetching: bundler-1.17.3.gem (100%)
-        Successfully installed bundler-1.17.3
-        1 gem installed
-        Installing ri documentation for bundler-1.17.3...
-        Installing RDoc documentation for bundler-1.17.3...
-`,
-`
-RUN gem install bundler:1.3.0
-ERROR:  Could not find a valid gem 'bundler:1.3.0' (>= 0) in any repository`
-, thus: -> use `gem install bundler -v '~>1'` in Dockerfile instead.
+  - [Link](https://makandracards.com/makandra/62887-how-to-install-bundler-for-ruby-2-3)
+  - 
+  `
+  rvm@eb9f628e539f:/var/www/inki$ gem install bundler
+  Fetching: bundler-2.0.2.gem (100%)
+  ERROR:  Error installing bundler:
+          bundler requires Ruby version >= 2.3.0.
+  ===
+  rvm@eb9f628e539f:/var/www/inki$ gem install bundler -v '~>1'
+  Fetching: bundler-1.17.3.gem (100%)
+  Successfully installed bundler-1.17.3
+  1 gem installed
+  Installing ri documentation for bundler-1.17.3...
+  Installing RDoc documentation for bundler-1.17.3...
+  `,
+  `
+  RUN gem install bundler:1.3.0
+  ERROR:  Could not find a valid gem 'bundler:1.3.0' (>= 0) in any repository`
+
+  , thus: -> use `gem install bundler -v '~>1'` in Dockerfile instead.
 
 
 ### Dockerfile
 
-1) Option for production? - use curl/wget/git/etc to load a specific version.
-`
-ARG INKI_VERSION="x.x"
-e.g. ARG INKI_URL="https://github.com/wogri/inki/archive/v${INKI_VERSION}.tar.gz"
-TODO: [...] && curl -sSL $PASSBOLT_URL | tar zxf - -C . --strip-components 1 \
+- Option for production? - use curl/wget/git/etc to load a specific version.
+  - ARG INKI_VERSION="x.x"
+    - e.g. ARG INKI_URL="https://github.com/wogri/inki/archive/v${INKI_VERSION}.tar.gz"
+    - something like: [...] && curl -sSL $INKI_URL | tar zxf - -C . --strip-components 1 \
