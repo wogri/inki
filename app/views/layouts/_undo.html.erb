@@ -10,7 +10,7 @@
 	<% elsif session[:undo].action == :create -%>
 		<%= alert(:warning, content_tag(:b, t(:click_undo_will_delete_element) + ":")) %>
 		<%= table %>
-		<%= link_to(icon("trash", t(:delete)),
+		<%= link_to(icon("fas", "trash", t(:delete)),
 			self.send("#{@object.class.to_s.underscore}_path", @object, :undo => true),
 			:method => :delete, 
 			:class => "btn btn-danger spinner", 

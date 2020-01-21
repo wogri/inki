@@ -1,4 +1,4 @@
-class CreateInkiTestGroups < ActiveRecord::Migration
+class CreateInkiTestGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :inki_test_groups do |t|
       t.string :name

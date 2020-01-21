@@ -1,4 +1,4 @@
-class CreateInkiTestRights < ActiveRecord::Migration
+class CreateInkiTestRights < ActiveRecord::Migration[4.2]
   def change
     create_table :inki_test_rights do |t|
       t.string :inki_right

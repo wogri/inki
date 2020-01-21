@@ -1,8 +1,8 @@
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right visible-md-block visible-lg-block">
 	<% if @right -%>
 		<li>
 			<%= button_to({:controller => "logins", :action => "destroy", :id => nil}, data: { disable_with: t(:logout) }, :class => "btn btn-warning navbar-btn") do %>
-				<%= icon("sign-out", t(:logout)).html_safe %>
+				<%= icon("fas", "sign-out-alt", t(:logout)).html_safe %>
 			<% end -%>
 		</li>
 	<% end -%>
@@ -28,5 +28,5 @@
 </ul>
 <p class="navbar-text pull-right visible-lg"><%= @user_name %> &nbsp;</p>
 <p class="navbar-text pull-right visible-lg">
-  <%= icon("spinner", '', :style => "display:none", :id => "waiting_bar", :class => "fa-spin fa-lg") %>
+  <%= icon("fas", "spinner", '', :style => "display:none", :id => "waiting_bar", :class => "fa-spin fa-lg") %>
 </p>

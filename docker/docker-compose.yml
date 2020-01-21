@@ -1,55 +1,25 @@
 version: "3.5"
 
 services:
-    inki:
-        build:                               
-          context: ..
-          dockerfile: docker/Dockerfile--rvm-ruby-1.9.3
-      # restart: always
-      # env_file:
-      #   - inki.env
-        environment:
-          - PROJECT_ROOT="/var/www/inki/"
-          - RAILS_ENV=development
-          - LC_ALL=C.UTF-8  # set locale
-        working_dir: /var/www/inki/ 
-      # TODO: set locale in container
-        user: rvm
-        command: bash -c "./entrypoint.bash"
-      # command: tail -f /etc/hosts  # NOTE: do nothing but keep container alive (for testing/debugging)
-        ports:
-          - 3000:3000
-      # l.b. could be used to map src files directly into container.
-      # however, inki source code is currently copied into container while
-      # building the image with Dockerfile.
-      # volumes:
-      #   - .:/var/www/inki/
-        networks:
-          - inki
-      #   - traefik
-      # labels:
-      #     - "traefik.frontend.rule=Host:${URL_ROOT}"
-      #     - "traefik.frontend.entryPoints=http,https"
-      #     - "traefik.docker.network=traefik"
-      #     - "traefik.port=3000"
+  inkidev:
+    build:                               
+      context: ..
+      dockerfile: docker/Dockerfile
+    # restart: always
+    environment:
+    - RAILS_ENV=development
+    - LC_ALL=C.UTF-8  # set locale
+    working_dir: /inki/ 
+    ports:
+    - 3000:3000
 
-
-    inki_db:
-        image: postgres:11.2
-      # restart: always
-        env_file:
-          - inki_db.env
-        volumes:
-          - inki_db_volume:/var/lib/postgresql/data
-        networks:
-          - inki
-        labels:
-          - "traefik.enable=false"
-
-networks:
-  inki:
-# traefik:
-#   name: traefik
+  inki_db:
+    image: postgres:12.1
+    restart: always
+    env_file:
+    - inki_db.env
+    volumes:
+    - inki_db_volume:/var/lib/postgresql/data
 
 volumes:
   inki_db_volume:

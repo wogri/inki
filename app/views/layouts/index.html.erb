@@ -2,7 +2,7 @@
 	<div class="col-md-12"> 
 		<h2>
 			<% if class_icon = @model_class.inki_icon -%>
-				<%= icon(class_icon) %>
+				<%= icon("fas", class_icon) %>
 			<% end -%>
 			<%= @model_class.model_name.human(:count => 2) %>
 		</h2>

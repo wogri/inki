@@ -3,11 +3,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery # prevents CSRF
 
-  before_filter :authorize
-	before_filter :set_locale
-  before_filter :get_ajax_id
-	before_filter :set_class_variables
-	before_filter :get_colors, :only => [:index, :destroy, :search]
+  before_action :authorize
+	before_action :set_locale
+  before_action :get_ajax_id
+	before_action :set_class_variables
+	before_action :get_colors, :only => [:index, :destroy, :search]
 	helper_method :get_ajax_id # this method is also accessible from views and helpers
 	helper_method :get_colors # this method is also accessible from views and helpers
 
@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 			@index = true
 		end
 		if params[:id].to_i == 0 and @close # special close of an object that doesn't exist yet
-    	render :file => "layouts/close"
+      render template: "layouts/close"
 			return
 		end
     @object = model_class.find(params[:id])
@@ -50,12 +50,12 @@ class ApplicationController < ActionController::Base
 		respond_to do |format|
     	format.js { 
 				if @close
-    			render :file => "layouts/close"
+          render template: "layouts/close"
 				else
-					render :file => "layouts/show" 
+          render template: "layouts/show" 
 				end
 			}
-    	format.html {render :file => "layouts/show" }
+      format.html {render template: "layouts/show" }
     	format.json {render :json => @object }
 			format.xml {render :xml => @object }
 			format.csv {send_data @object.class.to_csv([@object]) }
@@ -221,8 +221,8 @@ class ApplicationController < ActionController::Base
     @controller_name = controller_name.to_sym
 		if options[:render]
 			respond_to do |format|
-				format.js { render :file => 'layouts/index' }
-				format.html { render :file => 'layouts/index' }
+        format.js { render template: "layouts/index" }
+        format.html { render template: "layouts/index" }
 				format.json { render :json => @objects }
 				format.xml { render :xml => @objects }
 				format.csv { send_data @objects.to_csv }
@@ -235,7 +235,7 @@ class ApplicationController < ActionController::Base
     @object = model_class.find(params[:id])
 		@div_id = create_div_id(@object)
 		@show_encryption_passwords = false
-    render :file => "layouts/edit"
+    render template: "layouts/edit" 
   end
 
 	def destroy
@@ -255,7 +255,7 @@ class ApplicationController < ActionController::Base
 		index(:render => false) # call index so ajax-views can re-render the index-view
 		@div_id = create_div_id(object)
 		respond_to do |format|
-			format.js { render :file => 'layouts/destroy' }
+      format.js { render template: "layouts/destroy" }
 			format.html { redirect_to send("#{model_class.name.tableize}_path") }
 			format.json { head :no_content }
 		end	
@@ -280,7 +280,7 @@ class ApplicationController < ActionController::Base
 				flash.now[:error] = t(:decryption_failed)
 			end
 			respond_to do |format|
-				format.js { render :file => 'layouts/show' }
+        format.js { render template: "layouts/show" }
 			end
 			return
 		end
@@ -301,7 +301,7 @@ class ApplicationController < ActionController::Base
 			@ajax_id = @previous_ajax_id 
 			index(:render => false) # call index so the index-view can be refreshed. 
 			respond_to do |format|
-				format.js { render :file => 'layouts/update_habtm' }
+        format.js { render template: "layouts/update_habtm" }
 				format.html { render :nothing => true } # actually this will never happen.
 			end	
 		elsif @expire = params[:expire]
@@ -317,7 +317,7 @@ class ApplicationController < ActionController::Base
 				@object.dispatch(:operation => "delayed_delete", :retry_at => time)
 			end
 			respond_to do |format|
-				format.js { render :file => 'layouts/update' }
+        format.js { render template: "layouts/update" }
 				format.html { redirect_to @object }
 				format.json { head :no_content }
 			end	
@@ -343,7 +343,7 @@ class ApplicationController < ActionController::Base
 				#end
 			#else	
 			respond_to do |format|
-				format.js { render :file => 'layouts/update' }
+        format.js { render template: "layouts/update" }
 				format.html { redirect_to @object }
 				format.json { head :no_content }
 			end	
@@ -355,12 +355,12 @@ class ApplicationController < ActionController::Base
 				@current_element_selected = true
 				flash.now[:error] = t(:could_not_save_element)
 				respond_to do |format|
-					format.js { render :file => 'layouts/show' }
+          format.js { render template: "layouts/show" }
 				end
 			else
 				respond_to do |format|
-					format.js { render :file => "layouts/edit" }
-					format.html { render :file => "layouts/edit" }
+          format.js { render template: "layouts/edit" }
+          format.html { render template: "layouts/edit" }
 					format.json { render json: @object.errors, status: :unprocessable_entity }
 				end
 			end
@@ -388,13 +388,13 @@ class ApplicationController < ActionController::Base
 			get_colors
       flash[:notice] = "#{@object.title if defined? @object.title} #{t(:created)}."
 			respond_to do |format|
-				format.js { render :file => 'layouts/create' }
+				format.js { render template: "layouts/create" }
 				format.json { render json: @object, status: :created, location: @object }
 			end
     else
 			@show_encryption_passwords = true
 			respond_to do |format|
-      	format.js { render :file => 'layouts/new' }
+        format.js { render template: "layouts/new" }
 				format.json { render json: @object.errors, status: :unprocessable_entity }
 			end
     end
@@ -419,7 +419,7 @@ class ApplicationController < ActionController::Base
 			end
 		end
 		@show_encryption_passwords = true
-    render :file => "layouts/new"
+    render template: "layouts/new" 
 	end
 
   private
@@ -591,7 +591,7 @@ EOF
 		end
 	end
 
-  # returns a unique number for the calling client. this is used for generating unique div-ids. is called from a before_filter
+  # returns a unique number for the calling client. this is used for generating unique div-ids. is called from a before_action
   def get_ajax_id(new_id = false)
 		if params[:ajax_id] and not new_id
     	@ajax_id = params[:ajax_id]
@@ -620,7 +620,7 @@ EOF
     @user_id = session[:user_id]
     @user_name = session[:user_name]
 		@user_group = session[:group]
-		if request.format == Mime::JSON and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
+		if request.format == Mime[:json] and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
 			authenticate_or_request_with_http_basic("inki username and password please") do |username, password|
 				if username == "inki" and password == Rails.configuration.inki.rest_password
 					@user_id = "inki_rest_request"

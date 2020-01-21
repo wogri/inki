@@ -1,4 +1,4 @@
-class CreateInkiTestUserGroupAssocs < ActiveRecord::Migration
+class CreateInkiTestUserGroupAssocs < ActiveRecord::Migration[4.2]
   def change
     create_table :inki_test_user_group_assocs do |t|
       t.integer :inki_test_group_id

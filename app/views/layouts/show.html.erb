@@ -1,5 +1,5 @@
 <h1>
-	<%= icon(@object.class.inki_icon) -%>
+	<%= icon("fas", @object.class.inki_icon) -%>
 	<% if defined? @object.title and @object.title != "" -%>
     <%= @object.title  %>
   <% else -%>

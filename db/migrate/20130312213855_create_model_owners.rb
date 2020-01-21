@@ -1,4 +1,4 @@
-class CreateModelOwners < ActiveRecord::Migration
+class CreateModelOwners < ActiveRecord::Migration[4.2]
   def change
     create_table :model_owners do |t|
       t.integer :model_id

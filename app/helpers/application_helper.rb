@@ -23,7 +23,7 @@ module ApplicationHelper
       link_html_class << "spinner"
 			name = sub_menu.klass.model_name.human(:count => 2) # get the pluralized form of the model name
 			if sub_menu.klass.inki_icon
-				icon(sub_menu.klass.inki_icon, name, :class => "fa-fw")
+				icon("fas", sub_menu.klass.inki_icon, name, :class => "fa-fw")
 			else
 				name
 			end
@@ -102,13 +102,13 @@ module ApplicationHelper
 			end
 		end
 		unless options[:non_dropdown_view] or @non_dropdown_view
-			html << link_to(icon("reorder", t(:show), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
-			html << link_to(icon("reorder", t(:show_no_remote), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
+			html << link_to(icon("fas", "bars", t(:show), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "btn btn-sm btn-default spinner")
+			html << link_to(icon("fas", "bars", t(:show_no_remote), :class => "fa-fw"), self.send("#{object_name}_path", object, link_hash), :class => "spinner") if not @add_existing_model
 		end
 		if @right == :write and not @add_existing_model # add_existing_model means a has_and_belongs_to_many realtionship selection view :) 
-			edit_text = (icon("pencil", t(:edit), :class => "fa-fw")).html_safe
+			edit_text = (icon("fas", "pencil-alt", t(:edit), :class => "fa-fw")).html_safe
 			edit_path = self.send("edit_#{object_name}_path", object, link_hash)
-			delete_text = icon("trash", t(:delete), :class => "fa-fw")
+			delete_text = icon("fas", "trash", t(:delete), :class => "fa-fw")
 			delete_hash = link_hash.clone
 			delete_hash.merge!({:page => @page}) if @page and @page.to_i > 0
 			delete_hash.merge!({:search => @search_string}) if @search_string and @search_string != ""
@@ -121,23 +121,23 @@ module ApplicationHelper
 				html << link_to(delete_text, delete_path, :method => :delete, :class => "spinner", :data => { :confirm => t(:sure) + "?"}, :remote => true)
 			end
 			if object.class.is_expirable?
-				expirable_text = icon("trash", t(:delayed_delete), :class => "fa-fw")
+				expirable_text = icon("fas", "trash", t(:delayed_delete), :class => "fa-fw")
 				expirable_path = self.send("#{object_name}_path", object, :popup => "expire", :ajax_id => @ajax_id) # expire means: return a modal with a popup of expirable time
 				html << link_to(expirable_text, expirable_path, :remote => true)
 			end
 			if object.class.is_versioned?
-				version_text = icon("mail-reply-all", t(:versions), :class => "fa-fw")
+				version_text = icon("fas", "mail-reply-all", t(:versions), :class => "fa-fw")
 				version_path = self.send("#{object_name}_path", object, :vcs => true, :ajax_id => @ajax_id) # vcs means: return a modal with a popup of model versions
 				html << link_to(version_text, version_path, :remote => true)
 			end
 		end
 		# the standard-exporters are listed here
 		if not @add_existing_model
-			html << link_to(icon("external-link", t(:csv_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
-			html << link_to(icon("code", t(:xml_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
-			html << link_to(icon("external-link-square", t(:json_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
+			html << link_to(icon("fas", "file-export", t(:csv_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :csv), :class => "spinner")
+			html << link_to(icon("fas", "code", t(:xml_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :xml), :class => "spinner")
+			html << link_to(icon("fas", "external-link-square-alt", t(:json_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :json), :class => "spinner")
       if defined?(LatexTemplate) and LatexTemplate.table_exists? and LatexTemplate.where(model: object.class.to_s).size > 0
-			  html << link_to(icon("file-pdf-o", t(:pdf_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :pdf), :class => "spinner")
+			  html << link_to(icon("fas", "file-pdf-o", t(:pdf_export), :class => "fa-fw"), self.send("#{object_name}_path", object, :format => :pdf), :class => "spinner")
       end
 			html += build_special_buttons(object, link_hash, options)
 			split_button(html) # split_button generates a split button (a button with more options)
@@ -157,9 +157,9 @@ module ApplicationHelper
 	def special_controller_button(model_class, option_name, option, link_target = nil)
 		link_hash = {}
 		link_hash[:special_option] = option_name unless link_target
-		link_text = icon(option[:icon], t(option[:description]), :class => "fa-fw")
+		link_text = icon("fas", option[:icon], t(option[:description]), :class => "fa-fw")
 		if not link_target
-			link_target = self.send("#{@controller_name}_path", params.symbolize_keys.merge(link_hash))
+			link_target = self.send("#{@controller_name}_path", params.to_unsafe_h.symbolize_keys.merge(link_hash))
 		end
 		html_options = {:class => "spinner"}
 		html_options[:remote] = true unless option[:non_xhr_link]
@@ -169,7 +169,7 @@ module ApplicationHelper
 	def special_button(option_name, option, link_hash, object = nil)
 		object_name = object.class.to_s.underscore
 		link_hash[:special_option] = option_name
-		link_text = icon(option[:icon], t(option[:description]), :class => "fa-fw")
+		link_text = icon("fas", option[:icon], t(option[:description]), :class => "fa-fw")
 		link = link_to(link_text, self.send("#{object_name}_path", object, link_hash), :remote => true, :class => "spinner")
 	end
 
@@ -233,13 +233,13 @@ module ApplicationHelper
 		name = object.class.human_attribute_name(attribute)
     html = ''
     if attribute.to_s == @order_by
-      html = icon("caret-down", ' ')
+      html = icon("fas", "caret-down", ' ')
       if @order_direction == "DESC"
-        html = icon("caret-up")
+        html = icon("fas", "caret-up")
       end
       html += " "
     end
-    (html.html_safe + link_to(name, self.send("#{controller_name}_path", params.symbolize_keys.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner")).html_safe
+    (html.html_safe + link_to(name, self.send("#{controller_name}_path", params.to_unsafe_h.symbolize_keys.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner")).html_safe
 	end
 		
 	# returns the standard-options for a standard-object
@@ -317,9 +317,9 @@ module ApplicationHelper
 				sanitize(number_with_delimiter(value).to_s)
 			when :boolean
 				if value
-					icon("check")
+					icon("fas", "check")
 				else
-					icon("close")
+					icon("fas", "times")
 				end
 			when :time
       	value.strftime("%H:%M") if value
@@ -456,7 +456,7 @@ module ApplicationHelper
 
 	def back_link(object)
     badge = content_tag(:span, object.class.all.size, :class => "badge active")
-    title = icon("arrow-circle-left", t(controller_name, default: controller_name.camelcase), :class => "fa-lg")
+    title = icon("fas", "arrow-circle-left", t(controller_name, default: controller_name.camelcase), :class => "fa-lg")
         link_to((title + " " + badge).html_safe, index_path(object),
                 :class => "spinner btn btn-primary")
 	end
@@ -474,7 +474,7 @@ module ApplicationHelper
 			if foreign_object
 				title_prefix = foreign_object.class.model_name.human
 				title = "#{title_prefix}: #{foreign_object.model_title}"
-				title = icon("external-link-square", title, :class => "fa-lg")
+				title = icon("fas", "external-link-square", title, :class => "fa-lg")
 				content_tag(:div, link_to(title, foreign_object, :class => "list-group-item info spinnner"), :class => "list-group-inki list-group")
 			else
 				nil
@@ -499,7 +499,7 @@ module ApplicationHelper
 				ajax_id = get_ajax_id(true) # get_ajax_id can be called directly from the controller because of  helper_method :get_ajax_id in the application-controller
 			end
 			
-			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + icon(open_status, Object.const_get(relation.to_s.singularize.camelize).model_name.human(:count => relation_elements), :class => "fa-lg")
+			link_text = content_tag(:span, relation_elements, :id => "dropdown_counter_#{ajax_id}", :class => "badge") + icon("fas", open_status, Object.const_get(relation.to_s.singularize.camelize).model_name.human(:count => relation_elements), :class => "fa-lg")
       link = link_to(link_text, self.send("#{pluralized_relation}_path", {
 				:ajax_id => ajax_id, 
 				:from_show_table => object.class.name.tableize, 
@@ -651,7 +651,7 @@ module ApplicationHelper
     end
     filter[filter.keys.sort.last.to_i + 1] = {:attribute => attribute, state: "new"}
     description = model_class.human_attribute_name(attribute)
-    link = link_to(description, params.symbolize_keys.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
+    link = link_to(description, params.to_unsafe_h.symbolize_keys.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
     return content_tag(:li, link, role: "presentation")
   end
 
@@ -672,7 +672,7 @@ module ApplicationHelper
       if (["datetime_equal", "number_eq", "is"].member?(state) and element["input"] and element["input"] != "") or (state =~ /\Areference_/) or ["boolean_true", "boolean_false"].member?(state)
         selected_attributes.push(attribute.to_sym)
       end
-      minus_sign = link_to(icon("minus-circle"), params.symbolize_keys.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
+      minus_sign = link_to(icon("fas", "minus-circle"), params.to_unsafe_h.symbolize_keys.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
       # minus_sign = content_tag(:span, minus_sign, :class => "input-group-btn")
       attribute_name = content_tag(:button, model_class.human_attribute_name(attribute), "class" => "btn btn-default", :type => "button")
       # attribute_name = content_tag(:span, attribute_name.html_safe, :class => "input-group-btn")
@@ -739,8 +739,8 @@ module ApplicationHelper
 
     elsif attribute_type == :boolean
       filter_buttons = [
-        {boolean_true: icon("check")}, 
-        {boolean_false: icon("close")}
+        {boolean_true: icon("fas", "check")}, 
+        {boolean_false: icon("fas", "times")}
       ]
 		elsif attribute_type == :integer
       filter_buttons = [
@@ -791,7 +791,7 @@ module ApplicationHelper
       description = option.values.first
       tag = option.keys.first
       filter[key.to_s][:state] = tag
-      link = link_to(description, params.symbolize_keys.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
+      link = link_to(description, params.to_unsafe_h.symbolize_keys.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
       content_tag(:li, link, role: "presentation").html_safe
     end
     dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu") # , "aria-labelledby" => "filter_#{key}#{attribute}")

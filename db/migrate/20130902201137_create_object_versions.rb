@@ -1,4 +1,4 @@
-class CreateObjectVersions < ActiveRecord::Migration
+class CreateObjectVersions < ActiveRecord::Migration[4.2]
   def change
     create_table :object_versions do |t|
       t.integer :model_id

@@ -9,11 +9,11 @@
   :add_existing_model => @add_existing_model,
   :previous_ajax_id => @previous_ajax_id,
 }) if @from_show_table -%>
-<%= form_tag(params.symbolize_keys.merge(link_hash), :method => 'get', :class => "filter_form", :remote => true) do %>
+<%= form_tag(params.to_unsafe_h.symbolize_keys.merge(link_hash), :method => 'get', :class => "filter_form", :remote => true) do %>
   <div class="btn-group" role="group"> 
     <div class="btn-group" role="group">
       <button class="btn btn-default dropdown-toggle" type="button" id="filter<%= @ajax_id -%>" data-toggle="dropdown" aria-expanded="true">
-        <%= icon("plus-circle", t(:add_filter)) %>
+        <%= icon("fas", "plus-circle", t(:add_filter)) %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -24,10 +24,10 @@
     </div>
     <%#= submit_tag(t(:filter), :class => "btn btn-default") %>
     <%= button_tag(icon("filter", t(:filter)), type: "submit", :class => "btn btn-default") %>
-    <%= link_to(icon("external-link", t(:link_for_filter)), params.symbolize_keys.merge(link_hash), :class => "btn btn-default") %>
-    <% link_hash = params.symbolize_keys.merge(link_hash) %>
+    <%= link_to(icon("fas", "external-link", t(:link_for_filter)), params.to_unsafe_h.symbolize_keys.merge(link_hash), :class => "btn btn-default") %>
+    <% link_hash = params.to_unsafe_h.symbolize_keys.merge(link_hash) %>
     <% link_hash.delete(:filter) %>
-    <%= link_to(icon("times-circle", t(:cancel)), link_hash, :remote => true, :class => "btn btn-danger") %>
+    <%= link_to(icon("fas", "times-circle", t(:cancel)), link_hash, :remote => true, :class => "btn btn-danger") %>
   </div> <!-- btn-group -->
   <%= filter_form %>
 <% end -%>

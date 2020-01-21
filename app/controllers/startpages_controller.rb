@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class StartpagesController < ApplicationController
-  skip_before_filter :get_colors
+  skip_before_action :get_colors
 
 	def index
 	end

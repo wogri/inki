@@ -1,4 +1,4 @@
-class CreateDispatchJobs < ActiveRecord::Migration
+class CreateDispatchJobs < ActiveRecord::Migration[4.2]
   def change
     create_table :dispatch_jobs do |t|
       t.string :model_name

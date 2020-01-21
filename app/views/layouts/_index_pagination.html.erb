@@ -4,12 +4,12 @@
 		<ul class="pagination">
 			<li>
 				<% if @no_pagination %>
-					<%= link_to(t(:paginate), params.symbolize_keys.merge({:no_pagination => false, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
+					<%= link_to(t(:paginate), params.to_unsafe_h.symbolize_keys.merge({:no_pagination => false, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
 				<% else %>
 					<% if @objects.total_count > 1000 %>
-						<%= link_to(t(:all), params.symbolize_keys.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, data: { confirm: t(:big_number_of_objects_to_display)}, :class => "spinner") %>
+						<%= link_to(t(:all), params.to_unsafe_h.symbolize_keys.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, data: { confirm: t(:big_number_of_objects_to_display)}, :class => "spinner") %>
 					<% else %>
-						<%= link_to(t(:all), params.symbolize_keys.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
+						<%= link_to(t(:all), params.to_unsafe_h.symbolize_keys.merge({:no_pagination => true, :ajax_id => @ajax_id}), :remote => true, :class => "spinner") %>
 					<% end %>
 				<% end -%>
 			</li>

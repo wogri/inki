@@ -12,15 +12,15 @@
       <%= form_tag(link_hash, :method => 'get', :remote => true) do %>
         <div class="input-group">
           <span class="input-group-btn">
-            <%= link_to(icon("filter", '', :class =>"fa-lg"), link_hash.merge(filter: true), :remote => true, :class => "btn btn-default spinner") %>
+            <%= link_to(icon("fas", "filter", '', :class =>"fa-lg"), link_hash.merge(filter: true), :remote => true, :class => "btn btn-default spinner") %>
             <label for="search_button_<%= @ajax_id %>" class="btn btn-default spinner">
-              <%= icon("search", '', :class => "fa-lg") %>
+              <%= icon("fas", "search", '', :class => "fa-lg") %>
             </label>
             <%= button_tag(t(:search), :class => "hidden spinner", :id => "search_button_#{@ajax_id}") %>
           </span>
           <%= text_field_tag('search', @search_string, :type => "search", :class => "form-control", :placeholder => t(:search)) %>
           <span class="spinner input-group-btn<%= ' hidden' if not @search_string or @search_string == '' %>">
-              <%= link_to icon("times-circle-o", '', :class => "fa-lg"), link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default spinner" %>
+              <%= link_to icon("fas", "times-circle", '', :class => "fa-lg"), link_hash.merge(:search => ""), :remote => true, :class => "spinner btn btn-default spinner" %>
           </span>
         </div> <!-- input-group-->
       <% end -%>

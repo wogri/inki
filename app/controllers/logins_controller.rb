@@ -1,6 +1,6 @@
 class LoginsController < ApplicationController
-  skip_before_filter :authorize, :only => [:index, :create, :destroy]
-  skip_before_filter :get_colors
+  skip_before_action :authorize, :only => [:index, :create, :destroy]
+  skip_before_action :get_colors
 
   def index
     @menu_items = []
