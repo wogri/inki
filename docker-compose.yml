@@ -1,0 +1,24 @@
+version: "3.5"
+
+services:
+  inkidev:
+    build: .
+    image: inki:latest
+    command: rails server -b 0.0.0.0 -p 3000
+    environment:
+    - RAILS_ENV=development
+    - LC_ALL=C.UTF-8  # set locale
+    working_dir: /inki/ 
+    ports:
+      - 0.0.0.0:4001:3000/tcp
+
+  inki_db:
+    image: postgres:12.1
+    restart: always
+    env_file:
+    - docker/inki_db.env
+    volumes:
+    - inki_db_volume:/var/lib/postgresql/data
+
+volumes:
+  inki_db_volume:
