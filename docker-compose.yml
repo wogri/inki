@@ -13,10 +13,6 @@ services:
     working_dir: /inki/ 
     ports:
       - 0.0.0.0:4001:3000/tcp
-    volumes:
-      - type: "bind"
-        source: "/home/wogri/inki/github"
-        target: "/inki"
 
   inki_db:
     image: postgres:12.1
