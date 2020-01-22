@@ -4,13 +4,19 @@ services:
   inkidev:
     build: .
     image: inki:latest
-    command: rails server -b 0.0.0.0 -p 3000
+    command: sh -c 'sleep 5; rm -f /inki/tmp/pids/server.pid; rake db:migrate && rails server -b 0.0.0.0 -p 3000'
+    depends_on: 
+    - inki_db
     environment:
     - RAILS_ENV=development
     - LC_ALL=C.UTF-8  # set locale
     working_dir: /inki/ 
     ports:
       - 0.0.0.0:4001:3000/tcp
+    volumes:
+      - type: "bind"
+        source: "/home/wogri/inki/github"
+        target: "/inki"
 
   inki_db:
     image: postgres:12.1

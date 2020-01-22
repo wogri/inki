@@ -27,7 +27,7 @@ class Menu
 			self.klass = Object.const_get(menu_config)
 			self.icon = self.klass.inki_icon
 		else
-			logger.error("unknown class #{menu_config.class} for menu")
+      Rails.logger.error("unknown class #{menu_config.class} for menu")
 		end
 	end
 

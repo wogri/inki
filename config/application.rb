@@ -11,7 +11,6 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-# require "/config/inki.rb"
 
 module Development
   class Application < Rails::Application
@@ -63,6 +62,7 @@ module Development
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    config.logger = Logger.new(STDOUT)
 		# config.active_record.observers = :audit_observer
     # config.active_record.raise_in_transactional_callbacks = true
   end
