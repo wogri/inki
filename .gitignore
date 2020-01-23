@@ -1,9 +1,4 @@
-config/database.yml
-config/inki.yml
-config/menu.yml
-config/yaml_auth.yml
 db/schema.rb
-inki_db.env
 log/development.log
 tmp/cache/
 tmp/pids/

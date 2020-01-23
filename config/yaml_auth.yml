@@ -1,0 +1,13 @@
+development:
+  admins:
+    user: 
+      # password is: asdf
+      password: 912ec803b2ce49e4a541068d495ab570
+      mailaddress: wogri@wogri.com
+      name: Development User
+  users:
+    test: 
+      # password is: asdf
+      password: 912ec803b2ce49e4a541068d495ab570
+      mailaddress: wogri@wogri.com
+      name: Test Bert
