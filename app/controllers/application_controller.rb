@@ -617,9 +617,12 @@ EOF
 	end
 
   def authorize
+    session.delete 'init'
     @user_id = session[:user_id]
     @user_name = session[:user_name]
 		@user_group = session[:group]
+    logger.debug("Session Details in Application controller: #{session.inspect}")
+    logger.debug "user id: #{@user_id} / user_name: #{@user_name}"
 		if request.format == Mime[:json] and not @user_id # a way to authenticate via http basic authentication, this is useful for machine generated json / xml requests.
 			authenticate_or_request_with_http_basic("inki username and password please") do |username, password|
 				if username == "inki" and password == Rails.configuration.inki.rest_password

@@ -1,9 +1,10 @@
-FROM ruby:2.6-stretch
+FROM ruby:2.7-buster
 
 WORKDIR /inki
 COPY Gemfile /inki
 COPY Gemfile.lock /inki
 ENV RAILS_ENV production
+RUN bundle update --bundler
 RUN bundle install -V
 RUN ln -s /usr/local/bin/ruby /usr/bin/ruby
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y locales
