@@ -159,7 +159,7 @@ module ApplicationHelper
 		link_hash[:special_option] = option_name unless link_target
 		link_text = icon("fas", option[:icon], t(option[:description]), :class => "fa-fw")
 		if not link_target
-			link_target = self.send("#{@controller_name}_path", params.to_unsafe_h.symbolize_keys.merge(link_hash))
+      link_target = self.send("#{@controller_name}_path", params.permit(preferences: {}).merge(link_hash).to_unsafe_h)
 		end
 		html_options = {:class => "spinner"}
 		html_options[:remote] = true unless option[:non_xhr_link]
@@ -239,7 +239,7 @@ module ApplicationHelper
       end
       html += " "
     end
-    (html.html_safe + link_to(name, self.send("#{controller_name}_path", params.to_unsafe_h.symbolize_keys.merge({:order => attribute, :ajax_id => @ajax_id})), :remote => true, :class => "spinner")).html_safe
+    (html.html_safe + link_to(name, self.send("#{controller_name}_path", params.permit(preferences: {}).merge({:order => attribute, :ajax_id => @ajax_id}).to_unsafe_h), :remote => true, :class => "spinner")).html_safe
 	end
 		
 	# returns the standard-options for a standard-object
@@ -651,7 +651,9 @@ module ApplicationHelper
     end
     filter[filter.keys.sort.last.to_i + 1] = {:attribute => attribute, state: "new"}
     description = model_class.human_attribute_name(attribute)
-    link = link_to(description, params.to_unsafe_h.symbolize_keys.merge("filter" => filter, :ajax_id => ajax_id), :remote => true, :class => "spinner", :role => "menuitem")
+    permitted_params = params.permit(preferences: {})
+    merged_params = permitted_params.merge("filter" => filter, :ajax_id => ajax_id).to_unsafe_h
+    link = link_to(description, merged_params, :remote => true, :class => "spinner", :role => "menuitem")
     return content_tag(:li, link, role: "presentation")
   end
 
@@ -672,7 +674,7 @@ module ApplicationHelper
       if (["datetime_equal", "number_eq", "is"].member?(state) and element["input"] and element["input"] != "") or (state =~ /\Areference_/) or ["boolean_true", "boolean_false"].member?(state)
         selected_attributes.push(attribute.to_sym)
       end
-      minus_sign = link_to(icon("fas", "minus-circle"), params.to_unsafe_h.symbolize_keys.merge(:filter => new_filter), :remote => true, :class => "spinner btn btn-danger")
+      minus_sign = link_to(icon("fas", "minus-circle"), params.permit(preferences: {}).merge(:filter => new_filter).to_unsafe_h, :remote => true, :class => "spinner btn btn-danger")
       # minus_sign = content_tag(:span, minus_sign, :class => "input-group-btn")
       attribute_name = content_tag(:button, model_class.human_attribute_name(attribute), "class" => "btn btn-default", :type => "button")
       # attribute_name = content_tag(:span, attribute_name.html_safe, :class => "input-group-btn")
@@ -791,7 +793,7 @@ module ApplicationHelper
       description = option.values.first
       tag = option.keys.first
       filter[key.to_s][:state] = tag
-      link = link_to(description, params.to_unsafe_h.symbolize_keys.merge("filter" => filter), :remote => true, :class => "spinner", :role => "menuitem")
+      link = link_to(description, params.permit(preferences: {}).merge("filter" => filter).to_unsafe_h, :remote => true, :class => "spinner", :role => "menuitem")
       content_tag(:li, link, role: "presentation").html_safe
     end
     dropdown = button + content_tag(:ul, elements.join("\n").html_safe, :class => "dropdown-menu", :role => "menu") # , "aria-labelledby" => "filter_#{key}#{attribute}")
