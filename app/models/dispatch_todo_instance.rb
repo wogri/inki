@@ -43,7 +43,7 @@ class DispatchTodoInstance # < ActiveRecord::Base
 			begin
 				instance = YAML::load(self.dispatch_job.model_description)
 			rescue StandardError => e
-				logger.error(e.to_s)
+        Rails.logger.error(e.to_s)
 			end
 			# else
 			# 	logger.warn("could not add dispatch-job with ID #{dispatch_id} to job queue. Please inspect.")
